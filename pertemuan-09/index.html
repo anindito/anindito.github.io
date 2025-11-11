@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array 1D dan Operasinya - Pertemuan 9</title>
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/moon.css">
+    
+    <!-- Highlight.js for code syntax -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+    
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: none;
+        }
+        
+        .reveal pre {
+            width: 100%;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .reveal pre code {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        .reveal .slide-number {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .highlight {
+            color: #42affa;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: #90EE90;
+        }
+        
+        .warning {
+            color: #FFB366;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .two-column > div {
+            flex: 1;
+        }
+        
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .small-text {
+            font-size: 0.8em;
+        }
+        
+        img.diagram {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+        
+        ul.compact li {
+            margin: 10px 0;
+        }
+        
+        .emoji {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>Array 1D dan Operasinya</h1>
+                <h3>Pertemuan 9</h3>
+                <p>Dasar-Dasar Pemrograman</p>
+                <p class="small-text">Tekan <kbd>→</kbd> untuk melanjutkan atau <kbd>ESC</kbd> untuk overview</p>
+            </section>
+
+            <!-- Slide 2: Agenda -->
+            <section>
+                <h2>📋 Agenda Hari Ini</h2>
+                <ul class="compact">
+                    <li>Konsep Dasar Array</li>
+                    <li>Deklarasi dan Inisialisasi</li>
+                    <li>Akses dan Manipulasi Elemen</li>
+                    <li>Array sebagai Parameter Fungsi</li>
+                    <li>Operasi Dasar pada Array</li>
+                    <li>Algoritma Sequential Search</li>
+                    <li>Studi Kasus</li>
+                </ul>
+            </section>
+
+            <!-- Section: Pendahuluan -->
+            <section>
+                <section>
+                    <h2>🤔 Bayangkan...</h2>
+                    <p>Anda harus menyimpan nilai ujian dari <span class="highlight">50 mahasiswa</span></p>
+                    <div class="fragment">
+                        <p class="warning">Tanpa Array:</p>
+                        <pre><code class="language-cpp">int nilai1, nilai2, nilai3, ..., nilai50;</code></pre>
+                    </div>
+                    <div class="fragment">
+                        <p class="success">Dengan Array:</p>
+                        <pre><code class="language-cpp">int nilai[50];</code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Apa itu Array?</h2>
+                    <div class="box">
+                        <p><strong>Array</strong> adalah struktur data yang dapat menyimpan sekumpulan elemen dengan <span class="highlight">tipe data yang sama</span> dalam satu nama variabel.</p>
+                    </div>
+                    <ul class="compact fragment">
+                        <li>✅ Semua elemen bertipe data sama</li>
+                        <li>✅ Ukuran tetap setelah dideklarasi</li>
+                        <li>✅ Elemen disimpan berurutan dalam memori</li>
+                        <li>✅ Diakses menggunakan indeks (dimulai dari 0)</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- Section: Visualisasi Array -->
+            <section>
+                <section>
+                    <h2>Visualisasi Array dalam Memori</h2>
+                    <img src="https://raw.githubusercontent.com/anindito/dasardasarpemrograman/main/materi/pertemuan-09/images/array_visualization.svg" 
+                         alt="Array Visualization" class="diagram">
+                </section>
+
+                <section>
+                    <h2>⚠️ Penting: Indeks Dimulai dari 0</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="box">
+                                <p><strong>Elemen Pertama:</strong> indeks 0</p>
+                                <p><strong>Elemen Kedua:</strong> indeks 1</p>
+                                <p><strong>Elemen Ke-n:</strong> indeks n-1</p>
+                            </div>
+                        </div>
+                        <div>
+                            <pre><code class="language-cpp">int nilai[5] = {85, 92, 78, 88, 95};
+
+nilai[0]  // 85 (pertama)
+nilai[2]  // 78 (ketiga)
+nilai[4]  // 95 (terakhir)</code></pre>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Deklarasi -->
+            <section>
+                <section>
+                    <h2>Deklarasi Array</h2>
+                    <div class="box">
+                        <p><strong>Sintaks:</strong></p>
+                        <pre><code class="language-cpp">tipe_data nama_array[ukuran];</code></pre>
+                    </div>
+                    <div class="fragment">
+                        <p><strong>Contoh:</strong></p>
+                        <pre><code class="language-cpp">int nilai[10];           // Array integer, 10 elemen
+float suhu[7];           // Array float, 7 elemen
+double gaji[50];         // Array double, 50 elemen
+char nama[30];           // Array karakter, 30 elemen</code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Inisialisasi Array</h2>
+                    <pre><code class="language-cpp">// Inisialisasi lengkap
+int angka[5] = {10, 20, 30, 40, 50};
+
+// Inisialisasi parsial (sisanya 0)
+int data[7] = {5, 10, 15};  
+// data = {5, 10, 15, 0, 0, 0, 0}
+
+// Inisialisasi semua elemen dengan 0
+int kosong[10] = {0};
+
+// Ukuran implisit (C++ menghitung otomatis)
+int primes[] = {2, 3, 5, 7, 11, 13};  // ukuran = 6</code></pre>
+                </section>
+
+                <section>
+                    <h2>💡 Best Practice</h2>
+                    <div class="box">
+                        <p>Gunakan <strong>konstanta</strong> untuk ukuran array:</p>
+                        <pre><code class="language-cpp">const int UKURAN = 50;
+int nilai[UKURAN];
+
+// Atau dengan #define
+#define MAX_MAHASISWA 100
+float ipk[MAX_MAHASISWA];</code></pre>
+                    </div>
+                    <p class="fragment small-text">✅ Lebih mudah di-maintain<br>
+                    ✅ Cukup ubah di satu tempat</p>
+                </section>
+            </section>
+
+            <!-- Section: Akses dan Manipulasi -->
+            <section>
+                <section>
+                    <h2>Mengakses Elemen Array</h2>
+                    <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int nilai[5] = {85, 92, 78, 88, 95};
+    
+    cout &lt;&lt; "Nilai pertama: " &lt;&lt; nilai[0] &lt;&lt; endl;
+    cout &lt;&lt; "Nilai ketiga: " &lt;&lt; nilai[2] &lt;&lt; endl;
+    cout &lt;&lt; "Nilai terakhir: " &lt;&lt; nilai[4] &lt;&lt; endl;
+    
+    return 0;
+}</code></pre>
+                    <div class="fragment">
+                        <p><strong>Output:</strong></p>
+                        <pre><code>Nilai pertama: 85
+Nilai ketiga: 78
+Nilai terakhir: 95</code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Memodifikasi Elemen Array</h2>
+                    <pre><code class="language-cpp">int skor[3] = {75, 80, 85};
+
+// Memodifikasi nilai
+skor[0] = 90;
+skor[1] = 95;
+skor[2] = 88;
+
+// Hasil: skor = {90, 95, 88}</code></pre>
+                </section>
+
+                <section>
+                    <h2>🔄 Perulangan untuk Array</h2>
+                    <pre><code class="language-cpp">const int UKURAN = 5;
+int nilai[UKURAN];
+
+// Input menggunakan loop
+for (int i = 0; i < UKURAN; i++) {
+    cout &lt;&lt; "Nilai ke-" &lt;&lt; (i + 1) &lt;&lt; ": ";
+    cin &gt;&gt; nilai[i];
+}
+
+// Tampilkan menggunakan loop
+for (int i = 0; i < UKURAN; i++) {
+    cout &lt;&lt; nilai[i] &lt;&lt; " ";
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Range-Based For Loop (C++11)</h2>
+                    <pre><code class="language-cpp">int angka[] = {10, 20, 30, 40, 50};
+
+// Lebih sederhana!
+for (int n : angka) {
+    cout &lt;&lt; n &lt;&lt; " ";
+}
+
+// Output: 10 20 30 40 50</code></pre>
+                    <p class="fragment small-text">✅ Lebih mudah dibaca<br>
+                    ⚠️ Tidak bisa akses indeks atau modifikasi</p>
+                </section>
+            </section>
+
+            <!-- Section: Array sebagai Parameter -->
+            <section>
+                <section>
+                    <h2>Array sebagai Parameter Fungsi</h2>
+                    <pre><code class="language-cpp">void tampilkanArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+int main() {
+    int data[] = {5, 10, 15, 20, 25};
+    tampilkanArray(data, 5);
+    return 0;
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>⚠️ Penting: Pass by Reference</h2>
+                    <div class="box">
+                        <p>Array <strong>otomatis dikirim by reference</strong> (melalui pointer)</p>
+                    </div>
+                    <pre><code class="language-cpp">void kalikanDua(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        arr[i] *= 2;  // Mengubah array asli!
+    }
+}
+
+int main() {
+    int angka[] = {1, 2, 3, 4, 5};
+    kalikanDua(angka, 5);
+    // angka sekarang = {2, 4, 6, 8, 10}
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Fungsi yang Mengembalikan Nilai</h2>
+                    <pre><code class="language-cpp">int hitungJumlah(int arr[], int n) {
+    int total = 0;
+    for (int i = 0; i < n; i++) {
+        total += arr[i];
+    }
+    return total;
+}
+
+double hitungRataRata(int arr[], int n) {
+    int total = hitungJumlah(arr, n);
+    return (double)total / n;
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Operasi Dasar -->
+            <section>
+                <section>
+                    <h2>Operasi Dasar pada Array</h2>
+                    <ul class="compact">
+                        <li>🔍 Mencari nilai maksimum dan minimum</li>
+                        <li>📊 Menghitung statistik (rata-rata, variansi)</li>
+                        <li>🔄 Membalik urutan array</li>
+                        <li>📋 Menyalin array</li>
+                        <li>🔗 Menggabungkan dua array</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Mencari Maksimum dan Minimum</h2>
+                    <pre><code class="language-cpp">int cariMaksimum(int arr[], int n) {
+    int maks = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > maks) {
+            maks = arr[i];
+        }
+    }
+    return maks;
+}
+
+int cariMinimum(int arr[], int n) {
+    int min = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    return min;
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Membalik Urutan Array</h2>
+                    <pre><code class="language-cpp">void balikArray(int arr[], int n) {
+    int awal = 0;
+    int akhir = n - 1;
+    
+    while (awal < akhir) {
+        // Tukar elemen
+        int temp = arr[awal];
+        arr[awal] = arr[akhir];
+        arr[akhir] = temp;
+        
+        awal++;
+        akhir--;
+    }
+}</code></pre>
+                    <div class="fragment">
+                        <p class="small-text">{1, 2, 3, 4, 5} → {5, 4, 3, 2, 1}</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Sequential Search -->
+            <section>
+                <section>
+                    <h2>🔍 Sequential Search</h2>
+                    <div class="box">
+                        <p><strong>Pencarian Berurutan:</strong> Memeriksa setiap elemen satu per satu dari awal hingga akhir</p>
+                    </div>
+                    <ul class="compact fragment">
+                        <li>✅ Sangat sederhana</li>
+                        <li>✅ Bekerja pada array tidak terurut</li>
+                        <li>⚠️ Kompleksitas: O(n)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Visualisasi Sequential Search</h2>
+                    <img src="https://raw.githubusercontent.com/anindito/dasardasarpemrograman/main/materi/pertemuan-09/images/sequential_search.svg" 
+                         alt="Sequential Search" class="diagram">
+                </section>
+
+                <section>
+                    <h2>Implementasi Sequential Search</h2>
+                    <pre><code class="language-cpp">int sequentialSearch(int arr[], int n, int kunci) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == kunci) {
+            return i;  // Ditemukan, return indeks
+        }
+    }
+    return -1;  // Tidak ditemukan
+}
+
+int main() {
+    int data[] = {10, 25, 33, 40, 55, 67, 78};
+    int hasil = sequentialSearch(data, 7, 40);
+    
+    if (hasil != -1)
+        cout &lt;&lt; "Ditemukan pada indeks " &lt;&lt; hasil;
+    else
+        cout &lt;&lt; "Tidak ditemukan";
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Analisis Kompleksitas</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="box">
+                                <p><span class="success">Best Case: O(1)</span></p>
+                                <p class="small-text">Elemen di posisi pertama</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="box">
+                                <p><span class="warning">Worst Case: O(n)</span></p>
+                                <p class="small-text">Elemen di posisi terakhir atau tidak ada</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box fragment">
+                        <p><strong>Average Case: O(n/2) ≈ O(n)</strong></p>
+                        <p class="small-text">Rata-rata memeriksa setengah array</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Studi Kasus -->
+            <section>
+                <section>
+                    <h2>📚 Studi Kasus: Sistem Nilai Mahasiswa</h2>
+                    <p>Program lengkap untuk mengelola dan menganalisis nilai mahasiswa</p>
+                </section>
+
+                <section>
+                    <h2>Fitur Program</h2>
+                    <ul class="compact">
+                        <li>📝 Input nilai mahasiswa</li>
+                        <li>📊 Hitung rata-rata</li>
+                        <li>🏆 Cari nilai tertinggi dan terendah</li>
+                        <li>✅ Hitung jumlah yang lulus</li>
+                        <li>📈 Persentase kelulusan</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Contoh Output</h2>
+                    <pre><code>=== STATISTIK NILAI MAHASISWA ===
+Jumlah mahasiswa: 5
+Rata-rata nilai: 86.60
+Nilai tertinggi: 92
+Nilai terendah: 78
+Jumlah lulus (>= 60): 5
+Jumlah tidak lulus: 0
+Persentase kelulusan: 100.00%</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Rangkuman -->
+            <section>
+                <section>
+                    <h2>📝 Rangkuman</h2>
+                    <ul class="compact">
+                        <li>Array menyimpan <span class="highlight">sekumpulan data dengan tipe sama</span></li>
+                        <li>Indeks dimulai dari <span class="highlight">0</span></li>
+                        <li>Array dikirim ke fungsi <span class="highlight">by reference</span></li>
+                        <li>Sequential search: algoritma pencarian sederhana O(n)</li>
+                        <li>Array adalah fondasi untuk struktur data lebih kompleks</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🎯 Key Takeaways</h2>
+                    <div class="box">
+                        <h3>1. Deklarasi</h3>
+                        <pre><code class="language-cpp">tipe_data nama[ukuran];</code></pre>
+                    </div>
+                    <div class="box">
+                        <h3>2. Akses Elemen</h3>
+                        <pre><code class="language-cpp">array[indeks]</code></pre>
+                    </div>
+                    <div class="box">
+                        <h3>3. Perulangan</h3>
+                        <pre><code class="language-cpp">for (int i = 0; i < n; i++)</code></pre>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Latihan -->
+            <section>
+                <section>
+                    <h2>💪 Latihan</h2>
+                    <p>Buatlah program yang:</p>
+                    <ol class="compact">
+                        <li>Input 10 bilangan ke dalam array</li>
+                        <li>Tampilkan semua elemen</li>
+                        <li>Hitung jumlah dan rata-rata</li>
+                        <li>Tampilkan elemen pada indeks ganjil</li>
+                        <li>Tampilkan elemen dengan nilai genap</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>🚀 Challenge</h2>
+                    <div class="box">
+                        <p><strong>Rotasi Array</strong></p>
+                        <p>Buatlah fungsi untuk merotasi array ke kanan sebanyak k posisi</p>
+                        <p class="small-text">Input: [1, 2, 3, 4, 5], k = 2<br>
+                        Output: [4, 5, 1, 2, 3]</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Pertanyaan -->
+            <section>
+                <h2>❓ Pertanyaan?</h2>
+                <p class="emoji">🤔 💭 💡</p>
+                <p>Mari kita diskusikan!</p>
+            </section>
+
+            <!-- Section: Terima Kasih -->
+            <section>
+                <h1>Terima Kasih! 🙏</h1>
+                <p>Pertemuan 9: Array 1D dan Operasinya</p>
+                <p class="small-text">Dasar-Dasar Pemrograman</p>
+                <br>
+                <p class="small-text">Tekan <kbd>ESC</kbd> untuk melihat overview semua slide</p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            
+            plugins: [ RevealHighlight, RevealNotes, RevealZoom ],
+            
+            // Keyboard shortcuts
+            keyboard: {
+                // 13: null, // Enter
+                // 32: null, // Space
+            },
+            
+            // Display controls
+            controls: true,
+            progress: true,
+            center: true,
+            
+            // Auto-slide (disabled)
+            autoSlide: 0,
+            
+            // Presentation size
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+        });
+    </script>
+</body>
+</html>
