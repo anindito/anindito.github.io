@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 11: Pointer dan Memori Dinamis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/moon.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+        .reveal pre { width: 100%; }
+        .reveal code { max-height: 500px; }
+        .reveal .slides section .fragment.highlight-current-code { opacity: 1; visibility: inherit; }
+        .reveal .slides section .fragment.highlight-current-code.current-fragment { background: #555a5f; }
+        .two-columns { display: flex; gap: 20px; }
+        .two-columns > div { flex: 1; }
+        .small-code { font-size: 0.7em; }
+        .emphasis { color: #e7ad52; font-weight: bold; }
+        .danger { color: #ff6b6b; font-weight: bold; }
+        .success { color: #51cf66; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Title Slide -->
+            <section>
+                <h1>Pointer dan Memori Dinamis</h1>
+                <h3>Pertemuan 11</h3>
+                <p>Dasar-Dasar Pemrograman</p>
+            </section>
+
+            <!-- Outline -->
+            <section>
+                <h2>Outline Materi</h2>
+                <ol>
+                    <li>Konsep Pointer dan Alamat Memori</li>
+                    <li>Operator Pointer (& dan *)</li>
+                    <li>Pointer dan Array</li>
+                    <li>Memori Dinamis (new dan delete)</li>
+                    <li>Memory Management</li>
+                    <li>Best Practices</li>
+                </ol>
+            </section>
+
+            <!-- Section 1: Konsep Dasar -->
+            <section>
+                <section>
+                    <h2>Apa itu Pointer?</h2>
+                    <p>Pointer adalah variabel yang menyimpan <span class="emphasis">alamat memori</span> dari variabel lain</p>
+                    <pre><code class="cpp" data-trim>
+int x = 42;           // Variabel biasa
+int* ptr = &x;        // Pointer ke x
+                    </code></pre>
+                    <p class="fragment">Pointer "menunjuk" ke lokasi dimana data disimpan di memori</p>
+                </section>
+
+                <section>
+                    <h2>Mengapa Pointer Penting?</h2>
+                    <ul>
+                        <li class="fragment">Manipulasi data <strong>efisien</strong> tanpa copy</li>
+                        <li class="fragment">Alokasi memori <strong>dinamis</strong> saat runtime</li>
+                        <li class="fragment">Fondasi untuk <strong>struktur data lanjutan</strong></li>
+                        <li class="fragment">Membuat fungsi yang dapat <strong>memodifikasi</strong> variabel luar</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Memori Komputer</h2>
+                    <p>Memori dapat dibayangkan sebagai deretan kotak dengan alamat unik</p>
+                    <div class="fragment">
+                        <pre><code class="cpp" data-trim>
+int x = 10;
+// x disimpan di alamat: 0x7ffd5ba4e8bc
+// Kita bisa akses alamat ini dengan pointer
+                        </code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Visualisasi Pointer</h2>
+                    <img src="images/pointer_visualization.svg" alt="Pointer Visualization" style="height: 500px;">
+                </section>
+            </section>
+
+            <!-- Section 2: Operator Pointer -->
+            <section>
+                <section>
+                    <h2>Operator Pointer</h2>
+                    <div class="two-columns">
+                        <div>
+                            <h4>Address-of (&)</h4>
+                            <p>Mendapatkan alamat variabel</p>
+                            <pre><code class="cpp" data-trim>
+int x = 10;
+int* ptr = &x;
+                            </code></pre>
+                        </div>
+                        <div class="fragment">
+                            <h4>Dereference (*)</h4>
+                            <p>Akses nilai yang ditunjuk</p>
+                            <pre><code class="cpp" data-trim>
+cout << *ptr;  // 10
+*ptr = 20;     // ubah x
+                            </code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh Lengkap</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1|2|4-5|7-8">
+int nilai = 100;
+int* ptr = &nilai;
+
+cout << nilai;    // 100 (nilai variabel)
+cout << &nilai;   // 0x... (alamat variabel)
+
+cout << ptr;      // 0x... (alamat yang disimpan)
+cout << *ptr;     // 100 (nilai yang ditunjuk)
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Modifikasi Melalui Pointer</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|4|5|7-8">
+int x = 10;
+int* ptr = &x;
+
+cout << x;      // 10
+*ptr = 20;      // Ubah x melalui pointer
+
+cout << x;      // 20
+cout << *ptr;   // 20
+                    </code></pre>
+                    <p class="fragment emphasis">Pointer dan variabel asli berbagi lokasi memori yang sama!</p>
+                </section>
+            </section>
+
+            <!-- Section 3: Pointer dan Array -->
+            <section>
+                <section>
+                    <h2>Hubungan Pointer dan Array</h2>
+                    <p>Nama array adalah <span class="emphasis">pointer konstan</span> ke elemen pertama</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1|2|4-5">
+int arr[5] = {10, 20, 30, 40, 50};
+int* ptr = arr;  // arr = &arr[0]
+
+cout << arr;     // Alamat arr[0]
+cout << ptr;     // Sama dengan arr
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Akses Array dengan Pointer</h2>
+                    <pre><code class="cpp" data-trim>
+int arr[5] = {10, 20, 30, 40, 50};
+int* ptr = arr;
+
+// Dua cara yang ekuivalen:
+cout << arr[0];   // 10
+cout << *ptr;     // 10
+
+cout << arr[2];   // 30
+cout << *(ptr+2); // 30
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Pointer Arithmetic</h2>
+                    <p>Operasi aritmatika pada pointer</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1|3-4|6-7">
+int arr[5] = {10, 20, 30, 40, 50};
+
+int* ptr = arr;      // Menunjuk ke arr[0]
+ptr++;               // Menunjuk ke arr[1]
+
+cout << *ptr;        // 20
+cout << *(ptr + 2);  // 40 (arr[3])
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Traversal Array dengan Pointer</h2>
+                    <pre><code class="cpp" data-trim>
+int arr[5] = {10, 20, 30, 40, 50};
+
+// Menggunakan pointer
+int* ptr = arr;
+for (int i = 0; i < 5; i++) {
+    cout << *ptr << " ";
+    ptr++;
+}
+// Output: 10 20 30 40 50
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Array sebagai Parameter</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-6|8-9">
+void tampilkanArray(int* arr, int ukuran) {
+    for (int i = 0; i < ukuran; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+int data[5] = {1, 2, 3, 4, 5};
+tampilkanArray(data, 5);
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Section 4: Memori Dinamis -->
+            <section>
+                <section>
+                    <h2>Stack vs Heap</h2>
+                    <img src="images/memory_layout.svg" alt="Memory Layout" style="height: 500px;">
+                </section>
+
+                <section>
+                    <h2>Alokasi Memori Statik vs Dinamis</h2>
+                    <div class="two-columns">
+                        <div>
+                            <h4>Statik (Stack)</h4>
+                            <pre><code class="cpp" data-trim>
+int x = 10;
+int arr[100];
+                            </code></pre>
+                            <p class="small-code">✓ Otomatis dibersihkan<br>
+                            ✓ Cepat<br>
+                            ✗ Ukuran tetap</p>
+                        </div>
+                        <div class="fragment">
+                            <h4>Dinamis (Heap)</h4>
+                            <pre><code class="cpp" data-trim>
+int* x = new int(10);
+int* arr = new int[n];
+                            </code></pre>
+                            <p class="small-code">✓ Ukuran fleksibel<br>
+                            ✗ Manual management<br>
+                            ✗ Lebih lambat</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Operator new</h2>
+                    <p>Mengalokasikan memori di heap</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|4-5|7-10">
+// Single variable
+int* ptr = new int(42);
+
+// Dengan inisialisasi
+double* pi = new double(3.14159);
+
+// Array dinamis
+int ukuran = 100;
+int* arr = new int[ukuran];
+arr[0] = 10;  // Gunakan seperti array biasa
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Operator delete</h2>
+                    <p class="danger">Setiap new harus memiliki delete!</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|5-6|9-10">
+// Untuk single variable
+int* ptr = new int(42);
+// ... gunakan ptr ...
+delete ptr;
+ptr = nullptr;  // Good practice
+
+// Untuk array
+int* arr = new int[100];
+// ... gunakan arr ...
+delete[] arr;   // Perhatikan []
+arr = nullptr;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Contoh Lengkap</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|4-9|11-13|15-16">
+int ukuran;
+cin >> ukuran;
+
+// Alokasi
+int* arr = new int[ukuran];
+
+// Isi array
+for (int i = 0; i < ukuran; i++) {
+    arr[i] = i * 10;
+}
+
+// Gunakan array
+for (int i = 0; i < ukuran; i++) {
+    cout << arr[i] << " ";
+}
+
+// PENTING: Dealokasi
+delete[] arr;
+arr = nullptr;
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Section 5: Memory Management Issues -->
+            <section>
+                <section>
+                    <h2>Memory Leak</h2>
+                    <p class="danger">Bahaya: Memori tidak pernah di-dealokasi!</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|2-3|4">
+void fungsi() {
+    int* ptr = new int[1000];
+    // Gunakan ptr...
+    // LUPA delete[] ptr; ← MEMORY LEAK!
+}
+                    </code></pre>
+                    <p class="fragment">Seiring waktu, program kehabisan memori!</p>
+                </section>
+
+                <section>
+                    <h2>Cara Benar</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|2-3|4-5">
+void fungsi() {
+    int* ptr = new int[1000];
+    // Gunakan ptr...
+    delete[] ptr;     // PENTING!
+    ptr = nullptr;    // Good practice
+}
+                    </code></pre>
+                    <p class="success">Selalu pasangkan new dengan delete!</p>
+                </section>
+
+                <section>
+                    <h2>Dangling Pointer</h2>
+                    <p class="danger">Pointer yang menunjuk ke memori yang sudah dihapus</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|4|6">
+int* ptr = new int(100);
+cout << *ptr;  // OK: 100
+
+delete ptr;    // Memory freed
+// ptr sekarang DANGLING!
+cout << *ptr;  // DANGER: Undefined behavior!
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Solusi: nullptr</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|4-5|7-11">
+int* ptr = new int(100);
+// ... gunakan ptr ...
+
+delete ptr;
+ptr = nullptr;  // Set ke null!
+
+// Sekarang aman untuk cek
+if (ptr != nullptr) {
+    cout << *ptr;
+} else {
+    cout << "Pointer null" << endl;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Common Errors</h2>
+                    <div class="small-code">
+                        <pre><code class="cpp" data-trim>
+// ERROR 1: Uninitialized pointer
+int* ptr;
+cout << *ptr;  // DANGER!
+
+// ERROR 2: Double delete
+int* p = new int(42);
+delete p;
+delete p;  // CRASH!
+
+// ERROR 3: delete vs delete[]
+int* arr = new int[10];
+delete arr;     // WRONG!
+delete[] arr;   // CORRECT!
+
+// ERROR 4: Memory leak
+for (int i = 0; i < 1000; i++) {
+    int* leak = new int[100];
+    // No delete[]!
+}
+                        </code></pre>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section 6: Advanced Topics -->
+            <section>
+                <section>
+                    <h2>Pointer ke Pointer</h2>
+                    <p>Pointer yang menyimpan alamat pointer lain</p>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1|2|3|5-7">
+int nilai = 42;
+int* ptr1 = &nilai;     // Pointer
+int** ptr2 = &ptr1;     // Pointer ke pointer
+
+cout << nilai;   // 42
+cout << *ptr1;   // 42
+cout << **ptr2;  // 42
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Matrix Dinamis</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-2|4-8|10-14|16-20">
+int baris = 3;
+int kolom = 4;
+
+// Alokasi matrix
+int** matrix = new int*[baris];
+for (int i = 0; i < baris; i++) {
+    matrix[i] = new int[kolom];
+}
+
+// Isi matrix
+for (int i = 0; i < baris; i++) {
+    for (int j = 0; j < kolom; j++) {
+        matrix[i][j] = i * kolom + j;
+    }
+}
+
+// Dealokasi (PENTING: urutan!)
+for (int i = 0; i < baris; i++) {
+    delete[] matrix[i];
+}
+delete[] matrix;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Const Pointer</h2>
+                    <div class="two-columns small-code">
+                        <div>
+                            <h4>Pointer to Const</h4>
+                            <pre><code class="cpp" data-trim>
+const int* ptr;
+
+// Bisa ubah pointer
+ptr = &x;
+ptr = &y;
+
+// Tidak bisa ubah nilai
+*ptr = 10;  // ERROR
+                            </code></pre>
+                        </div>
+                        <div class="fragment">
+                            <h4>Const Pointer</h4>
+                            <pre><code class="cpp" data-trim>
+int* const ptr = &x;
+
+// Bisa ubah nilai
+*ptr = 10;  // OK
+
+// Tidak bisa ubah pointer
+ptr = &y;  // ERROR
+                            </code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Pointer sebagai Parameter</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1-4|6-10">
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int x = 5, y = 10;
+    swap(&x, &y);  // Pass alamat
+    cout << x << " " << y;  // 10 5
+}
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Section 7: Best Practices -->
+            <section>
+                <section>
+                    <h2>Best Practices</h2>
+                    <ol>
+                        <li class="fragment">Selalu <span class="emphasis">inisialisasi</span> pointer</li>
+                        <li class="fragment"><span class="emphasis">Cek nullptr</span> sebelum dereference</li>
+                        <li class="fragment"><span class="emphasis">Set nullptr</span> setelah delete</li>
+                        <li class="fragment">Pasangkan <span class="emphasis">new dengan delete</span></li>
+                        <li class="fragment">Gunakan <span class="emphasis">delete[]</span> untuk array</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>Template Best Practice</h2>
+                    <pre><code class="cpp" data-trim data-line-numbers="|1|3-4|6-7|9-10">
+int* ptr = nullptr;  // 1. Inisialisasi
+
+if (kondisi) {
+    ptr = new int[100];  // 2. Alokasi
+    
+    // 3. Gunakan ptr
+    ptr[0] = 10;
+    
+    delete[] ptr;  // 4. Dealokasi
+    ptr = nullptr; // 5. Reset
+}
+
+// 6. Cek sebelum gunakan
+if (ptr != nullptr) {
+    cout << *ptr;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Debugging Tools</h2>
+                    <ul>
+                        <li><strong>Valgrind</strong> (Linux): Memory leak detector</li>
+                        <li><strong>AddressSanitizer</strong>: Compiler flag <code>-fsanitize=address</code></li>
+                        <li><strong>Visual Studio</strong>: Built-in memory leak detection</li>
+                        <li><strong>GDB</strong>: Print pointer values</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- Applications -->
+            <section>
+                <section>
+                    <h2>Aplikasi Praktis</h2>
+                    <ul>
+                        <li>Dynamic arrays dengan resize</li>
+                        <li>Linked lists</li>
+                        <li>Trees dan graphs</li>
+                        <li>String manipulation</li>
+                        <li>Matrix operations</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Dynamic Array Resizing</h2>
+                    <pre><code class="cpp" data-trim class="small-code">
+int* resizeArray(int* old, int oldSize, int newSize) {
+    int* newArr = new int[newSize];
+    
+    // Copy data lama
+    int copySize = min(oldSize, newSize);
+    for (int i = 0; i < copySize; i++) {
+        newArr[i] = old[i];
+    }
+    
+    // Inisialisasi elemen baru
+    for (int i = oldSize; i < newSize; i++) {
+        newArr[i] = 0;
+    }
+    
+    delete[] old;  // Hapus array lama
+    return newArr;
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Linked List Node</h2>
+                    <pre><code class="cpp" data-trim>
+struct Node {
+    int data;
+    Node* next;  // Pointer ke node berikutnya
+};
+
+void insertAwal(Node** head, int nilai) {
+    Node* newNode = new Node();
+    newNode->data = nilai;
+    newNode->next = *head;
+    *head = newNode;
+}
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- Summary -->
+            <section>
+                <section>
+                    <h2>Key Takeaways</h2>
+                    <ul>
+                        <li>Pointer menyimpan <span class="emphasis">alamat memori</span></li>
+                        <li>Operator <span class="emphasis">&</span> = address-of, <span class="emphasis">*</span> = dereference</li>
+                        <li>Array dan pointer sangat <span class="emphasis">erat terkait</span></li>
+                        <li><span class="emphasis">new/delete</span> untuk memori dinamis</li>
+                        <li>Hindari <span class="danger">memory leak</span> dan <span class="danger">dangling pointer</span></li>
+                        <li>Selalu <span class="success">inisialisasi</span> dan <span class="success">cleanup</span> dengan benar</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Operator Cheat Sheet</h2>
+                    <div class="small-code">
+                        <pre><code class="cpp" data-trim>
+int x = 10;
+int* ptr = &x;
+
+x           // Nilai x (10)
+&x          // Alamat x
+ptr         // Alamat yang disimpan di ptr (sama dengan &x)
+*ptr        // Nilai di alamat yang ditunjuk ptr (10)
+&ptr        // Alamat pointer ptr sendiri
+
+// Modifikasi
+*ptr = 20;  // Ubah x menjadi 20
+ptr++;      // Pindah ke memori berikutnya
+                        </code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Memory Management Rules</h2>
+                    <div class="small-code">
+                        <table style="font-size: 0.8em;">
+                            <tr style="background: #3498db;">
+                                <th>Alokasi</th>
+                                <th>Dealokasi</th>
+                            </tr>
+                            <tr>
+                                <td><code>new Type</code></td>
+                                <td><code>delete ptr</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>new Type[size]</code></td>
+                                <td><code>delete[] ptr</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>malloc(size)</code></td>
+                                <td><code>free(ptr)</code></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <p class="fragment danger">Jangan mix-and-match! (new dengan free, malloc dengan delete)</p>
+                </section>
+            </section>
+
+            <!-- Practice -->
+            <section>
+                <h2>Latihan</h2>
+                <ol>
+                    <li>Buat fungsi swap menggunakan pointer</li>
+                    <li>Implementasi dynamic array dengan resize</li>
+                    <li>Buat linked list sederhana</li>
+                    <li>Alokasi matrix 2D dinamis</li>
+                    <li>Fix memory leaks dalam kode yang diberikan</li>
+                </ol>
+            </section>
+
+            <!-- End -->
+            <section>
+                <h1>Terima Kasih!</h1>
+                <p>Pertanyaan?</p>
+                <br>
+                <p style="font-size: 0.8em;">
+                    <strong>Sub-CPMK 3.3:</strong> Mahasiswa mampu menerapkan konsep pointer dan penggunaannya dalam program C++
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            plugins: [ RevealHighlight, RevealNotes, RevealMarkdown ]
+        });
+    </script>
+</body>
+</html>
