@@ -1,1 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Multidimensi - Pertemuan 10</title>
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/moon.css">
+    
+    <!-- Highlight.js for code syntax -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+    
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: none;
+        }
+        
+        .reveal pre {
+            width: 100%;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .reveal pre code {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        .reveal .slide-number {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .highlight {
+            color: #42affa;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: #90EE90;
+        }
+        
+        .warning {
+            color: #FFB366;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .two-column > div {
+            flex: 1;
+        }
+        
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .small-text {
+            font-size: 0.8em;
+        }
+        
+        img.diagram {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+        
+        ul.compact li {
+            margin: 10px 0;
+        }
+        
+        .emoji {
+            font-size: 1.5em;
+        }
+        
+        table.matrix {
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        
+        table.matrix td {
+            border: 2px solid #42affa;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>Array Multidimensi</h1>
+                <h3>Pertemuan 10</h3>
+                <p>Dasar-Dasar Pemrograman</p>
+                <p class="small-text">Tekan <kbd>→</kbd> untuk melanjutkan atau <kbd>ESC</kbd> untuk overview</p>
+            </section>
 
+            <!-- Slide 2: Agenda -->
+            <section>
+                <h2>📋 Agenda Hari Ini</h2>
+                <ul class="compact">
+                    <li>Konsep Array Multidimensi</li>
+                    <li>Deklarasi dan Inisialisasi</li>
+                    <li>Akses dan Manipulasi Elemen</li>
+                    <li>Array 2D sebagai Parameter</li>
+                    <li>Operasi Matriks</li>
+                    <li>Aplikasi Praktis</li>
+                </ul>
+            </section>
+
+            <!-- Section: Pendahuluan -->
+            <section>
+                <section>
+                    <h2>🤔 Dari 1D ke 2D</h2>
+                    <div class="fragment">
+                        <p class="warning">Array 1D:</p>
+                        <pre><code class="language-cpp">int nilai[5] = {85, 90, 78, 92, 88};</code></pre>
+                        <p class="small-text">Satu baris data</p>
+                    </div>
+                    <div class="fragment">
+                        <p class="success">Array 2D:</p>
+                        <pre><code class="language-cpp">int nilai[3][4];  // 3 mahasiswa, 4 mata kuliah</code></pre>
+                        <p class="small-text">Data dalam bentuk tabel!</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Apa itu Array Multidimensi?</h2>
+                    <div class="box">
+                        <p><strong>Array Multidimensi</strong> adalah array yang memiliki lebih dari satu dimensi.</p>
+                    </div>
+                    <ul class="compact fragment">
+                        <li>✅ Array 2D = Tabel (baris × kolom)</li>
+                        <li>✅ Array 3D = Kubus (lapisan × baris × kolom)</li>
+                        <li>✅ Diakses dengan multiple indeks</li>
+                        <li>✅ Berguna untuk data tabular dan matriks</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Aplikasi Real-World</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="box">
+                                <p>🎮 <strong>Game Development</strong></p>
+                                <p class="small-text">Papan catur, Peta game</p>
+                            </div>
+                            <div class="box">
+                                <p>🖼️ <strong>Image Processing</strong></p>
+                                <p class="small-text">Pixel dalam gambar</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="box">
+                                <p>📊 <strong>Data Analysis</strong></p>
+                                <p class="small-text">Tabel data, Spreadsheet</p>
+                            </div>
+                            <div class="box">
+                                <p>🔢 <strong>Scientific Computing</strong></p>
+                                <p class="small-text">Operasi matriks</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Visualisasi -->
+            <section>
+                <section>
+                    <h2>Visualisasi Array 2D</h2>
+                    <img src="https://raw.githubusercontent.com/anindito/dasardasarpemrograman/main/materi/pertemuan-10/images/array_2d_visualization.svg" 
+                         alt="Array 2D Visualization" class="diagram">
+                </section>
+
+                <section>
+                    <h2>⚠️ Indeks Array 2D</h2>
+                    <div class="box">
+                        <p><strong>Notasi:</strong> array[baris][kolom]</p>
+                    </div>
+                    <pre><code class="language-cpp">int matrix[3][4];
+
+matrix[0][0]  // Baris 0, Kolom 0 (elemen pertama)
+matrix[1][2]  // Baris 1, Kolom 2
+matrix[2][3]  // Baris 2, Kolom 3 (elemen terakhir)</code></pre>
+                    <p class="fragment small-text">⚠️ Kedua indeks dimulai dari 0!</p>
+                </section>
+            </section>
+
+            <!-- Section: Deklarasi -->
+            <section>
+                <section>
+                    <h2>Deklarasi Array 2D</h2>
+                    <div class="box">
+                        <p><strong>Sintaks:</strong></p>
+                        <pre><code class="language-cpp">tipe_data nama[baris][kolom];</code></pre>
+                    </div>
+                    <div class="fragment">
+                        <p><strong>Contoh:</strong></p>
+                        <pre><code class="language-cpp">int nilai[3][4];        // 3 baris, 4 kolom
+float suhu[7][24];      // 7 hari, 24 jam
+char papan[8][8];       // Papan catur
+double matrix[10][10];  // Matriks persegi</code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Inisialisasi Array 2D</h2>
+                    <pre><code class="language-cpp">// Inisialisasi dengan nested braces
+int matrix[3][4] = {
+    {1, 2, 3, 4},      // Baris 0
+    {5, 6, 7, 8},      // Baris 1
+    {9, 10, 11, 12}    // Baris 2
+};
+
+// Inisialisasi tanpa nested braces
+int matrix[3][4] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+
+// Inisialisasi parsial (sisanya 0)
+int matrix[3][4] = {
+    {1, 2},
+    {3, 4, 5},
+    {6}
+};</code></pre>
+                </section>
+
+                <section>
+                    <h2>⚠️ Ukuran Implisit</h2>
+                    <div class="box">
+                        <p>Boleh menghilangkan ukuran baris, tapi <span class="warning">HARUS</span> menentukan ukuran kolom!</p>
+                    </div>
+                    <pre><code class="language-cpp">// ✅ BENAR
+int matrix[][4] = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8}
+};  // Compiler tahu: 2 baris
+
+// ❌ SALAH
+int matrix[2][] = {...};   // Error!
+int matrix[][] = {...};    // Error!</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Akses -->
+            <section>
+                <section>
+                    <h2>Mengakses Elemen</h2>
+                    <pre><code class="language-cpp">int matrix[3][4] = {
+    {10, 20, 30, 40},
+    {50, 60, 70, 80},
+    {90, 100, 110, 120}
+};
+
+cout << matrix[0][0];   // 10
+cout << matrix[1][2];   // 70
+cout << matrix[2][3];   // 120
+
+// Modifikasi elemen
+matrix[1][1] = 600;     // Ubah 60 menjadi 600</code></pre>
+                </section>
+
+                <section>
+                    <h2>🔄 Nested Loop</h2>
+                    <pre><code class="language-cpp">const int BARIS = 3;
+const int KOLOM = 4;
+int matrix[BARIS][KOLOM];
+
+// Input dengan nested loop
+for (int i = 0; i < BARIS; i++) {
+    for (int j = 0; j < KOLOM; j++) {
+        cin >> matrix[i][j];
+    }
+}
+
+// Output dengan nested loop
+for (int i = 0; i < BARIS; i++) {
+    for (int j = 0; j < KOLOM; j++) {
+        cout << matrix[i][j] << "\t";
+    }
+    cout << endl;  // Ganti baris
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>💡 Pattern Nested Loop</h2>
+                    <div class="box">
+                        <p><strong>Loop Luar</strong> = Iterasi BARIS</p>
+                        <p><strong>Loop Dalam</strong> = Iterasi KOLOM</p>
+                    </div>
+                    <pre><code class="language-cpp">for (int i = 0; i < baris; i++) {      // ← Baris
+    for (int j = 0; j < kolom; j++) {  // ← Kolom
+        // Proses matrix[i][j]
+    }
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Parameter -->
+            <section>
+                <section>
+                    <h2>Array 2D sebagai Parameter</h2>
+                    <div class="box">
+                        <p>⚠️ <strong>WAJIB</strong> menentukan ukuran kolom!</p>
+                    </div>
+                    <pre><code class="language-cpp">// ✅ BENAR
+void tampilkan(int arr[][4], int baris) {
+    for (int i = 0; i < baris; i++) {
+        for (int j = 0; j < 4; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// ❌ SALAH
+void tampilkan(int arr[][], int baris, int kolom) {
+    // Error! Ukuran kolom harus ditentukan
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Mengapa Harus Menentukan Ukuran Kolom?</h2>
+                    <div class="box">
+                        <p>Compiler perlu tahu ukuran kolom untuk menghitung <span class="highlight">offset memori</span></p>
+                    </div>
+                    <p class="small-text fragment">Formula: alamat = base + (i × jumlah_kolom + j) × sizeof(tipe)</p>
+                    <p class="fragment">Tanpa ukuran kolom, compiler tidak bisa menghitung posisi elemen!</p>
+                </section>
+
+                <section>
+                    <h2>Fungsi untuk Operasi Array 2D</h2>
+                    <pre><code class="language-cpp">const int MAX = 10;
+
+int cariMaksimum(int arr[][MAX], int baris, int kolom) {
+    int maks = arr[0][0];
+    for (int i = 0; i < baris; i++) {
+        for (int j = 0; j < kolom; j++) {
+            if (arr[i][j] > maks) {
+                maks = arr[i][j];
+            }
+        }
+    }
+    return maks;
+}
+
+double hitungRataRata(int arr[][MAX], int baris, int kolom) {
+    int jumlah = 0;
+    for (int i = 0; i < baris; i++) {
+        for (int j = 0; j < kolom; j++) {
+            jumlah += arr[i][j];
+        }
+    }
+    return (double)jumlah / (baris * kolom);
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Operasi Matriks -->
+            <section>
+                <section>
+                    <h2>🔢 Operasi Matriks</h2>
+                    <ul class="compact">
+                        <li>➕ Penjumlahan Matriks</li>
+                        <li>✖️ Perkalian Matriks</li>
+                        <li>🔄 Transpose Matriks</li>
+                        <li>🆔 Matriks Identitas</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Penjumlahan Matriks</h2>
+                    <img src="https://raw.githubusercontent.com/anindito/dasardasarpemrograman/main/materi/pertemuan-10/images/matrix_addition.svg" 
+                         alt="Matrix Addition" class="diagram">
+                </section>
+
+                <section>
+                    <h2>Implementasi Penjumlahan</h2>
+                    <pre><code class="language-cpp">void tambahMatrix(int A[][MAX], int B[][MAX], 
+                  int C[][MAX], int baris, int kolom) {
+    for (int i = 0; i < baris; i++) {
+        for (int j = 0; j < kolom; j++) {
+            C[i][j] = A[i][j] + B[i][j];
+        }
+    }
+}</code></pre>
+                    <p class="fragment small-text">Syarat: Kedua matriks harus <span class="highlight">ukuran sama</span></p>
+                </section>
+
+                <section>
+                    <h2>Perkalian Matriks</h2>
+                    <div class="box">
+                        <p>A (m×n) × B (n×p) = C (m×p)</p>
+                    </div>
+                    <pre><code class="language-cpp">void kaliMatrix(int A[][MAX], int B[][MAX], int C[][MAX],
+                int m, int n, int p) {
+    // Inisialisasi C dengan 0
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            C[i][j] = 0;
+        }
+    }
+    
+    // Perkalian
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            for (int k = 0; k < n; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Transpose Matriks</h2>
+                    <div class="box">
+                        <p>Menukar baris menjadi kolom</p>
+                    </div>
+                    <table class="matrix">
+                        <tr>
+                            <td>1</td><td>2</td><td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td><td>5</td><td>6</td>
+                        </tr>
+                    </table>
+                    <p>↓ Transpose ↓</p>
+                    <table class="matrix">
+                        <tr>
+                            <td>1</td><td>4</td>
+                        </tr>
+                        <tr>
+                            <td>2</td><td>5</td>
+                        </tr>
+                        <tr>
+                            <td>3</td><td>6</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Implementasi Transpose</h2>
+                    <pre><code class="language-cpp">void transpose(int A[][MAX], int T[][MAX], 
+               int baris, int kolom) {
+    for (int i = 0; i < baris; i++) {
+        for (int j = 0; j < kolom; j++) {
+            T[j][i] = A[i][j];
+        }
+    }
+}
+
+// Ukuran hasil: kolom × baris</code></pre>
+                </section>
+
+                <section>
+                    <h2>Matriks Identitas</h2>
+                    <table class="matrix">
+                        <tr>
+                            <td style="background: #90EE90;">1</td><td>0</td><td>0</td>
+                        </tr>
+                        <tr>
+                            <td>0</td><td style="background: #90EE90;">1</td><td>0</td>
+                        </tr>
+                        <tr>
+                            <td>0</td><td>0</td><td style="background: #90EE90;">1</td>
+                        </tr>
+                    </table>
+                    <pre><code class="language-cpp">void buatIdentitas(int I[][MAX], int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            I[i][j] = (i == j) ? 1 : 0;
+        }
+    }
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Aplikasi -->
+            <section>
+                <section>
+                    <h2>🎮 Aplikasi: Tic-Tac-Toe</h2>
+                    <pre><code class="language-cpp">char papan[3][3];
+
+void inisialisasi(char papan[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            papan[i][j] = ' ';
+        }
+    }
+}
+
+void tampilkan(char papan[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        cout << " " << papan[i][0] << " | " 
+             << papan[i][1] << " | " << papan[i][2] << endl;
+        if (i < 2) cout << "---|---|---" << endl;
+    }
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>📊 Aplikasi: Data Tabular</h2>
+                    <pre><code class="language-cpp">// Penjualan 12 bulan × 5 produk
+int penjualan[12][5];
+
+// Total per bulan
+for (int i = 0; i < 12; i++) {
+    int total = 0;
+    for (int j = 0; j < 5; j++) {
+        total += penjualan[i][j];
+    }
+    cout << "Bulan " << (i+1) << ": " << total << endl;
+}
+
+// Total per produk
+for (int j = 0; j < 5; j++) {
+    int total = 0;
+    for (int i = 0; i < 12; i++) {
+        total += penjualan[i][j];
+    }
+    cout << "Produk " << (j+1) << ": " << total << endl;
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>🎓 Aplikasi: Sistem Nilai</h2>
+                    <pre><code class="language-cpp">// 30 mahasiswa × 8 mata kuliah
+int nilai[30][8];
+
+// Rata-rata per mahasiswa
+for (int i = 0; i < 30; i++) {
+    int total = 0;
+    for (int j = 0; j < 8; j++) {
+        total += nilai[i][j];
+    }
+    double rata = (double)total / 8;
+    cout << "Mhs " << (i+1) << ": " << rata << endl;
+}
+
+// Rata-rata per mata kuliah
+for (int j = 0; j < 8; j++) {
+    int total = 0;
+    for (int i = 0; i < 30; i++) {
+        total += nilai[i][j];
+    }
+    double rata = (double)total / 30;
+    cout << "Matkul " << (j+1) << ": " << rata << endl;
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Array 3D -->
+            <section>
+                <section>
+                    <h2>🧊 Array Tiga Dimensi</h2>
+                    <div class="box">
+                        <p>Array 3D = Kumpulan matriks berlapis</p>
+                    </div>
+                    <pre><code class="language-cpp">int kubus[2][3][4];  
+// 2 lapisan, 3 baris, 4 kolom
+
+// Akses: kubus[lapisan][baris][kolom]
+kubus[0][1][2] = 42;</code></pre>
+                    <p class="fragment small-text">Contoh: Data nilai 5 kelas × 30 mahasiswa × 8 matkul</p>
+                </section>
+
+                <section>
+                    <h2>Iterasi Array 3D</h2>
+                    <pre><code class="language-cpp">int data[2][3][4];
+
+// Triple nested loop
+for (int i = 0; i < 2; i++) {          // Lapisan
+    for (int j = 0; j < 3; j++) {      // Baris
+        for (int k = 0; k < 4; k++) {  // Kolom
+            cout << data[i][j][k] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- Section: Rangkuman -->
+            <section>
+                <section>
+                    <h2>📝 Rangkuman</h2>
+                    <ul class="compact">
+                        <li>Array 2D menyimpan data dalam <span class="highlight">bentuk tabel</span></li>
+                        <li>Akses menggunakan <span class="highlight">dua indeks</span>: [baris][kolom]</li>
+                        <li>Ukuran kolom <span class="highlight">HARUS ditentukan</span> di parameter fungsi</li>
+                        <li>Operasi matriks: penjumlahan, perkalian, transpose</li>
+                        <li>Aplikasi: game, data tabular, scientific computing</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🎯 Key Takeaways</h2>
+                    <div class="box">
+                        <h3>1. Deklarasi</h3>
+                        <pre><code class="language-cpp">int arr[baris][kolom];</code></pre>
+                    </div>
+                    <div class="box">
+                        <h3>2. Akses</h3>
+                        <pre><code class="language-cpp">arr[i][j]</code></pre>
+                    </div>
+                    <div class="box">
+                        <h3>3. Nested Loop</h3>
+                        <pre><code class="language-cpp">for (i...) for (j...)</code></pre>
+                    </div>
+                    <div class="box">
+                        <h3>4. Parameter</h3>
+                        <pre><code class="language-cpp">func(int arr[][KOLOM], int baris)</code></pre>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Latihan -->
+            <section>
+                <section>
+                    <h2>💪 Latihan</h2>
+                    <p>Buatlah program yang:</p>
+                    <ol class="compact">
+                        <li>Membuat matriks 4×5</li>
+                        <li>Mengisi dengan bilangan random</li>
+                        <li>Mencari nilai max dan min beserta posisinya</li>
+                        <li>Menghitung rata-rata setiap baris</li>
+                        <li>Menghitung rata-rata setiap kolom</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>🚀 Challenge</h2>
+                    <div class="box">
+                        <p><strong>Rotasi Matriks 90°</strong></p>
+                        <p>Buatlah fungsi untuk merotasi matriks 90 derajat searah jarum jam</p>
+                        <table class="matrix small-text">
+                            <tr><td>1</td><td>2</td><td>3</td></tr>
+                            <tr><td>4</td><td>5</td><td>6</td></tr>
+                            <tr><td>7</td><td>8</td><td>9</td></tr>
+                        </table>
+                        <p>→</p>
+                        <table class="matrix small-text">
+                            <tr><td>7</td><td>4</td><td>1</td></tr>
+                            <tr><td>8</td><td>5</td><td>2</td></tr>
+                            <tr><td>9</td><td>6</td><td>3</td></tr>
+                        </table>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Section: Pertanyaan -->
+            <section>
+                <h2>❓ Pertanyaan?</h2>
+                <p class="emoji">🤔 💭 💡</p>
+                <p>Mari kita diskusikan!</p>
+            </section>
+
+            <!-- Section: Terima Kasih -->
+            <section>
+                <h1>Terima Kasih! 🙏</h1>
+                <p>Pertemuan 10: Array Multidimensi</p>
+                <p class="small-text">Dasar-Dasar Pemrograman</p>
+                <br>
+                <p class="small-text">Tekan <kbd>ESC</kbd> untuk melihat overview semua slide</p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            
+            plugins: [ RevealHighlight, RevealNotes, RevealZoom ],
+            
+            controls: true,
+            progress: true,
+            center: true,
+            
+            autoSlide: 0,
+            
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+        });
+    </script>
+</body>
+</html>
