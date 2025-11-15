@@ -1,0 +1,884 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 15: File Handling dan Exception Handling</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+        .reveal h1 { font-size: 2.2em; color: #1976d2; }
+        .reveal h2 { font-size: 1.8em; color: #1976d2; margin-bottom: 20px; }
+        .reveal h3 { font-size: 1.4em; color: #0288d1; }
+        .reveal code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
+        .reveal pre code { max-height: 500px; font-size: 0.85em; line-height: 1.3; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .important { color: #d32f2f; font-weight: bold; }
+        .success { color: #388e3c; font-weight: bold; }
+        .warning { color: #f57c00; font-weight: bold; }
+        .code-label { font-size: 0.8em; color: #666; font-style: italic; margin-bottom: 10px; }
+        .highlight-box { background: #e3f2fd; padding: 20px; border-left: 5px solid #1976d2; margin: 20px 0; }
+        .warning-box { background: #fff3e0; padding: 20px; border-left: 5px solid #f57c00; margin: 20px 0; }
+        .success-box { background: #e8f5e9; padding: 20px; border-left: 5px solid #388e3c; margin: 20px 0; }
+        ul { text-align: left; }
+        table { font-size: 0.8em; }
+        img { max-height: 450px; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>File Handling dan Exception Handling</h1>
+                <h3>Pertemuan 15</h3>
+                <p>Dasar-Dasar Pemrograman C++</p>
+            </section>
+
+            <!-- Slide 2: Tujuan Pembelajaran -->
+            <section>
+                <h2>🎯 Tujuan Pembelajaran</h2>
+                <div class="highlight-box">
+                    <p>Setelah pertemuan ini, mahasiswa diharapkan mampu:</p>
+                    <ul>
+                        <li>Memahami konsep file handling dan operasi file di C++</li>
+                        <li>Menggunakan stream classes untuk membaca dan menulis file</li>
+                        <li>Bekerja dengan file teks dan file binary</li>
+                        <li>Memahami konsep exception handling</li>
+                        <li>Mengimplementasikan try-catch untuk error handling</li>
+                        <li>Menggunakan standard exception classes</li>
+                        <li>Membuat custom exception classes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- BAGIAN 1: FILE HANDLING -->
+            <section>
+                <section>
+                    <h1>Bagian 1</h1>
+                    <h2>File Handling</h2>
+                </section>
+
+                <!-- Konsep Dasar File Handling -->
+                <section>
+                    <h2>Mengapa File Handling?</h2>
+                    <div class="two-column">
+                        <div>
+                            <h3 class="important">❌ Tanpa File Handling</h3>
+                            <ul>
+                                <li>Data hilang saat program ditutup</li>
+                                <li>Harus input ulang setiap kali</li>
+                                <li>Tidak ada persistensi data</li>
+                                <li>Tidak bisa berbagi data</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="success">✅ Dengan File Handling</h3>
+                            <ul>
+                                <li>Data tersimpan permanen</li>
+                                <li>Bisa dimuat kembali</li>
+                                <li>Persistensi data terjaga</li>
+                                <li>Mudah dibagikan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stream Classes -->
+                <section>
+                    <h2>Stream Classes di C++</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Header</th>
+                                <th>Fungsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>ifstream</code></td>
+                                <td><code>&lt;fstream&gt;</code></td>
+                                <td><span class="success">Input</span> - Membaca file</td>
+                            </tr>
+                            <tr>
+                                <td><code>ofstream</code></td>
+                                <td><code>&lt;fstream&gt;</code></td>
+                                <td><span class="warning">Output</span> - Menulis file</td>
+                            </tr>
+                            <tr>
+                                <td><code>fstream</code></td>
+                                <td><code>&lt;fstream&gt;</code></td>
+                                <td><span class="important">Both</span> - Baca & Tulis</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Alur File Handling -->
+                <section>
+                    <h2>Alur Kerja File Handling</h2>
+                    <img src="images/file-handling-flow.svg" alt="File Handling Flow">
+                </section>
+
+                <!-- Membuka File -->
+                <section>
+                    <h2>Membuka File</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="code-label">Cara 1: Constructor</div>
+                            <pre><code class="cpp">// Menulis
+ofstream file("data.txt");
+
+// Membaca
+ifstream file("data.txt");
+
+// Keduanya
+fstream file("data.txt", 
+            ios::in | ios::out);</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-label">Cara 2: Method open()</div>
+                            <pre><code class="cpp">ofstream file;
+file.open("data.txt");
+
+ifstream input;
+input.open("data.txt");
+
+fstream both;
+both.open("data.txt");</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- File Modes -->
+                <section>
+                    <h2>File Modes</h2>
+                    <table style="font-size: 0.7em;">
+                        <thead>
+                            <tr>
+                                <th>Mode</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>ios::in</code></td>
+                                <td>Membuka untuk membaca</td>
+                            </tr>
+                            <tr>
+                                <td><code>ios::out</code></td>
+                                <td>Membuka untuk menulis (hapus isi lama)</td>
+                            </tr>
+                            <tr>
+                                <td><code>ios::app</code></td>
+                                <td>Append - tambah di akhir (jaga isi lama)</td>
+                            </tr>
+                            <tr>
+                                <td><code>ios::ate</code></td>
+                                <td>Set posisi di akhir file</td>
+                            </tr>
+                            <tr>
+                                <td><code>ios::trunc</code></td>
+                                <td>Truncate - hapus isi file</td>
+                            </tr>
+                            <tr>
+                                <td><code>ios::binary</code></td>
+                                <td>Mode binary</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Perbedaan Mode -->
+                <section>
+                    <h2>ios::out vs ios::app</h2>
+                    <img src="images/file-modes.svg" alt="File Modes Comparison">
+                </section>
+
+                <!-- Menulis File -->
+                <section>
+                    <h2>Menulis ke File Teks</h2>
+                    <div class="code-label">Sama seperti cout, tapi ke file!</div>
+                    <pre><code class="cpp">#include &lt;fstream&gt;
+using namespace std;
+
+int main() {
+    ofstream file("mahasiswa.txt");
+    
+    if (!file) {
+        cout << "Error: Tidak dapat membuka file!" << endl;
+        return 1;
+    }
+    
+    file << "Nama: Budi Santoso" << endl;
+    file << "NIM: 123456789" << endl;
+    file << "Jurusan: Teknik Informatika" << endl;
+    file << "IPK: 3.75" << endl;
+    
+    file.close();
+    cout << "Data berhasil ditulis!" << endl;
+    
+    return 0;
+}</code></pre>
+                </section>
+
+                <!-- Membaca File -->
+                <section>
+                    <h2>Membaca dari File Teks</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="code-label">Membaca kata per kata</div>
+                            <pre><code class="cpp">ifstream file("data.txt");
+
+string kata;
+while (file >> kata) {
+    cout << kata << endl;
+}
+
+file.close();</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-label">Membaca baris per baris</div>
+                            <pre><code class="cpp">ifstream file("data.txt");
+
+string baris;
+while (getline(file, baris)) {
+    cout << baris << endl;
+}
+
+file.close();</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- File Status -->
+                <section>
+                    <h2>Memeriksa Status File</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Return true jika...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>eof()</code></td>
+                                <td>Sudah mencapai end of file</td>
+                            </tr>
+                            <tr>
+                                <td><code>fail()</code></td>
+                                <td>Operasi terakhir gagal</td>
+                            </tr>
+                            <tr>
+                                <td><code>bad()</code></td>
+                                <td>Terjadi error serius</td>
+                            </tr>
+                            <tr>
+                                <td><code>good()</code></td>
+                                <td>Tidak ada error</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- File Position Pointers -->
+                <section>
+                    <h2>File Position Pointers</h2>
+                    <img src="images/file-pointers.svg" alt="File Position Pointers">
+                </section>
+
+                <!-- Binary Files -->
+                <section>
+                    <h2>File Binary</h2>
+                    <div class="two-column">
+                        <div>
+                            <h3>Menulis Binary</h3>
+                            <pre><code class="cpp">struct Data {
+    char nama[50];
+    int umur;
+    float nilai;
+};
+
+ofstream file("data.bin", 
+              ios::binary);
+
+Data d;
+strcpy(d.nama, "Andi");
+d.umur = 20;
+d.nilai = 85.5;
+
+file.write(
+    reinterpret_cast&lt;char*&gt;(&d),
+    sizeof(Data)
+);
+
+file.close();</code></pre>
+                        </div>
+                        <div>
+                            <h3>Membaca Binary</h3>
+                            <pre><code class="cpp">struct Data {
+    char nama[50];
+    int umur;
+    float nilai;
+};
+
+ifstream file("data.bin", 
+              ios::binary);
+
+Data d;
+
+file.read(
+    reinterpret_cast&lt;char*&gt;(&d),
+    sizeof(Data)
+);
+
+cout << d.nama << endl;
+cout << d.umur << endl;
+cout << d.nilai << endl;
+
+file.close();</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kapan Gunakan Binary -->
+                <section>
+                    <h2>File Teks vs File Binary</h2>
+                    <div class="two-column">
+                        <div class="success-box">
+                            <h3>File Teks</h3>
+                            <ul>
+                                <li>Human-readable</li>
+                                <li>Mudah di-debug</li>
+                                <li>Platform-independent</li>
+                                <li>Ukuran lebih besar</li>
+                            </ul>
+                            <p><strong>Gunakan untuk:</strong> Config files, logs, CSV, HTML</p>
+                        </div>
+                        <div class="warning-box">
+                            <h3>File Binary</h3>
+                            <ul>
+                                <li>Machine-readable</li>
+                                <li>Lebih cepat</li>
+                                <li>Ukuran lebih kecil</li>
+                                <li>Efisien untuk struct</li>
+                            </ul>
+                            <p><strong>Gunakan untuk:</strong> Database, images, executables</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- BAGIAN 2: EXCEPTION HANDLING -->
+            <section>
+                <section>
+                    <h1>Bagian 2</h1>
+                    <h2>Exception Handling</h2>
+                </section>
+
+                <!-- Apa itu Exception -->
+                <section>
+                    <h2>Apa itu Exception?</h2>
+                    <div class="highlight-box">
+                        <p><strong>Exception</strong> adalah kejadian tidak normal atau error yang terjadi saat program berjalan.</p>
+                    </div>
+                    <div class="two-column">
+                        <div>
+                            <h3>Contoh Exception:</h3>
+                            <ul>
+                                <li>Pembagian dengan nol</li>
+                                <li>File tidak ditemukan</li>
+                                <li>Array out of bounds</li>
+                                <li>Memory allocation failed</li>
+                                <li>Network timeout</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Tanpa Exception Handling:</h3>
+                            <ul>
+                                <li class="important">Program crash ❌</li>
+                                <li class="important">Data hilang ❌</li>
+                                <li class="important">User bingung ❌</li>
+                                <li class="important">Sulit di-debug ❌</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Exception Flow -->
+                <section>
+                    <h2>Alur Exception Handling</h2>
+                    <img src="images/exception-flow.svg" alt="Exception Flow">
+                </section>
+
+                <!-- Try-Catch Syntax -->
+                <section>
+                    <h2>Try-Catch Block</h2>
+                    <div class="code-label">Struktur dasar exception handling</div>
+                    <pre><code class="cpp">try {
+    // Kode yang mungkin menghasilkan exception
+    if (error_condition) {
+        throw "Error message";
+    }
+    // Kode normal lainnya
+}
+catch (TipeException e) {
+    // Kode untuk menangani exception
+    cout << "Error: " << e << endl;
+}
+// Program tetap berjalan di sini</code></pre>
+                </section>
+
+                <!-- Contoh Sederhana -->
+                <section>
+                    <h2>Contoh: Pembagian dengan Nol</h2>
+                    <pre><code class="cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a, b;
+    cout << "Masukkan a: "; cin >> a;
+    cout << "Masukkan b: "; cin >> b;
+    
+    try {
+        if (b == 0) {
+            throw "Error: Pembagian dengan nol!";
+        }
+        
+        double hasil = static_cast&lt;double&gt;(a) / b;
+        cout << "Hasil: " << hasil << endl;
+    }
+    catch (const char* pesan) {
+        cout << pesan << endl;
+    }
+    
+    cout << "Program selesai." << endl;
+    return 0;
+}</code></pre>
+                </section>
+
+                <!-- Multiple Catch -->
+                <section>
+                    <h2>Multiple Catch Blocks</h2>
+                    <div class="code-label">Menangani berbagai tipe exception</div>
+                    <pre><code class="cpp">try {
+    // Kode yang mungkin throw berbagai tipe exception
+    if (condition1) throw 42;           // int
+    if (condition2) throw 3.14;         // double
+    if (condition3) throw "Error!";     // string
+}
+catch (int e) {
+    cout << "Caught integer: " << e << endl;
+}
+catch (double e) {
+    cout << "Caught double: " << e << endl;
+}
+catch (const char* e) {
+    cout << "Caught string: " << e << endl;
+}
+catch (...) {
+    // Catch-all: menangani exception apapun
+    cout << "Caught unknown exception!" << endl;
+}</code></pre>
+                </section>
+
+                <!-- Standard Exception Classes -->
+                <section>
+                    <h2>Standard Exception Classes</h2>
+                    <div style="font-size: 0.8em;">
+                        <pre><code class="text">exception (base class)
+├── bad_alloc          - alokasi memori gagal
+├── bad_cast           - dynamic_cast gagal
+├── logic_error        - error logika program
+│   ├── invalid_argument   - argumen tidak valid
+│   ├── domain_error       - domain matematika tidak valid
+│   ├── length_error       - panjang terlalu besar
+│   └── out_of_range       - di luar jangkauan
+└── runtime_error      - error saat runtime
+    ├── range_error        - hasil di luar range
+    ├── overflow_error     - arithmetic overflow
+    └── underflow_error    - arithmetic underflow</code></pre>
+                    </div>
+                </section>
+
+                <!-- Using Standard Exceptions -->
+                <section>
+                    <h2>Menggunakan Standard Exceptions</h2>
+                    <pre><code class="cpp">#include &lt;stdexcept&gt;
+using namespace std;
+
+double bagi(double a, double b) {
+    if (b == 0) {
+        throw invalid_argument("Pembagi tidak boleh nol!");
+    }
+    return a / b;
+}
+
+int akses(int arr[], int size, int index) {
+    if (index < 0 || index >= size) {
+        throw out_of_range("Indeks di luar jangkauan!");
+    }
+    return arr[index];
+}
+
+int main() {
+    try {
+        double hasil = bagi(10, 0);
+    }
+    catch (invalid_argument& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+    return 0;
+}</code></pre>
+                </section>
+
+                <!-- Exception dalam File Operations -->
+                <section>
+                    <h2>Exception dalam File Operations</h2>
+                    <pre><code class="cpp">#include &lt;fstream&gt;
+#include &lt;stdexcept&gt;
+
+void bacaFile(string namaFile) {
+    ifstream file(namaFile);
+    
+    if (!file.is_open()) {
+        throw runtime_error("Tidak dapat membuka: " + namaFile);
+    }
+    
+    string baris;
+    while (getline(file, baris)) {
+        cout << baris << endl;
+    }
+    
+    if (file.bad()) {
+        throw runtime_error("Error saat membaca file!");
+    }
+    
+    file.close();
+}
+
+int main() {
+    try {
+        bacaFile("data.txt");
+    }
+    catch (runtime_error& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}</code></pre>
+                </section>
+
+                <!-- Custom Exception -->
+                <section>
+                    <h2>Custom Exception Classes</h2>
+                    <pre><code class="cpp">class SaldoTidakCukupException : public exception {
+private:
+    string pesan;
+public:
+    SaldoTidakCukupException(double saldo, double penarikan) {
+        pesan = "Saldo tidak cukup! Saldo: " + 
+                to_string(saldo) + 
+                ", Penarikan: " + to_string(penarikan);
+    }
+    
+    const char* what() const noexcept override {
+        return pesan.c_str();
+    }
+};
+
+// Penggunaan:
+try {
+    if (penarikan > saldo) {
+        throw SaldoTidakCukupException(saldo, penarikan);
+    }
+}
+catch (SaldoTidakCukupException& e) {
+    cout << e.what() << endl;
+}</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section>
+                    <h2>Best Practices Exception Handling</h2>
+                    <div class="two-column">
+                        <div class="success-box">
+                            <h3>✅ DO</h3>
+                            <ul style="font-size: 0.85em;">
+                                <li>Catch by reference</li>
+                                <li>Catch specific first</li>
+                                <li>Use standard exceptions</li>
+                                <li>Throw by value</li>
+                                <li>Use RAII pattern</li>
+                                <li>Provide clear messages</li>
+                            </ul>
+                        </div>
+                        <div class="warning-box">
+                            <h3>❌ DON'T</h3>
+                            <ul style="font-size: 0.85em;">
+                                <li>Catch by value</li>
+                                <li>Throw in destructor</li>
+                                <li>Catch and ignore</li>
+                                <li>Use exceptions for control flow</li>
+                                <li>Throw pointer</li>
+                                <li>Empty catch blocks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RAII Pattern -->
+                <section>
+                    <h2>RAII Pattern</h2>
+                    <div class="highlight-box">
+                        <p><strong>RAII</strong> = Resource Acquisition Is Initialization</p>
+                        <p>Resource diperoleh di constructor, dibebaskan di destructor</p>
+                    </div>
+                    <div class="two-column">
+                        <div>
+                            <div class="code-label important">❌ Buruk: Manual cleanup</div>
+                            <pre><code class="cpp">void proses() {
+    ifstream* file = 
+        new ifstream("data.txt");
+    
+    // Jika exception terjadi,
+    // file tidak tertutup!
+    
+    delete file;
+}</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-label success">✅ Baik: RAII</div>
+                            <pre><code class="cpp">void proses() {
+    ifstream file("data.txt");
+    
+    // Jika exception terjadi,
+    // destructor otomatis
+    // menutup file!
+    
+} // Otomatis cleanup</code></pre>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- STUDI KASUS -->
+            <section>
+                <section>
+                    <h2>📚 Studi Kasus</h2>
+                    <h3>Sistem Perpustakaan Sederhana</h3>
+                    <p>Menggabungkan File Handling dan Exception Handling</p>
+                </section>
+
+                <section>
+                    <h2>Fitur Sistem Perpustakaan</h2>
+                    <ul>
+                        <li>✅ Tambah buku ke database (binary file)</li>
+                        <li>✅ Tampilkan semua buku</li>
+                        <li>✅ Pinjam buku</li>
+                        <li>✅ Kembalikan buku</li>
+                        <li>✅ Cari buku</li>
+                        <li>✅ Custom exceptions untuk error handling</li>
+                        <li>✅ Auto-save menggunakan destructor</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Custom Exceptions</h2>
+                    <pre><code class="cpp">class BukuTidakDitemukanException : public exception {
+private:
+    string isbn;
+public:
+    BukuTidakDitemukanException(string i) : isbn(i) {}
+    const char* what() const noexcept override {
+        return "Buku tidak ditemukan!";
+    }
+    string getISBN() const { return isbn; }
+};
+
+class BukuSudahDipinjamException : public exception {
+public:
+    const char* what() const noexcept override {
+        return "Buku sudah dipinjam!";
+    }
+};</code></pre>
+                </section>
+
+                <section>
+                    <h2>Struct Buku</h2>
+                    <pre><code class="cpp">struct Buku {
+    string isbn;
+    string judul;
+    string pengarang;
+    int tahun;
+    bool dipinjam;
+};</code></pre>
+                </section>
+
+                <section>
+                    <h2>Method: Muat dari File</h2>
+                    <pre><code class="cpp">void muatDariFile() {
+    ifstream file(namaFile, ios::binary);
+    
+    if (!file.is_open()) {
+        return; // File belum ada
+    }
+    
+    Buku buku;
+    while (file.read(reinterpret_cast&lt;char*&gt;(&buku), 
+                     sizeof(Buku))) {
+        daftarBuku.push_back(buku);
+    }
+    
+    if (file.bad()) {
+        throw runtime_error("Error saat membaca database!");
+    }
+    
+    file.close();
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Method: Simpan ke File</h2>
+                    <pre><code class="cpp">void simpanKeFile() {
+    ofstream file(namaFile, ios::binary | ios::trunc);
+    
+    if (!file.is_open()) {
+        throw runtime_error("Tidak dapat menyimpan database!");
+    }
+    
+    for (const auto& buku : daftarBuku) {
+        file.write(reinterpret_cast&lt;const char*&gt;(&buku), 
+                   sizeof(Buku));
+        
+        if (file.fail()) {
+            throw runtime_error("Error saat menulis!");
+        }
+    }
+    
+    file.close();
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Method: Pinjam Buku</h2>
+                    <pre><code class="cpp">void pinjamBuku(string isbn) {
+    for (auto& buku : daftarBuku) {
+        if (buku.isbn == isbn) {
+            if (buku.dipinjam) {
+                throw BukuSudahDipinjamException();
+            }
+            buku.dipinjam = true;
+            cout << "Buku '" << buku.judul 
+                 << "' berhasil dipinjam!" << endl;
+            return;
+        }
+    }
+    throw BukuTidakDitemukanException(isbn);
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Main Program dengan Exception Handling</h2>
+                    <pre><code class="cpp">int main() {
+    try {
+        Perpustakaan perpus("perpustakaan.dat");
+        
+        // Menu loop...
+        try {
+            perpus.pinjamBuku("ISBN-001");
+        }
+        catch (BukuTidakDitemukanException& e) {
+            cout << "Error: " << e.what() << endl;
+            cout << "ISBN: " << e.getISBN() << endl;
+        }
+        catch (BukuSudahDipinjamException& e) {
+            cout << "Error: " << e.what() << endl;
+        }
+    }
+    catch (exception& e) {
+        cout << "Fatal Error: " << e.what() << endl;
+        return 1;
+    }
+    
+    return 0;
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- RANGKUMAN -->
+            <section>
+                <h2>📝 Rangkuman</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>File Handling</h3>
+                        <ul style="font-size: 0.85em;">
+                            <li>ifstream, ofstream, fstream</li>
+                            <li>File modes (in, out, app, binary)</li>
+                            <li>Menulis: operator &lt;&lt;</li>
+                            <li>Membaca: &gt;&gt;, getline(), get()</li>
+                            <li>Status: eof(), fail(), bad(), good()</li>
+                            <li>Pointers: seekg(), tellg()</li>
+                            <li>Binary: write(), read()</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Exception Handling</h3>
+                        <ul style="font-size: 0.85em;">
+                            <li>try-catch block</li>
+                            <li>throw statement</li>
+                            <li>Multiple catch blocks</li>
+                            <li>Standard exceptions</li>
+                            <li>Custom exceptions</li>
+                            <li>Best practices</li>
+                            <li>RAII pattern</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TIPS -->
+            <section>
+                <h2>💡 Tips Penting</h2>
+                <div class="warning-box">
+                    <ul>
+                        <li>Selalu tutup file setelah selesai!</li>
+                        <li>Cek apakah file berhasil dibuka</li>
+                        <li>Gunakan exception handling untuk file operations</li>
+                        <li>Catch by reference, throw by value</li>
+                        <li>Gunakan RAII untuk resource management</li>
+                        <li>Provide informative error messages</li>
+                        <li>Don't throw in destructor!</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- QA -->
+            <section>
+                <h2>❓ Pertanyaan?</h2>
+                <div class="highlight-box">
+                    <p>Terima kasih telah mengikuti pertemuan ini!</p>
+                    <p>Selamat belajar dan berlatih! 🚀</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            plugins: [ RevealHighlight, RevealNotes ]
+        });
+    </script>
+</body>
+</html>
