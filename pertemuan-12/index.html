@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 12: Struct, Union, dan Typedef</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+        .reveal h1 { font-size: 2.5em; color: #2C3E50; }
+        .reveal h2 { font-size: 1.8em; color: #34495E; }
+        .reveal code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
+        .reveal pre code { padding: 20px; border-radius: 8px; max-height: 500px; }
+        .two-column { display: flex; gap: 20px; }
+        .two-column > div { flex: 1; }
+        .highlight-box { background: #E8F5E9; padding: 20px; border-left: 4px solid #4CAF50; margin: 20px 0; }
+        .warning-box { background: #FFF3E0; padding: 20px; border-left: 4px solid #FF9800; margin: 20px 0; }
+        .error-box { background: #FFEBEE; padding: 20px; border-left: 4px solid #F44336; margin: 20px 0; }
+        .info-box { background: #E3F2FD; padding: 20px; border-left: 4px solid #2196F3; margin: 20px 0; }
+        .small-code { font-size: 0.7em; }
+        .smaller-code { font-size: 0.6em; }
+        table { font-size: 0.8em; }
+        .reveal section img { border: none; box-shadow: none; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>Struct, Union, dan Typedef</h1>
+                <h3>Pertemuan 12</h3>
+                <p>Dasar-Dasar Pemrograman</p>
+                <p style="font-size: 0.8em; color: #7F8C8D;">Tipe Data Bentukan (User-Defined Types)</p>
+            </section>
+
+            <!-- Slide 2: Tujuan Pembelajaran -->
+            <section>
+                <h2>🎯 Tujuan Pembelajaran</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.9em;">
+                    <p>Setelah pertemuan ini, mahasiswa diharapkan dapat:</p>
+                    <ol>
+                        <li>Mendefinisikan dan menggunakan struct sebagai tipe data bentukan</li>
+                        <li>Menjelaskan perbedaan struct dan union</li>
+                        <li>Menggunakan typedef untuk membuat alias tipe data</li>
+                        <li>Mengimplementasikan array of struct</li>
+                        <li>Menggunakan enum dan enum class</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Slide 3: Motivasi - Mengapa Struct? -->
+            <section>
+                <h2>Mengapa Perlu Struct?</h2>
+                <div class="two-column">
+                    <div>
+                        <h4>❌ Tanpa Struct</h4>
+                        <pre><code class="cpp small-code">string nama[100];
+string nim[100];
+float ipk[100];
+int tahun[100];
+
+// Sulit dikelola!
+// Rawan inkonsistensi indeks</code></pre>
+                    </div>
+                    <div>
+                        <h4>✅ Dengan Struct</h4>
+                        <pre><code class="cpp small-code">struct Mahasiswa {
+    string nama;
+    string nim;
+    float ipk;
+    int tahun;
+};
+
+Mahasiswa mhs[100];</code></pre>
+                    </div>
+                </div>
+                <div class="highlight-box" style="font-size: 0.85em; margin-top: 20px;">
+                    Struct mengelompokkan data yang berhubungan menjadi satu kesatuan logis
+                </div>
+            </section>
+
+            <!-- Slide 4: Definisi Struct -->
+            <section>
+                <h2>Definisi Struct</h2>
+                <pre><code class="cpp">struct NamaStruct {
+    tipe_data1 member1;
+    tipe_data2 member2;
+    tipe_data3 member3;
+    // ... member lainnya
+}; // ⚠️ Jangan lupa titik koma!</code></pre>
+                <div class="highlight-box" style="font-size: 0.85em;">
+                    <strong>Contoh:</strong>
+                    <pre><code class="cpp">struct Mahasiswa {
+    string nama;
+    string nim;
+    string jurusan;
+    float ipk;
+    int tahunMasuk;
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 5: Visualisasi Struct -->
+            <section>
+                <h2>Struct dalam Memori</h2>
+                <img src="images/struct_visualization.svg" alt="Visualisasi Struct" style="max-height: 500px;">
+            </section>
+
+            <!-- Slide 6: Deklarasi Variabel Struct -->
+            <section>
+                <h2>Deklarasi Variabel Struct</h2>
+                <pre><code class="cpp">struct Mahasiswa {
+    string nama;
+    string nim;
+    float ipk;
+};
+
+int main() {
+    // Cara 1: Deklarasi sederhana
+    Mahasiswa mhs1;
+    
+    // Cara 2: Multiple variabel
+    Mahasiswa mhs2, mhs3, mhs4;
+    
+    // Cara 3: Dengan inisialisasi
+    Mahasiswa mhs5 = {"Budi Santoso", "12345", 3.75};
+    
+    return 0;
+}</code></pre>
+            </section>
+
+            <!-- Slide 7: Inisialisasi Struct -->
+            <section>
+                <h2>Inisialisasi Struct</h2>
+                <pre><code class="cpp smaller-code">struct Mahasiswa {
+    string nama;
+    string nim;
+    float ipk;
+    int semester;
+};
+
+int main() {
+    // Inisialisasi lengkap
+    Mahasiswa mhs1 = {"Alice", "2024001", 3.85, 3};
+    
+    // Inisialisasi sebagian (sisanya default)
+    Mahasiswa mhs2 = {"Bob", "2024002"};
+    
+    // Inisialisasi kosong
+    Mahasiswa mhs3 = {};
+    
+    // Designated initializers (C++20)
+    Mahasiswa mhs4 = {
+        .nama = "Charlie",
+        .nim = "2024003",
+        .ipk = 3.90,
+        .semester = 5
+    };
+}</code></pre>
+            </section>
+
+            <!-- Slide 8: Akses Member -->
+            <section>
+                <h2>Mengakses Member Struct</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.9em;">
+                    Gunakan operator titik (<code>.</code>) untuk mengakses member:
+                </div>
+                <pre><code class="cpp small-code">struct Buku {
+    string judul;
+    string penulis;
+    int tahun;
+    float harga;
+};
+
+int main() {
+    Buku b1;
+    
+    // Mengisi nilai
+    b1.judul = "Pemrograman C++";
+    b1.penulis = "John Doe";
+    b1.tahun = 2024;
+    b1.harga = 150000.0;
+    
+    // Mengakses nilai
+    cout << b1.judul << endl;
+    cout << b1.harga << endl;
+}</code></pre>
+            </section>
+
+            <!-- Slide 9: Array of Struct -->
+            <section>
+                <h2>Array of Struct</h2>
+                <pre><code class="cpp small-code">struct Siswa {
+    string nama;
+    int umur;
+    float nilai;
+};
+
+int main() {
+    // Array of struct
+    Siswa kelas[3];
+    
+    // Mengisi data
+    kelas[0] = {"Ahmad", 16, 85.5};
+    kelas[1] = {"Budi", 17, 90.0};
+    kelas[2] = {"Citra", 16, 88.75};
+    
+    // Akses data
+    for (int i = 0; i < 3; i++) {
+        cout << kelas[i].nama << ": " 
+             << kelas[i].nilai << endl;
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 10: Inisialisasi Array of Struct -->
+            <section>
+                <h2>Inisialisasi Array of Struct</h2>
+                <pre><code class="cpp smaller-code">struct Produk {
+    string nama;
+    int stok;
+    float harga;
+};
+
+int main() {
+    // Inisialisasi langsung
+    Produk inventory[4] = {
+        {"Laptop", 15, 8500000.0},
+        {"Mouse", 50, 125000.0},
+        {"Keyboard", 30, 450000.0},
+        {"Monitor", 20, 2500000.0}
+    };
+    
+    // Tampilkan
+    for (int i = 0; i < 4; i++) {
+        cout << inventory[i].nama << " - "
+             << "Stok: " << inventory[i].stok << " - "
+             << "Rp " << inventory[i].harga << endl;
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 11: Struct sebagai Parameter - Pass by Value -->
+            <section>
+                <h2>Struct sebagai Parameter: Pass by Value</h2>
+                <pre><code class="cpp small-code">struct Point {
+    int x, y;
+};
+
+void tampilkanPoint(Point p) {
+    cout << "(" << p.x << ", " << p.y << ")" << endl;
+}
+
+void geserPoint(Point p, int dx, int dy) {
+    p.x += dx;
+    p.y += dy;
+    // Perubahan tidak mempengaruhi struct asli
+}
+
+int main() {
+    Point p1 = {10, 20};
+    tampilkanPoint(p1);  // (10, 20)
+    geserPoint(p1, 5, 5);
+    tampilkanPoint(p1);  // Masih (10, 20)
+}</code></pre>
+                <div class="warning-box" style="font-size: 0.8em;">
+                    Pass by value menyalin seluruh struct → Overhead untuk struct besar
+                </div>
+            </section>
+
+            <!-- Slide 12: Struct sebagai Parameter - Pass by Reference -->
+            <section>
+                <h2>Struct sebagai Parameter: Pass by Reference</h2>
+                <pre><code class="cpp small-code">struct Mahasiswa {
+    string nama;
+    float ipk;
+};
+
+// Pass by reference untuk modifikasi
+void updateIPK(Mahasiswa &mhs, float ipkBaru) {
+    mhs.ipk = ipkBaru;
+}
+
+// Const reference untuk efisiensi tanpa modifikasi
+void tampilkan(const Mahasiswa &mhs) {
+    cout << mhs.nama << ": " << mhs.ipk << endl;
+}
+
+int main() {
+    Mahasiswa m1 = {"Alice", 3.50};
+    tampilkan(m1);    // Alice: 3.50
+    updateIPK(m1, 3.75);
+    tampilkan(m1);    // Alice: 3.75
+}</code></pre>
+            </section>
+
+            <!-- Slide 13: Mengembalikan Struct -->
+            <section>
+                <h2>Fungsi yang Mengembalikan Struct</h2>
+                <pre><code class="cpp small-code">struct Point {
+    double x, y;
+};
+
+Point buatPoint(double x, double y) {
+    Point p;
+    p.x = x;
+    p.y = y;
+    return p;
+}
+
+Point titikTengah(Point p1, Point p2) {
+    Point tengah;
+    tengah.x = (p1.x + p2.x) / 2.0;
+    tengah.y = (p1.y + p2.y) / 2.0;
+    return tengah;
+}
+
+int main() {
+    Point p1 = buatPoint(0, 0);
+    Point p2 = buatPoint(10, 10);
+    Point tengah = titikTengah(p1, p2);  // (5, 5)
+}</code></pre>
+            </section>
+
+            <!-- Slide 14: Nested Struct -->
+            <section>
+                <h2>Nested Struct</h2>
+                <div class="two-column">
+                    <div>
+                        <h4>Definisi</h4>
+                        <pre><code class="cpp smaller-code">struct Tanggal {
+    int hari;
+    int bulan;
+    int tahun;
+};
+
+struct Alamat {
+    string jalan;
+    string kota;
+    string provinsi;
+};
+
+struct Pegawai {
+    string nama;
+    Tanggal tglLahir;
+    Alamat alamat;
+    float gaji;
+};</code></pre>
+                    </div>
+                    <div>
+                        <h4>Penggunaan</h4>
+                        <pre><code class="cpp smaller-code">Pegawai p1;
+
+p1.nama = "John";
+
+// Nested access
+p1.tglLahir.hari = 15;
+p1.tglLahir.bulan = 8;
+p1.tglLahir.tahun = 1990;
+
+p1.alamat.kota = "Jakarta";
+p1.alamat.provinsi = "DKI";
+
+p1.gaji = 8500000;
+
+cout << p1.nama << endl;
+cout << p1.tglLahir.hari 
+     << "/" 
+     << p1.tglLahir.bulan
+     << "/"
+     << p1.tglLahir.tahun;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 15: Union - Pengertian -->
+            <section>
+                <h2>Union: Berbagi Memori</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.9em;">
+                    Union mirip struct, tetapi semua member <strong>berbagi lokasi memori yang sama</strong>
+                </div>
+                <pre><code class="cpp small-code">union Data {
+    int intValue;
+    float floatValue;
+    char charValue;
+};
+
+int main() {
+    Data d;
+    d.intValue = 42;
+    cout << d.intValue << endl;     // 42
+    
+    d.floatValue = 3.14;
+    cout << d.floatValue << endl;   // 3.14
+    cout << d.intValue << endl;     // ??? (tidak valid lagi!)
+}</code></pre>
+                <div class="warning-box" style="font-size: 0.8em;">
+                    Hanya satu member yang valid pada satu waktu!
+                </div>
+            </section>
+
+            <!-- Slide 16: Visualisasi Struct vs Union -->
+            <section>
+                <h2>Struct vs Union: Penggunaan Memori</h2>
+                <img src="images/struct_union_comparison.svg" alt="Struct vs Union" style="max-height: 500px;">
+            </section>
+
+            <!-- Slide 17: Perbandingan Struct dan Union -->
+            <section>
+                <h2>Perbandingan Struct vs Union</h2>
+                <table style="font-size: 0.75em;">
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>Struct</th>
+                            <th>Union</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Memori</strong></td>
+                            <td>Setiap member punya ruang sendiri</td>
+                            <td>Semua member berbagi ruang yang sama</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ukuran</strong></td>
+                            <td>Jumlah ukuran semua member</td>
+                            <td>Ukuran member terbesar</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Akses</strong></td>
+                            <td>Semua member bisa diakses bersamaan</td>
+                            <td>Hanya satu member valid pada satu waktu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kegunaan</strong></td>
+                            <td>Representasi objek dengan banyak atribut</td>
+                            <td>Menghemat memori untuk data yang mutually exclusive</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Risiko</strong></td>
+                            <td>Lebih banyak menggunakan memori</td>
+                            <td>Mudah terjadi bug jika tidak hati-hati</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Slide 18: Tagged Union -->
+            <section>
+                <h2>Tagged Union</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.85em;">
+                    Kombinasi enum + union untuk melacak member yang aktif
+                </div>
+                <pre><code class="cpp smaller-code">enum TipeData { TIPE_INT, TIPE_FLOAT, TIPE_STRING };
+
+struct TaggedUnion {
+    TipeData tipe;  // Tag
+    union {
+        int intValue;
+        float floatValue;
+        char stringValue[50];
+    } data;
+};
+
+void tampilkan(const TaggedUnion &tu) {
+    switch(tu.tipe) {
+        case TIPE_INT:
+            cout << "Integer: " << tu.data.intValue << endl;
+            break;
+        case TIPE_FLOAT:
+            cout << "Float: " << tu.data.floatValue << endl;
+            break;
+        case TIPE_STRING:
+            cout << "String: " << tu.data.stringValue << endl;
+            break;
+    }
+}</code></pre>
+            </section>
+
+            <!-- Slide 19: Typedef -->
+            <section>
+                <h2>Typedef: Alias Tipe Data</h2>
+                <div class="highlight-box" style="text-align: left; font-size: 0.9em;">
+                    <code>typedef</code> membuat nama alternatif untuk tipe data yang sudah ada
+                </div>
+                <pre><code class="cpp small-code">// Typedef untuk tipe primitif
+typedef unsigned long long ull;
+typedef long double ldouble;
+
+// Typedef untuk struct
+struct Mahasiswa {
+    string nama;
+    float ipk;
+};
+typedef struct Mahasiswa Mhs;
+
+int main() {
+    ull angkaBesar = 18446744073709551615ULL;
+    ldouble pi = 3.14159265358979323846L;
+    
+    Mhs m1 = {"Alice", 3.85};
+}</code></pre>
+            </section>
+
+            <!-- Slide 20: Using Declaration (C++11) -->
+            <section>
+                <h2>Using Declaration (C++11)</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.85em;">
+                    Cara modern untuk membuat alias tipe (lebih konsisten dan readable)
+                </div>
+                <pre><code class="cpp small-code">// Using untuk tipe primitif
+using Integer = int;
+using Real = double;
+
+// Using untuk tipe kompleks
+using StringVector = vector<string>;
+using IntPtr = int*;
+
+// Using untuk struct
+struct Point { double x, y; };
+using Point2D = Point;
+
+int main() {
+    Integer angka = 42;
+    Real desimal = 3.14159;
+    StringVector nama = {"Alice", "Bob"};
+    Point2D p = {10.5, 20.3};
+}</code></pre>
+            </section>
+
+            <!-- Slide 21: Typedef vs Using -->
+            <section>
+                <h2>Typedef vs Using</h2>
+                <table style="font-size: 0.7em;">
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>typedef</th>
+                            <th>using</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Sintaks</strong></td>
+                            <td><code>typedef old_type new_name;</code></td>
+                            <td><code>using new_name = old_type;</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Readability</strong></td>
+                            <td>Kurang intuitif untuk tipe kompleks</td>
+                            <td>Lebih jelas: nama = tipe</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Template</strong></td>
+                            <td>Tidak support template aliases</td>
+                            <td>Support template aliases</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rekomendasi</strong></td>
+                            <td>Legacy code</td>
+                            <td>✅ Gunakan ini untuk kode baru (C++11+)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="highlight-box" style="font-size: 0.8em; margin-top: 20px;">
+                    <strong>Best Practice:</strong> Gunakan <code>using</code> untuk kode C++11 dan setelahnya
+                </div>
+            </section>
+
+            <!-- Slide 22: Enum -->
+            <section>
+                <h2>Enum (Enumeration)</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.85em;">
+                    Enum adalah tipe data yang terdiri dari sekumpulan konstanta bernama
+                </div>
+                <pre><code class="cpp small-code">enum Hari {
+    SENIN,    // 0
+    SELASA,   // 1
+    RABU,     // 2
+    KAMIS,    // 3
+    JUMAT,    // 4
+    SABTU,    // 5
+    MINGGU    // 6
+};
+
+enum Status {
+    PENDING = 1,
+    PROCESSING = 2,
+    COMPLETED = 3,
+    CANCELLED = 0
+};
+
+int main() {
+    Hari hariIni = RABU;
+    Status status = PROCESSING;
+    
+    cout << hariIni << endl;   // 2
+    cout << status << endl;     // 2
+}</code></pre>
+            </section>
+
+            <!-- Slide 23: Enum Class (C++11) -->
+            <section>
+                <h2>Enum Class (Scoped Enum)</h2>
+                <div class="highlight-box" style="text-align: left; font-size: 0.85em;">
+                    Enum class memberikan type safety dan mencegah name pollution
+                </div>
+                <pre><code class="cpp small-code">enum class Warna {
+    MERAH,
+    HIJAU,
+    BIRU,
+    KUNING
+};
+
+enum class Priority {
+    LOW = 1,
+    MEDIUM = 5,
+    HIGH = 10
+};
+
+int main() {
+    Warna w = Warna::BIRU;  // Harus pakai scope
+    Priority p = Priority::HIGH;
+    
+    // cout << w << endl;  // ERROR! Tidak auto-convert ke int
+    cout << static_cast<int>(p) << endl;  // OK: 10
+}</code></pre>
+            </section>
+
+            <!-- Slide 24: Enum vs Enum Class -->
+            <section>
+                <h2>Enum vs Enum Class</h2>
+                <table style="font-size: 0.7em;">
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>enum</th>
+                            <th>enum class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Scope</strong></td>
+                            <td>Global (unscoped)</td>
+                            <td>Scoped (harus pakai ::)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Konversi ke int</strong></td>
+                            <td>Otomatis</td>
+                            <td>Harus explicit cast</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type safety</strong></td>
+                            <td>Lemah</td>
+                            <td>Kuat</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Name collision</strong></td>
+                            <td>Bisa terjadi</td>
+                            <td>Tidak akan terjadi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rekomendasi</strong></td>
+                            <td>Legacy code</td>
+                            <td>✅ Gunakan ini (C++11+)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Slide 25: Enum dalam Struct -->
+            <section>
+                <h2>Enum Class dalam Struct</h2>
+                <pre><code class="cpp smaller-code">enum class Gender { MALE, FEMALE };
+enum class Status { ACTIVE, GRADUATED, DROPPED };
+
+struct Student {
+    string nama;
+    Gender jenisKelamin;
+    Status status;
+    float ipk;
+};
+
+string getGender(Gender g) {
+    return (g == Gender::MALE) ? "Laki-laki" : "Perempuan";
+}
+
+int main() {
+    Student s1 = {
+        "Alice",
+        Gender::FEMALE,
+        Status::ACTIVE,
+        3.85
+    };
+    
+    cout << s1.nama << " (" << getGender(s1.jenisKelamin) << ")" << endl;
+}</code></pre>
+            </section>
+
+            <!-- Slide 26: Aplikasi - Sistem Perpustakaan -->
+            <section>
+                <h2>Aplikasi: Sistem Perpustakaan</h2>
+                <pre><code class="cpp smaller-code">struct Tanggal {
+    int hari, bulan, tahun;
+};
+
+struct Buku {
+    string judul;
+    string penulis;
+    string isbn;
+    bool tersedia;
+};
+
+struct Peminjam {
+    string nama;
+    string id;
+    Tanggal tglPinjam;
+    Tanggal tglKembali;
+};
+
+struct TransaksiPinjam {
+    Buku buku;
+    Peminjam peminjam;
+};
+
+void prosesPeminjaman(TransaksiPinjam &t) {
+    t.buku.tersedia = false;
+    cout << "Peminjaman berhasil!" << endl;
+    cout << "Peminjam: " << t.peminjam.nama << endl;
+    cout << "Buku: " << t.buku.judul << endl;
+}</code></pre>
+            </section>
+
+            <!-- Slide 27: Aplikasi - Sistem Inventory -->
+            <section>
+                <h2>Aplikasi: Sistem Inventory</h2>
+                <pre><code class="cpp smaller-code">enum class Kategori { ELEKTRONIK, MAKANAN, PAKAIAN };
+
+struct Barang {
+    string kode;
+    string nama;
+    Kategori kategori;
+    int stok;
+    float harga;
+};
+
+void tambahStok(Barang &b, int jumlah) {
+    b.stok += jumlah;
+}
+
+bool kurangiStok(Barang &b, int jumlah) {
+    if (b.stok >= jumlah) {
+        b.stok -= jumlah;
+        return true;
+    }
+    return false;
+}
+
+float hitungNilaiInventory(Barang inventory[], int n) {
+    float total = 0;
+    for (int i = 0; i < n; i++) {
+        total += inventory[i].stok * inventory[i].harga;
+    }
+    return total;
+}</code></pre>
+            </section>
+
+            <!-- Slide 28: Best Practices -->
+            <section>
+                <h2>💡 Best Practices</h2>
+                <div class="highlight-box" style="text-align: left; font-size: 0.8em;">
+                    <strong>1. Gunakan struct untuk mengelompokkan data yang berhubungan</strong><br>
+                    <code>struct Point { double x, y; };</code>
+                </div>
+                <div class="highlight-box" style="text-align: left; font-size: 0.8em;">
+                    <strong>2. Pass by const reference untuk struct besar</strong><br>
+                    <code>void display(const LargeStruct &s);</code>
+                </div>
+                <div class="highlight-box" style="text-align: left; font-size: 0.8em;">
+                    <strong>3. Gunakan enum class untuk type safety (C++11+)</strong><br>
+                    <code>enum class Status { ACTIVE, INACTIVE };</code>
+                </div>
+                <div class="highlight-box" style="text-align: left; font-size: 0.8em;">
+                    <strong>4. Gunakan tagged union jika perlu union</strong><br>
+                    Tambahkan enum untuk track member yang aktif
+                </div>
+                <div class="highlight-box" style="text-align: left; font-size: 0.8em;">
+                    <strong>5. Gunakan <code>using</code> daripada <code>typedef</code> (C++11+)</strong><br>
+                    Lebih readable dan konsisten
+                </div>
+            </section>
+
+            <!-- Slide 29: Common Pitfalls -->
+            <section>
+                <h2>⚠️ Common Pitfalls</h2>
+                <div class="error-box" style="text-align: left; font-size: 0.75em;">
+                    <strong>1. Lupa titik koma setelah definisi struct</strong>
+                    <pre><code class="cpp">struct Point {
+    int x, y;
+}; // ← HARUS ADA!</code></pre>
+                </div>
+                <div class="error-box" style="text-align: left; font-size: 0.75em;">
+                    <strong>2. Mengakses union member yang tidak aktif</strong>
+                    <pre><code class="cpp">union Data { int i; float f; };
+Data d;
+d.i = 10;
+cout << d.f; // WRONG! d.f tidak valid</code></pre>
+                </div>
+                <div class="error-box" style="text-align: left; font-size: 0.75em;">
+                    <strong>3. Name pollution dengan enum biasa</strong>
+                    <pre><code class="cpp">enum Color { RED, GREEN };
+enum Signal { RED, GREEN }; // ERROR: redefinition!
+// Gunakan enum class!</code></pre>
+                </div>
+            </section>
+
+            <!-- Slide 30: Struct vs Class Preview -->
+            <section>
+                <h2>Struct vs Class (Preview)</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.85em;">
+                    Dalam C++, struct sebenarnya adalah class dengan perbedaan kecil:
+                </div>
+                <table style="font-size: 0.75em; margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>struct</th>
+                            <th>class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Default Access</strong></td>
+                            <td>public</td>
+                            <td>private</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Inheritance Default</strong></td>
+                            <td>public</td>
+                            <td>private</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kegunaan Umum</strong></td>
+                            <td>Data grouping sederhana</td>
+                            <td>OOP dengan encapsulation</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="highlight-box" style="font-size: 0.8em; margin-top: 20px;">
+                    Struct adalah jembatan menuju OOP! 🌉
+                </div>
+            </section>
+
+            <!-- Slide 31: Kapan Menggunakan Apa? -->
+            <section>
+                <h2>Kapan Menggunakan Apa?</h2>
+                <table style="font-size: 0.7em;">
+                    <thead>
+                        <tr>
+                            <th>Gunakan</th>
+                            <th>Ketika</th>
+                            <th>Contoh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Struct</strong></td>
+                            <td>Mengelompokkan data berhubungan</td>
+                            <td>Point, Rectangle, Student, Book</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Union</strong></td>
+                            <td>Data mutually exclusive, hemat memori</td>
+                            <td>Tagged union untuk variant types</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Typedef/Using</strong></td>
+                            <td>Membuat kode lebih readable</td>
+                            <td>StudentID, Matrix2D, Callback</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Enum</strong></td>
+                            <td>Set nilai terbatas (legacy)</td>
+                            <td>Legacy code compatibility</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Enum Class</strong></td>
+                            <td>Set nilai terbatas + type safety</td>
+                            <td>Status, Color, Direction, Gender</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Slide 32: Ringkasan -->
+            <section>
+                <h2>📝 Ringkasan</h2>
+                <div style="text-align: left; font-size: 0.85em;">
+                    <p><strong>Struct:</strong> Mengelompokkan data berbeda menjadi satu tipe</p>
+                    <p><strong>Union:</strong> Member berbagi memori (hemat, tapi hati-hati)</p>
+                    <p><strong>Typedef/Using:</strong> Membuat alias untuk tipe data</p>
+                    <p><strong>Enum:</strong> Konstanta bernama (gunakan enum class)</p>
+                    <p><strong>Array of Struct:</strong> Mengelola koleksi data terstruktur</p>
+                    <p><strong>Nested Struct:</strong> Struktur data hierarkis</p>
+                </div>
+                <div class="highlight-box" style="font-size: 0.85em; margin-top: 20px;">
+                    <strong>Key Takeaway:</strong> Tipe data bentukan membantu mengorganisasi data kompleks dengan lebih baik dan menjadi fondasi untuk OOP!
+                </div>
+            </section>
+
+            <!-- Slide 33: Persiapan Selanjutnya -->
+            <section>
+                <h2>🚀 Pertemuan Selanjutnya</h2>
+                <div class="info-box" style="text-align: left; font-size: 0.9em;">
+                    <h3>Pertemuan 13: C++ di Platform Lain</h3>
+                    <ul>
+                        <li>C++ untuk Embedded Systems (Arduino)</li>
+                        <li>C++ untuk Competitive Programming</li>
+                        <li>C++ untuk Game Development</li>
+                        <li>Cross-platform Development</li>
+                    </ul>
+                </div>
+                <div class="highlight-box" style="font-size: 0.85em; margin-top: 20px;">
+                    Pelajari aplikasi praktis C++ di berbagai domain! 🎮🤖🏆
+                </div>
+            </section>
+
+            <!-- Slide 34: Q&A -->
+            <section>
+                <h1>❓ Tanya Jawab</h1>
+                <p style="font-size: 1.2em; margin-top: 50px;">Pertanyaan?</p>
+            </section>
+
+            <!-- Slide 35: Thank You -->
+            <section>
+                <h1>Terima Kasih! 🙏</h1>
+                <p style="font-size: 1.2em; margin-top: 30px;">Selamat Belajar!</p>
+                <div style="margin-top: 50px; font-size: 0.9em; color: #7F8C8D;">
+                    <p>Dasar-Dasar Pemrograman</p>
+                    <p>Pertemuan 12: Struct, Union, dan Typedef</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            plugins: [ RevealHighlight, RevealNotes ]
+        });
+    </script>
+</body>
+</html>
