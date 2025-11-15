@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 14: Pengenalan OOP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: none;
+        }
+        .reveal section img {
+            border: none;
+            box-shadow: none;
+        }
+        .reveal pre {
+            width: 100%;
+            font-size: 0.50em;
+        }
+        .reveal code {
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .reveal pre code {
+            background: #2d2d2d;
+            padding: 20px;
+            max-height: 500px;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .pillar-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .concept-highlight {
+            background: #e3f2fd;
+            padding: 20px;
+            border-left: 5px solid #1976d2;
+            margin: 15px 0;
+        }
+        .example-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th {
+            background: #1976d2;
+            color: white;
+            padding: 12px;
+        }
+        .comparison-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .fragment.highlight-current-blue.visible.current-fragment {
+            background: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>Pertemuan 14</h1>
+                <h2>Pengenalan Pemrograman Berorientasi Objek (OOP)</h2>
+                <p>Dasar-Dasar Pemrograman</p>
+            </section>
+
+            <!-- Slide 2: Tujuan Pembelajaran -->
+            <section>
+                <h2>Tujuan Pembelajaran</h2>
+                <div style="text-align: left; margin: 20px 40px;">
+                    <p>Setelah pertemuan ini, mahasiswa diharapkan dapat:</p>
+                    <ul style="font-size: 0.85em;">
+                        <li>Memahami paradigma pemrograman berorientasi objek</li>
+                        <li>Memahami konsep class dan object serta perbedaannya</li>
+                        <li>Membuat dan menggunakan class dengan constructor dan destructor</li>
+                        <li>Menerapkan enkapsulasi dengan access specifier</li>
+                        <li>Memahami dan mengimplementasikan inheritance</li>
+                        <li>Memahami konsep dasar polymorphism dengan virtual functions</li>
+                        <li>Mengembangkan aplikasi sederhana menggunakan prinsip OOP</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 3: Paradigma Pemrograman -->
+            <section>
+                <h2>Paradigma Pemrograman</h2>
+                <div class="two-column">
+                    <div>
+                        <h3 style="color: #1976d2;">Prosedural</h3>
+                        <div class="example-box">
+                            <ul style="font-size: 0.75em; text-align: left;">
+                                <li>Data terpisah dari fungsi</li>
+                                <li>Fokus pada algoritma</li>
+                                <li>Program = urutan instruksi</li>
+                                <li>Contoh: C, Pascal</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: #7b1fa2;">Berorientasi Objek</h3>
+                        <div class="example-box">
+                            <ul style="font-size: 0.75em; text-align: left;">
+                                <li>Data + fungsi dalam objek</li>
+                                <li>Fokus pada objek & interaksi</li>
+                                <li>Program = kumpulan objek</li>
+                                <li>Contoh: C++, Java, Python</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Empat Pilar OOP -->
+            <section>
+                <h2>Empat Pilar OOP</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.7em;">
+                    <div class="pillar-box">
+                        <h3>1. Encapsulation</h3>
+                        <p>Penggabungan data dan method + menyembunyikan detail internal</p>
+                    </div>
+                    <div class="pillar-box">
+                        <h3>2. Inheritance</h3>
+                        <p>Pewarisan atribut dan method dari class lain</p>
+                    </div>
+                    <div class="pillar-box">
+                        <h3>3. Polymorphism</h3>
+                        <p>Satu interface untuk berbagai tipe objek</p>
+                    </div>
+                    <div class="pillar-box">
+                        <h3>4. Abstraction</h3>
+                        <p>Menyembunyikan kompleksitas, menampilkan yang penting</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: Class dan Object -->
+            <section>
+                <h2>Class dan Object</h2>
+                <div class="concept-highlight">
+                    <p><strong>Class</strong> = Blueprint atau template</p>
+                    <p><strong>Object</strong> = Instance dari class</p>
+                </div>
+                <div class="example-box" style="margin-top: 20px;">
+                    <p><strong>Analogi:</strong></p>
+                    <p>Class = Cetakan kue 🍪</p>
+                    <p>Object = Kue-kue yang dihasilkan 🍪🍪🍪</p>
+                </div>
+            </section>
+
+            <!-- Slide 6: Sintaks Class -->
+            <section>
+                <h2>Sintaks Definisi Class</h2>
+                <pre><code class="cpp" data-trim>
+class NamaClass {
+private:
+    // Data members private
+    // Hanya dapat diakses dari dalam class
+    
+public:
+    // Data members public
+    // Dapat diakses dari luar class
+    
+    // Member functions
+    // Method-method yang bekerja pada data
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 7: Contoh Class Sederhana -->
+            <section>
+                <h2>Contoh Class Mahasiswa</h2>
+                <pre><code class="cpp" data-trim>
+class Mahasiswa {
+private:
+    string nama;
+    string nim;
+    float ipk;
+
+public:
+    void setData(string n, string ni, float i) {
+        nama = n;
+        nim = ni;
+        ipk = i;
+    }
+    
+    void tampilkan() {
+        cout << "Nama: " << nama << endl;
+        cout << "NIM: " << nim << endl;
+        cout << "IPK: " << ipk << endl;
+    }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 8: Membuat Object -->
+            <section>
+                <h2>Membuat dan Menggunakan Object</h2>
+                <pre><code class="cpp" data-trim>
+int main() {
+    // Membuat object
+    Mahasiswa mhs1;
+    Mahasiswa mhs2;
+    
+    // Mengatur data
+    mhs1.setData("Budi Santoso", "2101001", 3.75);
+    mhs2.setData("Ani Lestari", "2101002", 3.25);
+    
+    // Menampilkan data
+    mhs1.tampilkan();
+    cout << endl;
+    mhs2.tampilkan();
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 9: Access Specifier -->
+            <section>
+                <h2>Access Specifier</h2>
+                <table class="comparison-table" style="font-size: 0.75em;">
+                    <tr>
+                        <th>Access Specifier</th>
+                        <th>Akses dari Dalam Class</th>
+                        <th>Akses dari Luar Class</th>
+                        <th>Akses dari Derived Class</th>
+                    </tr>
+                    <tr>
+                        <td><strong>private</strong></td>
+                        <td>✓ Ya</td>
+                        <td>✗ Tidak</td>
+                        <td>✗ Tidak</td>
+                    </tr>
+                    <tr>
+                        <td><strong>protected</strong></td>
+                        <td>✓ Ya</td>
+                        <td>✗ Tidak</td>
+                        <td>✓ Ya</td>
+                    </tr>
+                    <tr>
+                        <td><strong>public</strong></td>
+                        <td>✓ Ya</td>
+                        <td>✓ Ya</td>
+                        <td>✓ Ya</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Slide 10: Constructor -->
+            <section>
+                <h2>Constructor</h2>
+                <div class="concept-highlight">
+                    <p><strong>Constructor</strong> adalah method khusus yang dipanggil otomatis saat object dibuat</p>
+                    <ul style="text-align: left; font-size: 0.85em;">
+                        <li>Nama sama dengan nama class</li>
+                        <li>Tidak memiliki return type</li>
+                        <li>Digunakan untuk inisialisasi</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 11: Jenis Constructor -->
+            <section>
+                <h2>Jenis Constructor</h2>
+                <pre><code class="cpp" data-trim>
+class Mahasiswa {
+private:
+    string nama;
+    float ipk;
+
+public:
+    // Default constructor
+    Mahasiswa() {
+        nama = "Belum diisi";
+        ipk = 0.0;
+    }
+    
+    // Parameterized constructor
+    Mahasiswa(string n, float i) {
+        nama = n;
+        ipk = i;
+    }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 12: Constructor Initializer List -->
+            <section>
+                <h2>Constructor Initializer List</h2>
+                <pre><code class="cpp" data-trim>
+class Mahasiswa {
+private:
+    string nama;
+    string nim;
+    float ipk;
+
+public:
+    // Constructor dengan initializer list
+    Mahasiswa(string n, string ni, float i) 
+        : nama(n), nim(ni), ipk(i) {
+        cout << "Mahasiswa " << nama << " dibuat" << endl;
+    }
+    
+    // Lebih efisien!
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 13: Destructor -->
+            <section>
+                <h2>Destructor</h2>
+                <div class="concept-highlight">
+                    <p><strong>Destructor</strong> adalah method khusus yang dipanggil otomatis saat object dihancurkan</p>
+                    <ul style="text-align: left; font-size: 0.85em;">
+                        <li>Nama sama dengan class, diawali tilde (~)</li>
+                        <li>Tidak memiliki return type dan parameter</li>
+                        <li>Digunakan untuk cleanup</li>
+                    </ul>
+                </div>
+                <pre><code class="cpp" data-trim>
+~Mahasiswa() {
+    cout << "Object " << nama << " dihancurkan" << endl;
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 14: Encapsulation -->
+            <section>
+                <h2>Encapsulation (Enkapsulasi)</h2>
+                <div class="concept-highlight">
+                    <p><strong>Data Hiding:</strong> Membuat data private dan mengaksesnya melalui public methods</p>
+                </div>
+                <div class="example-box" style="margin-top: 20px;">
+                    <p><strong>Keuntungan:</strong></p>
+                    <ul style="font-size: 0.8em; text-align: left;">
+                        <li>Melindungi integritas data</li>
+                        <li>Validasi saat mengubah data</li>
+                        <li>Mudah dimodifikasi tanpa mengubah interface</li>
+                        <li>Meningkatkan maintainability</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 15: Getter dan Setter -->
+            <section>
+                <h2>Getter dan Setter Methods</h2>
+                <pre><code class="cpp" data-trim>
+class Mahasiswa {
+private:
+    float ipk;
+
+public:
+    // Getter
+    float getIPK() {
+        return ipk;
+    }
+    
+    // Setter dengan validasi
+    void setIPK(float i) {
+        if (i >= 0.0 && i <= 4.0) {
+            ipk = i;
+        } else {
+            cout << "Error: IPK harus 0.0 - 4.0!" << endl;
+        }
+    }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 16: Inheritance -->
+            <section>
+                <h2>Inheritance (Pewarisan)</h2>
+                <div class="concept-highlight">
+                    <p><strong>Inheritance:</strong> Mekanisme dimana class dapat mewarisi atribut dan method dari class lain</p>
+                </div>
+                <div style="margin-top: 20px;">
+                    <p><strong>Base Class (Parent)</strong> → Class yang diwarisi</p>
+                    <p><strong>Derived Class (Child)</strong> → Class yang mewarisi</p>
+                </div>
+            </section>
+
+            <!-- Slide 17: Sintaks Inheritance -->
+            <section>
+                <h2>Sintaks Inheritance</h2>
+                <pre><code class="cpp" data-trim>
+// Base class
+class Person {
+protected:
+    string nama;
+    int umur;
+
+public:
+    Person(string n, int u) : nama(n), umur(u) {}
+    
+    void tampilkanInfo() {
+        cout << "Nama: " << nama << endl;
+        cout << "Umur: " << umur << endl;
+    }
+};
+
+// Derived class
+class Mahasiswa : public Person {
+private:
+    string nim;
+    
+public:
+    Mahasiswa(string n, int u, string ni) 
+        : Person(n, u), nim(ni) {}
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 18: Keuntungan Inheritance -->
+            <section>
+                <h2>Keuntungan Inheritance</h2>
+                <div style="text-align: left; margin: 20px 60px;">
+                    <div class="example-box">
+                        <h3 style="color: #1976d2;">✓ Code Reusability</h3>
+                        <p>Tidak perlu menulis ulang kode yang sama</p>
+                    </div>
+                    <div class="example-box">
+                        <h3 style="color: #1976d2;">✓ Extensibility</h3>
+                        <p>Mudah menambahkan class baru</p>
+                    </div>
+                    <div class="example-box">
+                        <h3 style="color: #1976d2;">✓ Hierarchical Organization</h3>
+                        <p>Class terorganisir dalam hierarki yang logis</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 19: Constructor dalam Inheritance -->
+            <section>
+                <h2>Urutan Constructor dan Destructor</h2>
+                <div class="concept-highlight">
+                    <p><strong>Constructor:</strong> Base → Derived</p>
+                    <p><strong>Destructor:</strong> Derived → Base</p>
+                </div>
+                <pre><code class="cpp" data-trim>
+class Person {
+public:
+    Person() { cout << "1. Constructor Person" << endl; }
+    ~Person() { cout << "3. Destructor Person" << endl; }
+};
+
+class Mahasiswa : public Person {
+public:
+    Mahasiswa() { cout << "2. Constructor Mahasiswa" << endl; }
+    ~Mahasiswa() { cout << "2. Destructor Mahasiswa" << endl; }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 20: Polymorphism -->
+            <section>
+                <h2>Polymorphism (Polimorfisme)</h2>
+                <div class="concept-highlight">
+                    <p><strong>Polymorphism:</strong> "Banyak bentuk" - kemampuan menggunakan satu interface untuk berbagai tipe objek</p>
+                </div>
+                <div class="two-column" style="margin-top: 20px; font-size: 0.8em;">
+                    <div>
+                        <h3>Compile-time</h3>
+                        <p>Function overloading</p>
+                        <p>Operator overloading</p>
+                    </div>
+                    <div>
+                        <h3>Runtime</h3>
+                        <p>Virtual functions</p>
+                        <p>Function overriding</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 21: Function Overriding -->
+            <section>
+                <h2>Function Overriding</h2>
+                <pre><code class="cpp" data-trim>
+class BangunDatar {
+public:
+    void hitungLuas() {
+        cout << "Luas belum didefinisikan" << endl;
+    }
+};
+
+class Persegi : public BangunDatar {
+private:
+    double sisi;
+public:
+    Persegi(double s) : sisi(s) {}
+    
+    // Override method dari base class
+    void hitungLuas() {
+        cout << "Luas persegi: " << sisi * sisi << endl;
+    }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 22: Virtual Functions -->
+            <section>
+                <h2>Virtual Functions</h2>
+                <div class="concept-highlight">
+                    <p><strong>Virtual function</strong> memungkinkan runtime polymorphism</p>
+                    <p>Method yang dipanggil ditentukan pada saat runtime berdasarkan tipe objek sebenarnya</p>
+                </div>
+                <pre><code class="cpp" data-trim>
+class BangunDatar {
+public:
+    virtual double hitungLuas() {
+        return 0.0;
+    }
+};
+
+class Persegi : public BangunDatar {
+private:
+    double sisi;
+public:
+    double hitungLuas() override {
+        return sisi * sisi;
+    }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 23: Runtime Polymorphism -->
+            <section>
+                <h2>Runtime Polymorphism</h2>
+                <pre><code class="cpp" data-trim>
+int main() {
+    BangunDatar* bentuk[3];
+    
+    bentuk[0] = new Persegi(5.0);
+    bentuk[1] = new Lingkaran(7.0);
+    bentuk[2] = new Segitiga(4.0, 6.0);
+    
+    // Polymorphism!
+    for (int i = 0; i < 3; i++) {
+        cout << "Luas: " << bentuk[i]->hitungLuas() << endl;
+    }
+    
+    // Cleanup
+    for (int i = 0; i < 3; i++) {
+        delete bentuk[i];
+    }
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 24: Virtual Destructor -->
+            <section>
+                <h2>Virtual Destructor</h2>
+                <div class="concept-highlight">
+                    <p><strong>Penting!</strong> Jika class memiliki virtual functions, destructor juga harus virtual</p>
+                </div>
+                <pre><code class="cpp" data-trim>
+class Base {
+public:
+    virtual void someMethod() { }
+    
+    // Virtual destructor
+    virtual ~Base() {
+        cout << "Destructor Base" << endl;
+    }
+};
+
+class Derived : public Base {
+public:
+    ~Derived() {
+        cout << "Destructor Derived" << endl;
+    }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 25: Keyword override -->
+            <section>
+                <h2>Keyword override (C++11)</h2>
+                <div class="concept-highlight">
+                    <p><strong>override</strong> memastikan method benar-benar meng-override method base class</p>
+                    <p>Compiler akan error jika signature tidak cocok</p>
+                </div>
+                <pre><code class="cpp" data-trim>
+class Base {
+public:
+    virtual void print(int x) { }
+};
+
+class Derived : public Base {
+public:
+    // Benar - akan meng-override
+    void print(int x) override { }
+    
+    // Error - signature berbeda
+    // void print(double x) override { }
+};
+                </code></pre>
+            </section>
+
+            <!-- Slide 26: Contoh Aplikasi: Sistem Perpustakaan -->
+            <section>
+                <h2>Contoh Aplikasi OOP</h2>
+                <h3>Sistem Perpustakaan Sederhana</h3>
+                <div style="text-align: left; font-size: 0.75em; margin: 20px 40px;">
+                    <p><strong>Class yang dibutuhkan:</strong></p>
+                    <ul>
+                        <li><code>ItemPerpustakaan</code> (base class) - dengan virtual methods</li>
+                        <li><code>Buku</code> (derived class) - dengan atribut pengarang, tahun</li>
+                        <li><code>Majalah</code> (derived class) - dengan atribut penerbit, edisi</li>
+                        <li><code>Perpustakaan</code> - mengelola koleksi items</li>
+                    </ul>
+                    <p><strong>Fitur:</strong> Tambah item, pinjam, kembalikan, tampilkan koleksi</p>
+                </div>
+            </section>
+
+            <!-- Slide 27: Best Practices OOP -->
+            <section>
+                <h2>Best Practices OOP</h2>
+                <div style="text-align: left; margin: 20px 60px; font-size: 0.8em;">
+                    <div class="example-box">
+                        <p>✓ Gunakan enkapsulasi - data private, interface public</p>
+                    </div>
+                    <div class="example-box">
+                        <p>✓ Gunakan initializer list di constructor</p>
+                    </div>
+                    <div class="example-box">
+                        <p>✓ Buat virtual destructor untuk class dengan virtual functions</p>
+                    </div>
+                    <div class="example-box">
+                        <p>✓ Gunakan keyword override untuk clarity</p>
+                    </div>
+                    <div class="example-box">
+                        <p>✓ Prefer composition over inheritance (dalam beberapa kasus)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 28: Common Mistakes -->
+            <section>
+                <h2>Kesalahan Umum</h2>
+                <div style="text-align: left; margin: 20px 60px; font-size: 0.75em;">
+                    <div class="example-box" style="background: #ffebee;">
+                        <p>✗ Mengakses private members langsung dari luar class</p>
+                    </div>
+                    <div class="example-box" style="background: #ffebee;">
+                        <p>✗ Lupa memanggil base class constructor</p>
+                    </div>
+                    <div class="example-box" style="background: #ffebee;">
+                        <p>✗ Tidak membuat destructor virtual untuk inheritance</p>
+                    </div>
+                    <div class="example-box" style="background: #ffebee;">
+                        <p>✗ Memory leak karena tidak delete pointer</p>
+                    </div>
+                    <div class="example-box" style="background: #ffebee;">
+                        <p>✗ Menggunakan inheritance hanya untuk code reuse (gunakan composition)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 29: OOP vs Procedural - Kapan Menggunakan -->
+            <section>
+                <h2>Kapan Menggunakan OOP?</h2>
+                <div class="two-column" style="font-size: 0.75em;">
+                    <div>
+                        <h3 style="color: #2e7d32;">Gunakan OOP ketika:</h3>
+                        <ul style="text-align: left;">
+                            <li>Program kompleks dan besar</li>
+                            <li>Banyak entitas dengan atribut</li>
+                            <li>Perlu maintainability tinggi</li>
+                            <li>Tim development besar</li>
+                            <li>Perlu extensibility</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: #c62828;">Prosedural cukup ketika:</h3>
+                        <ul style="text-align: left;">
+                            <li>Program kecil dan sederhana</li>
+                            <li>Algoritma linear</li>
+                            <li>Performance critical</li>
+                            <li>Script utility sederhana</li>
+                            <li>Embedded systems</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 30: Topik Lanjutan -->
+            <section>
+                <h2>Topik Lanjutan (Mata Kuliah PBO)</h2>
+                <div style="text-align: left; margin: 20px 60px; font-size: 0.8em;">
+                    <p>Di mata kuliah Pemrograman Berorientasi Objek, Anda akan mempelajari:</p>
+                    <ul>
+                        <li>Operator overloading</li>
+                        <li>Friend functions dan friend classes</li>
+                        <li>Multiple inheritance</li>
+                        <li>Abstract classes dan pure virtual functions</li>
+                        <li>Templates dan generic programming</li>
+                        <li>STL (Standard Template Library)</li>
+                        <li>Design patterns (Singleton, Factory, Observer, dll)</li>
+                        <li>SOLID principles</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 31: Ringkasan -->
+            <section>
+                <h2>Ringkasan</h2>
+                <div style="text-align: left; margin: 20px 60px; font-size: 0.75em;">
+                    <ul>
+                        <li><strong>OOP</strong> mengorganisir kode dalam objek (data + method)</li>
+                        <li><strong>Class</strong> adalah blueprint, <strong>object</strong> adalah instance</li>
+                        <li><strong>Constructor</strong> menginisialisasi object, <strong>destructor</strong> membersihkan</li>
+                        <li><strong>Enkapsulasi</strong> menyembunyikan data, akses via getter/setter</li>
+                        <li><strong>Inheritance</strong> memungkinkan code reuse</li>
+                        <li><strong>Polymorphism</strong> dengan virtual functions untuk flexibility</li>
+                        <li><strong>Empat pilar OOP:</strong> Encapsulation, Inheritance, Polymorphism, Abstraction</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 32: Referensi -->
+            <section>
+                <h2>Referensi</h2>
+                <div style="text-align: left; margin: 20px 60px; font-size: 0.65em;">
+                    <ol>
+                        <li>Stroustrup, B. (2013). <em>The C++ Programming Language</em> (4th ed.). Chapter 2-3.</li>
+                        <li>Savitch, W. (2017). <em>Problem Solving with C++</em> (10th ed.). Chapter 10-11.</li>
+                        <li>Lippman, S. B., Lajoie, J., & Moo, B. E. (2012). <em>C++ Primer</em> (5th ed.). Chapter 7, 13, 15.</li>
+                        <li>Deitel, P., & Deitel, H. (2016). <em>C++ How to Program</em> (10th ed.). Chapter 9, 12.</li>
+                        <li>Gamma, E., et al. (1994). <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Slide 33: Terima Kasih -->
+            <section>
+                <h1>Terima Kasih</h1>
+                <h3>Pertanyaan?</h3>
+                <p style="margin-top: 50px; font-size: 0.8em;">
+                    Pertemuan berikutnya: File Handling dan Exception Handling
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/math/math.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+        });
+    </script>
+</body>
+</html>
