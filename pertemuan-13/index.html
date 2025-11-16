@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 13: C++ di Platform Lain - Dasar-Dasar Pemrograman</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: none;
+        }
+        .reveal pre {
+            width: 100%;
+            font-size: 0.50em;
+        }
+        .reveal code {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .reveal pre code {
+            max-height: 500px;
+            background-color: #f5f5f5;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .highlight-box {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-left: 4px solid #2196F3;
+            margin: 10px 0;
+        }
+        .success-box {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-left: 4px solid #4CAF50;
+            margin: 10px 0;
+        }
+        .warning-box {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-left: 4px solid #FF9800;
+            margin: 10px 0;
+        }
+        .info-box {
+            background-color: #f3e5f5;
+            padding: 15px;
+            border-left: 4px solid #9C27B0;
+            margin: 10px 0;
+        }
+        .small-text {
+            font-size: 0.8em;
+        }
+        .smaller-text {
+            font-size: 0.7em;
+        }
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        ul.emoji-list li::marker {
+            content: "✅ ";
+        }
+        table {
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+<!-- ==================== TITLE SLIDE ==================== -->
+<section>
+    <h1>Pertemuan 13</h1>
+    <h2>C++ di Platform Lain dan Development Tools</h2>
+    <p><strong>Dasar-Dasar Pemrograman</strong></p>
+    <p class="small-text">CPMK 1 (Sub-CPMK 1.3) | CPMK 4 (Sub-CPMK 4.1)</p>
+</section>
+
+<!-- ==================== AGENDA ==================== -->
+<section>
+    <h2>Agenda Hari Ini</h2>
+    <p>Hari ini kita akan mengeksplorasi dunia C++ di luar pembelajaran konvensional:</p>
+    <ul>
+        <li>🤖 C++ untuk Embedded Systems (Arduino & ESP32)</li>
+        <li>🏆 C++ untuk Competitive Programming</li>
+        <li>🎮 C++ untuk Game Development</li>
+        <li>🖥️ Cross-Platform Development</li>
+        <li>🐛 Debugging Tools</li>
+    </ul>
+</section>
+
+<!-- ==================== MOTIVASI ==================== -->
+<section>
+    <h2>Mengapa Topik Ini Penting?</h2>
+    <p>C++ bukan hanya untuk program konsol atau aplikasi desktop. Bahasa ini digunakan di:</p>
+    <div class="two-column">
+        <div>
+            <ul class="smaller-text">
+                <li>IoT devices dan robotics</li>
+                <li>Game AAA (Call of Duty, Fortnite)</li>
+                <li>High-frequency trading systems</li>
+            </ul>
+        </div>
+        <div>
+            <ul class="smaller-text">
+                <li>Operating systems (Windows, Linux)</li>
+                <li>Game engines (Unreal, Unity core)</li>
+                <li>Bahkan di Mars Rover!</li>
+            </ul>
+        </div>
+    </div>
+    <p class="highlight-box">Mari kita lihat bagaimana semua konsep yang sudah kita pelajari diaplikasikan di dunia nyata.</p>
+</section>
+
+<!-- ==================== PART 1: EMBEDDED SYSTEMS ==================== -->
+<section>
+    <section>
+        <h1>Bagian 1</h1>
+        <h2>C++ untuk Embedded Systems</h2>
+        <p class="small-text">Arduino, ESP32, dan IoT</p>
+    </section>
+
+    <section>
+        <h2>Apa itu Embedded System?</h2>
+        <p><strong>Embedded system</strong> adalah sistem komputer yang dirancang untuk melakukan fungsi spesifik sebagai bagian dari sistem yang lebih besar.</p>
+        <div class="highlight-box">
+            <strong>Contoh di sekitar kita:</strong>
+            <ul class="smaller-text">
+                <li>Mesin cuci, kulkas, microwave</li>
+                <li>Remote TV dan AC</li>
+                <li>Kamera digital</li>
+                <li>Sistem kontrol mobil</li>
+                <li>Medical devices</li>
+            </ul>
+        </div>
+        <p><strong>Karakteristik:</strong> Resource terbatas, real-time operation, task-specific</p>
+    </section>
+
+    <section>
+        <h2>Mengapa C++ untuk Embedded?</h2>
+        <p>C++ ideal untuk embedded programming karena:</p>
+        <div class="success-box">
+            <ul class="smaller-text">
+                <li><strong>Low-level control:</strong> Akses langsung ke hardware (registers, pins, memory)</li>
+                <li><strong>Efisiensi:</strong> Minimal overhead, optimal memory usage</li>
+                <li><strong>Object-oriented:</strong> Mengorganisir kode kompleks dengan baik</li>
+                <li><strong>C compatibility:</strong> Dapat menggunakan C libraries dan drivers</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Arduino: Platform Embedded Populer</h2>
+        <p>Arduino adalah platform open-source untuk prototyping elektronik.</p>
+        <div class="two-column">
+            <div>
+                <strong>Komponen:</strong>
+                <ul class="smaller-text">
+                    <li>Mikrokontroler board (Uno, Nano, Mega)</li>
+                    <li>Arduino IDE untuk programming</li>
+                    <li>Ribuan libraries dan shields</li>
+                </ul>
+            </div>
+            <div>
+                <strong>Kegunaan:</strong>
+                <ul class="smaller-text">
+                    <li>Robotics</li>
+                    <li>Home automation</li>
+                    <li>IoT projects</li>
+                    <li>Education</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Struktur Program Arduino</h2>
+        <p>Program Arduino (sketch) memiliki dua fungsi utama:</p>
+        <pre><code class="language-cpp">void setup() {
+  // Inisialisasi
+  // Dijalankan sekali saat startup
+}
+
+void loop() {
+  // Program utama
+  // Dijalankan berulang-ulang
+}</code></pre>
+        <p class="info-box small-text">Berbeda dengan <code>main()</code> yang kita kenal, Arduino abstrak away program entry point.</p>
+    </section>
+
+    <section>
+        <h2>Program Pertama: Blink LED</h2>
+        <p>Program klasik "Hello World" di embedded programming:</p>
+        <pre><code class="language-cpp">const int LED_PIN = 13;
+const int DELAY_MS = 1000;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH);  // Nyalakan LED
+  delay(DELAY_MS);              // Tunggu 1 detik
+  digitalWrite(LED_PIN, LOW);   // Matikan LED
+  delay(DELAY_MS);              // Tunggu 1 detik
+}</code></pre>
+        <p class="small-text">Sederhana namun mendemonstrasikan konsep fundamental I/O.</p>
+    </section>
+
+    <section>
+        <h2>Digital I/O Concepts</h2>
+        <div class="two-column">
+            <div class="highlight-box">
+                <strong>Output:</strong>
+                <p class="smaller-text">Mengirim HIGH (5V) atau LOW (0V) ke pin</p>
+                <ul class="smaller-text">
+                    <li>Mengontrol LED, relay, motor</li>
+                </ul>
+                <pre><code class="language-cpp">pinMode(pin, OUTPUT);
+digitalWrite(pin, HIGH);</code></pre>
+            </div>
+            <div class="success-box">
+                <strong>Input:</strong>
+                <p class="smaller-text">Membaca HIGH atau LOW dari pin</p>
+                <ul class="smaller-text">
+                    <li>Membaca tombol, switch, sensor digital</li>
+                </ul>
+                <pre><code class="language-cpp">pinMode(pin, INPUT_PULLUP);
+int state = digitalRead(pin);</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Demo: Button Control LED</h2>
+        <pre><code class="language-cpp">const int BUTTON_PIN = 2;
+const int LED_PIN = 13;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+}
+
+void loop() {
+  int buttonState = digitalRead(BUTTON_PIN);
+  
+  if (buttonState == LOW) {  // Ditekan (pull-up)
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
+}</code></pre>
+        <p class="info-box small-text">Input mempengaruhi output - interaksi dasar.</p>
+    </section>
+
+    <section>
+        <h2>Analog Input</h2>
+        <p>Pins analog (A0-A5) membaca voltage 0-5V menjadi nilai 0-1023.</p>
+        <div class="highlight-box">
+            <strong>Penggunaan:</strong>
+            <ul class="smaller-text">
+                <li>Sensor suhu, cahaya, kelembaban</li>
+                <li>Potensiometer untuk input variable</li>
+                <li>Sensor jarak analog</li>
+            </ul>
+        </div>
+        <pre><code class="language-cpp">int sensorValue = analogRead(A0);
+float voltage = sensorValue * (5.0 / 1023.0);</code></pre>
+        <p class="small-text">ADC (Analog to Digital Converter) mengkonversi voltage analog menjadi nilai digital.</p>
+    </section>
+
+    <section>
+        <h2>Demo: Sensor Suhu LM35</h2>
+        <pre><code class="language-cpp">const int TEMP_PIN = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int sensorValue = analogRead(TEMP_PIN);
+  float voltage = sensorValue * (5.0 / 1023.0);
+  float temperatureC = voltage * 100.0;  // LM35: 10mV/°C
+  
+  Serial.print("Temperature: ");
+  Serial.print(temperatureC);
+  Serial.println(" C");
+  
+  delay(1000);
+}</code></pre>
+    </section>
+
+    <section>
+        <h2>Serial Communication</h2>
+        <p>Serial memungkinkan Arduino berkomunikasi dengan komputer atau devices lain.</p>
+        <div class="success-box">
+            <strong>Kegunaan:</strong>
+            <ul class="smaller-text">
+                <li>Debugging dengan Serial Monitor</li>
+                <li>Logging data sensor</li>
+                <li>Menerima commands dari komputer</li>
+                <li>Komunikasi dengan modules (GPS, Bluetooth, WiFi)</li>
+            </ul>
+        </div>
+        <pre><code class="language-cpp">Serial.begin(9600);          // Inisialisasi dengan baud rate
+Serial.println("Hello!");    // Kirim pesan
+if (Serial.available()) {    // Cek data masuk
+  String input = Serial.readStringUntil('\n');
+}</code></pre>
+    </section>
+
+    <section>
+        <h2>ESP32: Next Level</h2>
+        <p>ESP32 adalah mikrokontroler powerful dengan fitur:</p>
+        <div class="two-column">
+            <div class="highlight-box smaller-text">
+                <strong>Hardware:</strong>
+                <ul>
+                    <li>Dual-core processor hingga 240 MHz</li>
+                    <li>520KB RAM</li>
+                    <li>WiFi dan Bluetooth built-in</li>
+                    <li>Touch sensors</li>
+                </ul>
+            </div>
+            <div class="success-box smaller-text">
+                <strong>Software:</strong>
+                <ul>
+                    <li>Compatible dengan Arduino IDE</li>
+                    <li>RTOS support</li>
+                    <li>Powerful libraries</li>
+                    <li>Perfect untuk IoT!</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Demo: ESP32 WiFi Connection</h2>
+        <pre><code class="language-cpp">#include &lt;WiFi.h&gt;
+
+const char* ssid = "YourWiFi";
+const char* password = "YourPassword";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  
+  Serial.println("\nWiFi connected!");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
+}</code></pre>
+        <p class="info-box small-text">Dengan WiFi, ESP32 bisa terhubung ke cloud, smartphone apps, atau IoT networks.</p>
+    </section>
+</section>
+
+<!-- ==================== PART 2: COMPETITIVE PROGRAMMING ==================== -->
+<section>
+    <section>
+        <h1>Bagian 2</h1>
+        <h2>C++ untuk Competitive Programming</h2>
+        <p class="small-text">Algorithms, Problem Solving, Performance</p>
+    </section>
+
+    <section>
+        <h2>Apa itu Competitive Programming?</h2>
+        <p>Sport mental di mana peserta solve algorithmic problems dalam waktu terbatas.</p>
+        <div class="two-column">
+            <div class="highlight-box">
+                <strong>Platform populer:</strong>
+                <ul class="smaller-text">
+                    <li>Codeforces</li>
+                    <li>LeetCode (interview prep)</li>
+                    <li>CodeChef</li>
+                    <li>AtCoder</li>
+                    <li>HackerRank</li>
+                </ul>
+            </div>
+            <div class="success-box">
+                <strong>Manfaat:</strong>
+                <ul class="smaller-text">
+                    <li>Melatih problem solving</li>
+                    <li>Menguasai algoritma</li>
+                    <li>Meningkatkan coding speed</li>
+                    <li>Interview preparation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Mengapa C++ Dominan?</h2>
+        <p>C++ adalah bahasa #1 di competitive programming karena:</p>
+        <div class="success-box">
+            <ul class="smaller-text">
+                <li><strong>Speed:</strong> Execution time sangat penting dengan time limits</li>
+                <li><strong>STL:</strong> Standard Template Library yang powerful</li>
+                <li><strong>Control:</strong> Low-level optimization capabilities</li>
+                <li><strong>Popularity:</strong> Banyak resources dan community support</li>
+            </ul>
+        </div>
+        <p class="warning-box small-text">Python mudah tapi sering TLE (Time Limit Exceeded) untuk large inputs.</p>
+    </section>
+
+    <section>
+        <h2>Fast I/O Techniques</h2>
+        <p>Standard cin/cout bisa lambat untuk input besar. Optimasi:</p>
+        <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // Optimasi I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int n;
+    cin >> n;
+    
+    for(int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        cout << x * 2 << "\n";  // "\n" lebih cepat dari endl
+    }
+    
+    return 0;
+}</code></pre>
+        <p class="highlight-box small-text">Untuk jutaan inputs, perbedaan bisa 10x lebih cepat!</p>
+    </section>
+
+    <section>
+        <h2>STL Data Structures</h2>
+        <div class="smaller-text">
+        <strong>Vector - dynamic array:</strong>
+        <pre><code class="language-cpp">vector&lt;int&gt; arr(n);
+arr.push_back(5);
+sort(arr.begin(), arr.end());</code></pre>
+        
+        <strong>Set - unique sorted elements:</strong>
+        <pre><code class="language-cpp">set&lt;int&gt; s;
+s.insert(5);  // O(log n)
+if(s.count(5)) { ... }</code></pre>
+        
+        <strong>Map - key-value pairs:</strong>
+        <pre><code class="language-cpp">map&lt;string, int&gt; freq;
+freq["hello"]++;</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>Common Algorithms</h2>
+        <div class="smaller-text">
+        <strong>Sorting: O(n log n)</strong>
+        <pre><code class="language-cpp">sort(arr.begin(), arr.end());
+sort(arr.begin(), arr.end(), greater&lt;int&gt;());  // Descending</code></pre>
+        
+        <strong>Binary Search: O(log n) - requires sorted array</strong>
+        <pre><code class="language-cpp">bool found = binary_search(arr.begin(), arr.end(), target);
+auto it = lower_bound(arr.begin(), arr.end(), target);</code></pre>
+        
+        <strong>Max/Min:</strong>
+        <pre><code class="language-cpp">int maxVal = *max_element(arr.begin(), arr.end());</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>Template Code</h2>
+        <p class="small-text">Competitive programmers menggunakan templates untuk speed:</p>
+        <pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;  // All headers
+using namespace std;
+
+typedef long long ll;
+typedef vector&lt;int&gt; vi;
+
+#define pb push_back
+#define all(x) x.begin(), x.end()
+#define REP(i, a, b) for(int i = a; i < b; i++)
+
+void fastIO() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+}
+
+int main() {
+    fastIO();
+    // Solution code...
+}</code></pre>
+    </section>
+
+    <section>
+        <h2>Online Judge Verdicts</h2>
+        <p class="small-text">Ketika submit solution:</p>
+        <table>
+            <tr>
+                <th>Verdict</th>
+                <th>Meaning</th>
+            </tr>
+            <tr style="background-color: #e8f5e9;">
+                <td>✅ AC (Accepted)</td>
+                <td>Benar semua test case</td>
+            </tr>
+            <tr style="background-color: #ffebee;">
+                <td>❌ WA (Wrong Answer)</td>
+                <td>Output salah</td>
+            </tr>
+            <tr style="background-color: #fff3e0;">
+                <td>⏱️ TLE (Time Limit Exceeded)</td>
+                <td>Terlalu lambat</td>
+            </tr>
+            <tr style="background-color: #fff3e0;">
+                <td>💾 MLE (Memory Limit Exceeded)</td>
+                <td>Terlalu boros memory</td>
+            </tr>
+            <tr style="background-color: #ffebee;">
+                <td>💥 RE (Runtime Error)</td>
+                <td>Program crash</td>
+            </tr>
+        </table>
+        <p class="success-box small-text">Goal: Dapatkan AC dengan optimal algorithm!</p>
+    </section>
+
+    <section>
+        <h2>Contoh Problem: Two Sum</h2>
+        <p class="smaller-text"><strong>Problem:</strong> Diberikan array dan target, find dua numbers yang sum = target.</p>
+        <div class="two-column smaller-text">
+            <div>
+                <strong>Naive O(n²):</strong>
+                <pre><code class="language-cpp">for(int i = 0; i < n; i++)
+  for(int j = i+1; j < n; j++)
+    if(arr[i] + arr[j] == target)
+      return {i, j};</code></pre>
+            </div>
+            <div>
+                <strong>Optimal O(n):</strong>
+                <pre><code class="language-cpp">map&lt;int, int&gt; seen;
+for(int i = 0; i < n; i++) {
+  int comp = target - arr[i];
+  if(seen.count(comp))
+    return {seen[comp], i};
+  seen[arr[i]] = i;
+}</code></pre>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- ==================== PART 3: GAME DEVELOPMENT ==================== -->
+<section>
+    <section>
+        <h1>Bagian 3</h1>
+        <h2>C++ untuk Game Development</h2>
+        <p class="small-text">Real-time Programming, Graphics, User Interaction</p>
+    </section>
+
+    <section>
+        <h2>C++ di Game Industry</h2>
+        <p>C++ adalah bahasa utama untuk:</p>
+        <div class="two-column">
+            <div class="highlight-box smaller-text">
+                <strong>AAA Games:</strong>
+                <ul>
+                    <li>Call of Duty</li>
+                    <li>Fortnite</li>
+                    <li>GTA V</li>
+                    <li>Assassin's Creed</li>
+                </ul>
+            </div>
+            <div class="success-box smaller-text">
+                <strong>Game Engines:</strong>
+                <ul>
+                    <li>Unreal Engine</li>
+                    <li>CryEngine</li>
+                    <li>Unity (core)</li>
+                    <li>Custom engines</li>
+                </ul>
+            </div>
+        </div>
+        <p class="info-box small-text"><strong>Alasan:</strong> Performance critical, low latency, hardware control</p>
+    </section>
+
+    <section>
+        <h2>Game Development Libraries</h2>
+        <p>Untuk pembelajaran, gunakan libraries yang lebih simple:</p>
+        <div class="two-column">
+            <div class="highlight-box">
+                <strong>SDL</strong>
+                <ul class="smaller-text">
+                    <li>C library, works dengan C++</li>
+                    <li>Cross-platform</li>
+                    <li>Low-level, more control</li>
+                </ul>
+            </div>
+            <div class="success-box">
+                <strong>SFML</strong>
+                <ul class="smaller-text">
+                    <li>Modern C++, object-oriented</li>
+                    <li>Easier API</li>
+                    <li>Graphics, audio, network</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>The Game Loop</h2>
+        <p>Inti dari setiap game: infinite loop yang terus update dan render.</p>
+        <pre><code class="language-cpp">while (window.isOpen()) {
+    // 1. Handle Input
+    processEvents();
+    
+    // 2. Update Game State
+    update(deltaTime);
+    
+    // 3. Render
+    render();
+}</code></pre>
+        <p class="highlight-box small-text">Loop ini berjalan 60+ times per second (60 FPS)!</p>
+    </section>
+
+    <section>
+        <h2>Basic SFML Program</h2>
+        <pre><code class="language-cpp">#include &lt;SFML/Graphics.hpp&gt;
+
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "My Game");
+    
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        
+        window.clear(sf::Color::Black);
+        // Draw game objects
+        window.display();
+    }
+    
+    return 0;
+}</code></pre>
+    </section>
+
+    <section>
+        <h2>Sprite dan Graphics</h2>
+        <p class="small-text">Sprite = 2D image yang merepresentasikan game object.</p>
+        <pre><code class="language-cpp">// Load texture
+sf::Texture playerTexture;
+playerTexture.loadFromFile("player.png");
+
+// Create sprite
+sf::Sprite playerSprite;
+playerSprite.setTexture(playerTexture);
+playerSprite.setPosition(100, 100);
+
+// In render loop
+window.draw(playerSprite);</code></pre>
+        <p class="info-box small-text">Texture adalah image data, Sprite adalah instance yang bisa di-position, scale, rotate.</p>
+    </section>
+
+    <section>
+        <h2>Movement dengan Delta Time</h2>
+        <p class="small-text">Agar movement smooth dan consistent di berbagai frame rates:</p>
+        <pre><code class="language-cpp">sf::Clock clock;
+float speed = 200.0f;  // pixels per second
+
+while (window.isOpen()) {
+    float dt = clock.restart().asSeconds();
+    
+    // Movement
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        playerSprite.move(0, -speed * dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        playerSprite.move(0, speed * dt);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        playerSprite.move(-speed * dt, 0);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        playerSprite.move(speed * dt, 0);
+}</code></pre>
+        <p class="highlight-box small-text">Delta time = waktu yang elapsed sejak frame terakhir.</p>
+    </section>
+
+    <section>
+        <h2>Collision Detection</h2>
+        <p>Detect ketika objects bersentuhan:</p>
+        <pre><code class="language-cpp">// Bounding box collision
+if (player.getGlobalBounds().intersects(coin.getGlobalBounds())) {
+    // Collision happened!
+    score += 10;
+    coinCollected = true;
+}</code></pre>
+        <div class="info-box small-text">
+            <p><strong>Bounding box:</strong> Rectangular area yang contain sprite.</p>
+            <p><strong>Advanced:</strong> Circle collision, pixel-perfect collision, polygon collision.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Demo: Simple Pong</h2>
+        <p class="smaller-text">Konsep yang digunakan:</p>
+        <ul class="smaller-text">
+            <li>Game loop</li>
+            <li>Input handling (keyboard)</li>
+            <li>Movement dengan delta time</li>
+            <li>Collision detection (paddle, walls)</li>
+            <li>Basic game logic (ball bounce)</li>
+        </ul>
+        <p class="success-box small-text">Dari konsep sederhana ini, bisa dikembangkan menjadi game kompleks!</p>
+    </section>
+</section>
+
+<!-- ==================== PART 4: CROSS-PLATFORM ==================== -->
+<section>
+    <section>
+        <h1>Bagian 4</h1>
+        <h2>Cross-Platform Development</h2>
+        <p class="small-text">Write Once, Compile Anywhere</p>
+    </section>
+
+    <section>
+        <h2>Platform Challenges</h2>
+        <p class="small-text">Develop untuk multiple OS (Windows, macOS, Linux) memiliki challenges:</p>
+        <ul class="smaller-text">
+            <li><strong>Kompiler berbeda:</strong> GCC, Clang, MSVC</li>
+            <li><strong>System APIs berbeda:</strong> Windows API vs POSIX</li>
+            <li><strong>Path separators:</strong> Windows <code>\</code> vs Unix <code>/</code></li>
+            <li><strong>Line endings:</strong> Windows <code>\r\n</code> vs Unix <code>\n</code></li>
+            <li><strong>Case sensitivity:</strong> Linux case-sensitive, Windows tidak</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Compiler Perbedaan</h2>
+        <table>
+            <tr>
+                <th>Compiler</th>
+                <th>Platform</th>
+                <th>Karakteristik</th>
+            </tr>
+            <tr>
+                <td><strong>GCC</strong></td>
+                <td>Linux (default)</td>
+                <td>Open-source, excellent C++ support</td>
+            </tr>
+            <tr>
+                <td><strong>Clang</strong></td>
+                <td>macOS (default)</td>
+                <td>Part of LLVM, clear error messages</td>
+            </tr>
+            <tr>
+                <td><strong>MSVC</strong></td>
+                <td>Windows</td>
+                <td>Visual Studio, Windows-optimized</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Preprocessor untuk Platform Detection</h2>
+        <pre><code class="language-cpp">#ifdef _WIN32
+    // Windows-specific code
+    #include &lt;windows.h&gt;
+#elif __linux__
+    // Linux-specific code
+    #include &lt;unistd.h&gt;
+#elif __APPLE__
+    // macOS-specific code
+    #include &lt;unistd.h&gt;
+#endif</code></pre>
+        <p class="info-box small-text">Conditional compilation memungkinkan different code untuk different platforms.</p>
+    </section>
+
+    <section>
+        <h2>Example: Cross-Platform Sleep</h2>
+        <pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void sleep_ms(int milliseconds) {
+    #ifdef _WIN32
+        #include &lt;windows.h&gt;
+        Sleep(milliseconds);
+    #else
+        #include &lt;unistd.h&gt;
+        usleep(milliseconds * 1000);
+    #endif
+}
+
+int main() {
+    std::cout << "Waiting 2 seconds...\n";
+    sleep_ms(2000);
+    std::cout << "Done!\n";
+    return 0;
+}</code></pre>
+        <p class="small-text">Same interface, different implementation per platform.</p>
+    </section>
+
+    <section>
+        <h2>Build Systems: Makefile</h2>
+        <p class="small-text">Traditional build system untuk Unix:</p>
+        <pre><code class="language-makefile">CXX = g++
+CXXFLAGS = -std=c++17 -Wall
+
+myprogram: main.o utils.o
+	$(CXX) -o myprogram main.o utils.o
+
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+clean:
+	rm -f *.o myprogram</code></pre>
+        <p class="info-box small-text">Compile hanya files yang berubah, efficient untuk large projects.</p>
+    </section>
+
+    <section>
+        <h2>CMake: Modern Build System</h2>
+        <p class="small-text">CMake generate platform-specific build files:</p>
+        <pre><code class="language-cmake">cmake_minimum_required(VERSION 3.10)
+project(MyGame VERSION 1.0)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(MyGame 
+    src/main.cpp
+    src/game.cpp
+    src/player.cpp
+)
+
+target_include_directories(MyGame PRIVATE include)</code></pre>
+        <div class="highlight-box smaller-text">
+            <strong>Workflow:</strong>
+            <pre><code>mkdir build && cd build
+cmake ..
+cmake --build .</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h2>CMake Keuntungan</h2>
+        <ul class="smaller-text">
+            <li>✅ <strong>Cross-platform:</strong> Same CMakeLists.txt untuk semua OS</li>
+            <li>✅ <strong>IDE integration:</strong> Generate Visual Studio, Xcode projects</li>
+            <li>✅ <strong>Dependency management:</strong> Find dan link libraries dengan mudah</li>
+            <li>✅ <strong>Out-of-source builds:</strong> Build files terpisah dari source</li>
+            <li>✅ <strong>Widely adopted:</strong> Industry standard</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Best Practices Cross-Platform</h2>
+        <div class="success-box">
+            <ul class="smaller-text">
+                <li>✅ <strong>Use standard C++</strong> sebisa mungkin - hindari compiler-specific extensions</li>
+                <li>✅ <strong>Test di semua target platforms</strong> - jangan assume behavior sama</li>
+                <li>✅ <strong>Abstract platform-specific code</strong> - create wrapper functions/classes</li>
+                <li>✅ <strong>Use portable libraries</strong> - Boost, SDL, SFML, Qt</li>
+                <li>✅ <strong>Document platform differences</strong> - clear build instructions</li>
+            </ul>
+        </div>
+    </section>
+</section>
+
+<!-- ==================== PART 5: DEBUGGING ==================== -->
+<section>
+    <section>
+        <h1>Bagian 5</h1>
+        <h2>Debugging Tools</h2>
+        <p class="small-text">Finding and Fixing Bugs Efficiently</p>
+    </section>
+
+    <section>
+        <h2>Debugging: Essential Skill</h2>
+        <p>Debugging adalah process menemukan dan fixing bugs dalam code.</p>
+        <div class="highlight-box">
+            <strong>Tools vary by platform:</strong>
+            <ul class="smaller-text">
+                <li>Linux: GDB (GNU Debugger)</li>
+                <li>macOS: LLDB</li>
+                <li>Windows: Visual Studio Debugger</li>
+                <li>Cross-platform IDEs: CLion, VSCode</li>
+            </ul>
+        </div>
+        <p class="success-box small-text">Bugs are inevitable, good debugging saves time!</p>
+    </section>
+
+    <section>
+        <h2>GDB (GNU Debugger)</h2>
+        <p class="small-text">Command-line debugger untuk Linux/Unix:</p>
+        <pre><code class="language-bash"># Compile dengan debug symbols
+g++ -g -o program main.cpp
+
+# Run GDB
+gdb ./program
+
+# Basic commands:
+(gdb) break main          # Set breakpoint
+(gdb) run                 # Run program
+(gdb) next                # Step over
+(gdb) step                # Step into
+(gdb) print variable      # Print value
+(gdb) backtrace          # Show call stack
+(gdb) continue           # Continue execution</code></pre>
+    </section>
+
+    <section>
+        <h2>LLDB untuk macOS</h2>
+        <p class="small-text">Similar to GDB dengan syntax sedikit berbeda:</p>
+        <pre><code class="language-bash">lldb ./program
+
+(lldb) breakpoint set --name main
+(lldb) run
+(lldb) next
+(lldb) step
+(lldb) print variable
+(lldb) bt
+(lldb) continue</code></pre>
+        <p class="info-box small-text">LLDB default debugger di Xcode.</p>
+    </section>
+
+    <section>
+        <h2>Visual Studio Debugger</h2>
+        <p class="small-text">GUI-based debugger yang powerful:</p>
+        <div class="two-column smaller-text">
+            <div class="highlight-box">
+                <strong>Features:</strong>
+                <ul>
+                    <li>Click untuk set breakpoints</li>
+                    <li>Hover untuk inspect variables</li>
+                    <li>Watch window</li>
+                    <li>Call stack visualization</li>
+                    <li>Memory viewer</li>
+                </ul>
+            </div>
+            <div class="success-box">
+                <strong>Shortcuts:</strong>
+                <ul>
+                    <li>F5: Start debugging</li>
+                    <li>F9: Toggle breakpoint</li>
+                    <li>F10: Step over</li>
+                    <li>F11: Step into</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Debugging dalam IDE</h2>
+        <p>Modern IDEs provide integrated debugging:</p>
+        <div class="two-column smaller-text">
+            <div class="highlight-box">
+                <strong>CLion:</strong>
+                <ul>
+                    <li>Visual breakpoints</li>
+                    <li>Inline variable values</li>
+                    <li>CMake integration</li>
+                </ul>
+            </div>
+            <div class="success-box">
+                <strong>VSCode:</strong>
+                <ul>
+                    <li>IntelliSense</li>
+                    <li>Integrated terminal</li>
+                    <li>Multi-platform support</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Debugging Arduino</h2>
+        <p>Embedded debugging lebih challenging:</p>
+        <div class="highlight-box smaller-text">
+            <strong>Serial debugging:</strong>
+            <pre><code class="language-cpp">Serial.begin(9600);
+Serial.print("Debug: variable = ");
+Serial.println(variable);</code></pre>
+        </div>
+        <div class="success-box smaller-text">
+            <strong>LED indicators:</strong>
+            <pre><code class="language-cpp">// Blink different patterns untuk different states
+if (errorState) {
+    blinkFast();  // Error indicator
+}</code></pre>
+        </div>
+        <p class="info-box small-text"><strong>Advanced:</strong> JTAG debuggers untuk hardware-level debugging.</p>
+    </section>
+
+    <section>
+        <h2>Debugging Best Practices</h2>
+        <div class="success-box">
+            <ul class="smaller-text">
+                <li>✅ <strong>Use version control (Git)</strong> - Bisa rollback ke working version</li>
+                <li>✅ <strong>Write testable code</strong> - Small functions, clear responsibilities</li>
+                <li>✅ <strong>Add assertions</strong> - <code>assert(index >= 0 && index < size);</code></li>
+                <li>✅ <strong>Use debugger, not just print</strong> - More efficient untuk complex bugs</li>
+                <li>✅ <strong>Reproduce bugs consistently</strong> - Easier to fix</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Common Bug Categories</h2>
+        <table class="smaller-text">
+            <tr>
+                <th>Category</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><strong>Syntax errors</strong></td>
+                <td>Compiler catches these</td>
+            </tr>
+            <tr>
+                <td><strong>Logic errors</strong></td>
+                <td>Program runs but wrong output</td>
+            </tr>
+            <tr>
+                <td><strong>Runtime errors</strong></td>
+                <td>Crashes, segfaults, exceptions</td>
+            </tr>
+            <tr>
+                <td><strong>Memory errors</strong></td>
+                <td>Leaks, dangling pointers</td>
+            </tr>
+            <tr>
+                <td><strong>Off-by-one errors</strong></td>
+                <td>Loop boundaries</td>
+            </tr>
+        </table>
+        <p class="info-box small-text">Setiap category memerlukan approach berbeda untuk debug!</p>
+    </section>
+</section>
+
+<!-- ==================== RECAP & CONCLUSION ==================== -->
+<section>
+    <section>
+        <h2>Recap: C++ Everywhere</h2>
+        <p>Hari ini kita melihat C++ digunakan di:</p>
+        <ul class="emoji-list">
+            <li><strong>Embedded Systems:</strong> Arduino, ESP32, IoT</li>
+            <li><strong>Competitive Programming:</strong> Algorithms, problem solving</li>
+            <li><strong>Game Development:</strong> SFML, game loops, sprites</li>
+            <li><strong>Cross-Platform:</strong> CMake, compiler differences</li>
+            <li><strong>Debugging:</strong> GDB, LLDB, Visual Studio, IDE tools</li>
+        </ul>
+        <p class="highlight-box">C++ truly is a versatile language dengan aplikasi di berbagai domains!</p>
+    </section>
+
+    <section>
+        <h2>Key Takeaways</h2>
+        <div class="two-column smaller-text">
+            <div class="highlight-box">
+                <strong>Technical:</strong>
+                <ul>
+                    <li>Embedded: Efficiency dan low-level control</li>
+                    <li>Competitive: Performance dan algorithms</li>
+                    <li>Games: Real-time constraints</li>
+                    <li>Cross-platform: Abstraction penting</li>
+                    <li>Debugging: Right tools save time</li>
+                </ul>
+            </div>
+            <div class="success-box">
+                <strong>Career:</strong>
+                <ul>
+                    <li>Embedded: IoT, robotics</li>
+                    <li>Competitive: Olympiad, interviews</li>
+                    <li>Game Dev: AAA studios</li>
+                    <li>Systems: OS, drivers</li>
+                    <li>Finance: HFT systems</li>
+                </ul>
+            </div>
+        </div>
+        <p class="info-box small-text">Pilih domain yang sesuai dengan interest kalian!</p>
+    </section>
+
+    <section>
+        <h2>Praktik Mandiri</h2>
+        <p>Coba salah satu project ini:</p>
+        <div class="two-column smaller-text">
+            <div class="highlight-box">
+                <strong>Beginner:</strong>
+                <ul>
+                    <li>Setup Arduino, buat LED pattern</li>
+                    <li>Solve 5 easy problems di LeetCode</li>
+                    <li>Buat character yang bergerak dengan SFML</li>
+                    <li>Setup CMake project sederhana</li>
+                </ul>
+            </div>
+            <div class="success-box">
+                <strong>Advanced:</strong>
+                <ul>
+                    <li>IoT sensor system dengan ESP32</li>
+                    <li>Participate dalam Codeforces contest</li>
+                    <li>Complete game (Snake/Pong/Breakout)</li>
+                    <li>Cross-platform utility tool</li>
+                </ul>
+            </div>
+        </div>
+        <p class="warning-box small-text">Start small, iterate, learn by doing!</p>
+    </section>
+
+    <section>
+        <h2>Sumber Belajar</h2>
+        <div class="two-column smaller-text">
+            <div>
+                <strong>Arduino:</strong>
+                <ul>
+                    <li>arduino.cc</li>
+                    <li>RandomNerdTutorials.com</li>
+                </ul>
+                <strong>Competitive:</strong>
+                <ul>
+                    <li>codeforces.com</li>
+                    <li>leetcode.com</li>
+                    <li>cp-algorithms.com</li>
+                </ul>
+            </div>
+            <div>
+                <strong>Game Dev:</strong>
+                <ul>
+                    <li>SFML-dev.org tutorials</li>
+                    <li>GameDev.net</li>
+                </ul>
+                <strong>General:</strong>
+                <ul>
+                    <li>learncpp.com</li>
+                    <li>cppreference.com</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Pertanyaan?</h2>
+        <p>Ada yang ingin ditanyakan tentang:</p>
+        <ul class="smaller-text">
+            <li>🤖 Embedded programming?</li>
+            <li>🏆 Competitive programming?</li>
+            <li>🎮 Game development?</li>
+            <li>🖥️ Cross-platform development?</li>
+            <li>🐛 Debugging tools?</li>
+        </ul>
+        <p class="highlight-box">Let's discuss!</p>
+    </section>
+
+    <section>
+        <h2>Terima Kasih!</h2>
+        <div class="success-box">
+            <p><strong>Next Meeting:</strong></p>
+            <ul class="smaller-text">
+                <li>Pertemuan 14: Pengenalan OOP</li>
+                <li>Class, Object, Inheritance, Polymorphism</li>
+            </ul>
+        </div>
+        <div class="info-box">
+            <p><strong>Jangan lupa:</strong></p>
+            <ul class="smaller-text">
+                <li>Kerjakan latihan</li>
+                <li>Eksplorasi platform yang menarik</li>
+                <li>Practice, practice, practice!</li>
+            </ul>
+        </div>
+        <h3>Happy coding! 🚀</h3>
+    </section>
+</section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [ RevealHighlight, RevealNotes ],
+            width: 1200,
+            height: 700,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>
