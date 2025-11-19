@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limit Trigonometri - Presentasi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/sky.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+    <style>
+        .reveal h1 { color: #7cb342; font-size: 2.5em; }
+        .reveal h2 { color: #558b2f; font-size: 2em; }
+        .reveal h3 { color: #689f38; font-size: 1.5em; }
+        .reveal { font-size: 32px; }
+        .reveal .slides section { text-align: left; }
+        .reveal .slides section.center { text-align: center; }
+        .formula-box {
+            background: #f5f5f5;
+            border-left: 5px solid #7cb342;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .important {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        .note {
+            background: #fff9c4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        .theorem {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 2px solid #1976d2;
+        }
+        .example {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 2px solid #7b1fa2;
+        }
+        .fragment.highlight-current-blue .visible.current-fragment {
+            color: #1976d2;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .math { font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Judul -->
+            <section class="center" data-background-gradient="linear-gradient(to bottom, #7cb342, #558b2f)">
+                <h1 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Limit Trigonometri</h1>
+                <p style="color: white; font-size: 1.2em;">Pertemuan 9</p>
+                <br>
+                <p style="color: white;">Nadiza Lediwara, S.T., M.Eng.</p>
+            </section>
+
+            <!-- Slide 2: Daftar Isi -->
+            <section>
+                <h2>Daftar Isi</h2>
+                <ol>
+                    <li class="fragment">Pendahuluan Limit Trigonometri</li>
+                    <li class="fragment">Limit Fungsi Trigonometri untuk x → c</li>
+                    <li class="fragment">Limit Fungsi Trigonometri untuk x → 0</li>
+                    <li class="fragment">Teknik Penyelesaian</li>
+                    <li class="fragment">Latihan Soal</li>
+                    <li class="fragment">Aplikasi dan Kesimpulan</li>
+                </ol>
+            </section>
+
+            <!-- Slide 3: Pendahuluan -->
+            <section>
+                <h2>Pendahuluan</h2>
+                <div class="note">
+                    <p><strong>Apa itu Limit Trigonometri?</strong></p>
+                    <p>Limit fungsi trigonometri mempelajari perilaku fungsi trigonometri (sin, cos, tan, dll.) ketika variabelnya mendekati suatu nilai tertentu.</p>
+                </div>
+                <br>
+                <div class="fragment">
+                    <h3>Mengapa Penting?</h3>
+                    <ul>
+                        <li>Dasar untuk memahami turunan fungsi trigonometri</li>
+                        <li>Aplikasi dalam fisika dan teknik</li>
+                        <li>Analisis perilaku fungsi periodik</li>
+                        <li>Pemodelan fenomena osilasi</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 4: Limit untuk x mendekati c -->
+            <section>
+                <h2>Limit Fungsi Trigonometri untuk x → c</h2>
+                <div class="theorem">
+                    <p><strong>Teorema:</strong></p>
+                    <p>Jika <span class="math">c</span> adalah bilangan real dari domain fungsi trigonometri, maka:</p>
+                </div>
+            </section>
+
+            <!-- Slide 5: Rumus-rumus Limit x→c -->
+            <section>
+                <h3>Rumus-Rumus Dasar</h3>
+                <div class="formula-box">
+                    <div class="fragment">
+                        <p>lim<sub>x→c</sub> sin x = sin c</p>
+                    </div>
+                    <div class="fragment">
+                        <p>lim<sub>x→c</sub> cos x = cos c</p>
+                    </div>
+                    <div class="fragment">
+                        <p>lim<sub>x→c</sub> tan x = tan c</p>
+                    </div>
+                    <div class="fragment">
+                        <p>lim<sub>x→c</sub> cosec x = cosec c</p>
+                    </div>
+                    <div class="fragment">
+                        <p>lim<sub>x→c</sub> sec x = sec c</p>
+                    </div>
+                    <div class="fragment">
+                        <p>lim<sub>x→c</sub> cotan x = cotan c</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Contoh Limit x→c -->
+            <section>
+                <h3>Contoh: Limit x → c</h3>
+                <div class="example">
+                    <p><strong>Contoh 1:</strong> Hitung lim<sub>x→π/4</sub> sin x</p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>lim<sub>x→π/4</sub> sin x = sin(π/4) = <strong>√2/2</strong></p>
+                    </div>
+                </div>
+                <br>
+                <div class="example fragment">
+                    <p><strong>Contoh 2:</strong> Hitung lim<sub>x→π/3</sub> cos x</p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>lim<sub>x→π/3</sub> cos x = cos(π/3) = <strong>1/2</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Limit untuk x→0 - Pendahuluan -->
+            <section data-background-color="#e8f5e9">
+                <h2>Limit Fungsi Trigonometri untuk x → 0</h2>
+                <div class="note">
+                    <p>Ini adalah bagian paling penting dalam limit trigonometri!</p>
+                    <p class="important">Bentuk ini sering menghasilkan bentuk tak tentu 0/0</p>
+                </div>
+            </section>
+
+            <!-- Slide 8: Limit Fundamental -->
+            <section>
+                <h3>Limit Fundamental Trigonometri</h3>
+                <div class="theorem">
+                    <h4 class="important">Rumus Paling Penting:</h4>
+                    <div class="fragment" style="font-size: 1.3em; text-align: center; margin: 30px 0;">
+                        <p>lim<sub>x→0</sub> <sup>sin x</sup>/<sub>x</sub> = 1</p>
+                    </div>
+                    <div class="fragment" style="font-size: 1.3em; text-align: center; margin: 30px 0;">
+                        <p>lim<sub>x→0</sub> <sup>tan x</sup>/<sub>x</sub> = 1</p>
+                    </div>
+                </div>
+                <div class="note fragment">
+                    <p><strong>Catatan:</strong> Kedua rumus ini adalah dasar dari semua limit trigonometri untuk x→0</p>
+                </div>
+            </section>
+
+            <!-- Slide 9: Limit dengan Koefisien -->
+            <section>
+                <h3>Limit dengan Koefisien</h3>
+                <div class="formula-box">
+                    <p class="fragment">lim<sub>x→0</sub> <sup>sin ax</sup>/<sub>bx</sub> = <strong>a/b</strong></p>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>ax</sup>/<sub>sin bx</sub> = <strong>a/b</strong></p>
+                    <br>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>tan ax</sup>/<sub>bx</sub> = <strong>a/b</strong></p>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>ax</sup>/<sub>tan bx</sub> = <strong>a/b</strong></p>
+                </div>
+                <div class="note fragment">
+                    <p><strong>Tips:</strong> Perhatikan koefisien a dan b. Hasilnya adalah perbandingan koefisien!</p>
+                </div>
+            </section>
+
+            <!-- Slide 10: Limit Kombinasi -->
+            <section>
+                <h3>Limit Kombinasi Fungsi</h3>
+                <div class="formula-box">
+                    <p class="fragment">lim<sub>x→0</sub> <sup>sin ax</sup>/<sub>sin bx</sub> = <strong>a/b</strong></p>
+                    <br>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>tan ax</sup>/<sub>tan bx</sub> = <strong>a/b</strong></p>
+                    <br>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>sin ax</sup>/<sub>tan bx</sub> = <strong>a/b</strong></p>
+                    <br>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>tan ax</sup>/<sub>sin bx</sub> = <strong>a/b</strong></p>
+                </div>
+            </section>
+
+            <!-- Slide 11: Limit Bentuk Khusus -->
+            <section>
+                <h3>Limit Bentuk Khusus</h3>
+                <div class="formula-box">
+                    <p class="fragment">lim<sub>x→0</sub> <sup>sin ax + tan bx</sup>/<sub>cx - sin dx</sub> = <strong>(a + b)/(c - d)</strong></p>
+                    <br>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>1 - cos x</sup>/<sub>x</sub> = <strong>0</strong></p>
+                    <br>
+                    <p class="fragment">lim<sub>x→0</sub> <sup>1 - cos x</sup>/<sub>x²</sub> = <strong>1/2</strong></p>
+                </div>
+            </section>
+
+            <!-- Slide 12: Teknik Penyelesaian -->
+            <section data-background-color="#fff3e0">
+                <h2>Teknik Penyelesaian</h2>
+                <div class="two-column">
+                    <div>
+                        <h4>Teknik 1: Substitusi Langsung</h4>
+                        <p class="fragment">Gunakan jika tidak menghasilkan 0/0</p>
+                    </div>
+                    <div>
+                        <h4>Teknik 2: Manipulasi Aljabar</h4>
+                        <p class="fragment">Ubah bentuk agar sesuai rumus</p>
+                    </div>
+                </div>
+                <br><br>
+                <div class="two-column fragment">
+                    <div>
+                        <h4>Teknik 3: Perkalian Sekawan</h4>
+                        <p>Untuk bentuk dengan akar</p>
+                    </div>
+                    <div>
+                        <h4>Teknik 4: Identitas Trigonometri</h4>
+                        <p>Gunakan identitas untuk menyederhanakan</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 13: Contoh Teknik Manipulasi -->
+            <section>
+                <h3>Contoh: Manipulasi Aljabar</h3>
+                <div class="example">
+                    <p><strong>Soal:</strong> Hitung lim<sub>x→0</sub> <sup>sin 2x</sup>/<sub>x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>= lim<sub>x→0</sub> <sup>2 sin 2x</sup>/<sub>2x</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= 2 · lim<sub>x→0</sub> <sup>sin 2x</sup>/<sub>2x</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= 2 · 1</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <strong>2</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 14: Latihan 1a -->
+            <section>
+                <h2>Latihan Soal 1</h2>
+                <div class="example">
+                    <p><strong>a.</strong> lim<sub>x→0</sub> <sup>1 - sin 2x</sup>/<sub>cos x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Substitusi langsung x = 0:</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>1 - sin 0</sup>/<sub>cos 0</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>1 - 0</sup>/<sub>1</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <strong>1</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 15: Latihan 1b -->
+            <section>
+                <h3>Latihan 1 (lanjutan)</h3>
+                <div class="example">
+                    <p><strong>b.</strong> lim<sub>x→π/2</sub> <sup>4 - sin x</sup>/<sub>1 - cos x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Substitusi x = π/2:</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>4 - sin(π/2)</sup>/<sub>1 - cos(π/2)</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>4 - 1</sup>/<sub>1 - 0</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <strong>3</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 16: Latihan 1c -->
+            <section>
+                <h3>Latihan 1 (lanjutan)</h3>
+                <div class="example">
+                    <p><strong>c.</strong> lim<sub>x→π/4</sub> <sup>2 + tan x</sup>/<sub>sin x + cos x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Substitusi x = π/4:</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>2 + tan(π/4)</sup>/<sub>sin(π/4) + cos(π/4)</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>2 + 1</sup>/<sub>√2/2 + √2/2</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>3</sup>/<sub>√2</sub> = <strong>3√2/2</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 17: Latihan 2a -->
+            <section>
+                <h2>Latihan Soal 2</h2>
+                <div class="example">
+                    <p><strong>a.</strong> lim<sub>x→0</sub> <sup>cos 2x - 1</sup>/<sub>x²</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Gunakan identitas: cos 2x = 1 - 2sin²x</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> <sup>-2sin²x</sup>/<sub>x²</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= -2 · [lim<sub>x→0</sub> <sup>sin x</sup>/<sub>x</sub>]²</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= -2 · 1² = <strong>-2</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 18: Latihan 2b -->
+            <section>
+                <h3>Latihan 2 (lanjutan)</h3>
+                <div class="example">
+                    <p><strong>b.</strong> lim<sub>x→0</sub> <sup>1 - cos x</sup>/<sub>x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Gunakan: 1 - cos x = 2sin²(x/2)</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> <sup>2sin²(x/2)</sup>/<sub>x</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> [<sup>sin(x/2)</sup>/<sub>x/2</sub>] · sin(x/2)</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= 1 · 0 = <strong>0</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 19: Latihan 3a -->
+            <section>
+                <h2>Latihan Soal 3</h2>
+                <div class="example">
+                    <p><strong>a.</strong> lim<sub>x→0</sub> <sup>x + sin 3x</sup>/<sub>x - sin 2x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Bagi pembilang dan penyebut dengan x:</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> <sup>1 + 3(sin 3x)/(3x)</sup>/<sub>1 - 2(sin 2x)/(2x)</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>1 + 3(1)</sup>/<sub>1 - 2(1)</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>4</sup>/<sub>-1</sub> = <strong>-4</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 20: Latihan 3b -->
+            <section>
+                <h3>Latihan 3 (lanjutan)</h3>
+                <div class="example">
+                    <p><strong>b.</strong> lim<sub>x→0</sub> <sup>sin 4x + tan 3x</sup>/<sub>x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Pisahkan menjadi dua limit:</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> <sup>sin 4x</sup>/<sub>x</sub> + lim<sub>x→0</sub> <sup>tan 3x</sup>/<sub>x</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= 4 · 1 + 3 · 1</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <strong>7</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 21: Latihan 4a -->
+            <section>
+                <h2>Latihan Soal 4</h2>
+                <div class="example">
+                    <p><strong>a.</strong> lim<sub>x→0</sub> <sup>sin² 4x</sup>/<sub>x²</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>= lim<sub>x→0</sub> [<sup>sin 4x</sup>/<sub>x</sub>]²</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= [4 · lim<sub>x→0</sub> <sup>sin 4x</sup>/<sub>4x</sub>]²</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= [4 · 1]²</p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <strong>16</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 22: Latihan 4b -->
+            <section>
+                <h3>Latihan 4 (lanjutan)</h3>
+                <div class="example">
+                    <p><strong>b.</strong> lim<sub>x→0</sub> <sup>cot x</sup>/<sub>cot 3x</sub></p>
+                    <div class="fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>= lim<sub>x→0</sub> <sup>cos x / sin x</sup>/<sub>cos 3x / sin 3x</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> <sup>cos x · sin 3x</sup>/<sub>sin x · cos 3x</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>cos 0</sup>/<sub>cos 0</sub> · <sup>3</sup>/<sub>1</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <strong>3</strong> ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 23: Latihan 5 - Bagian a -->
+            <section>
+                <h2>Latihan Soal 5 (Pembuktian)</h2>
+                <div class="example">
+                    <p>Jika a = lim<sub>x→0</sub> <sup>√(1+sin x) - √(1-sin x)</sup>/<sub>2x</sub></p>
+                    <p>dan b = lim<sub>x→∞</sub> (√(4x² + x) - √(4x² - x))</p>
+                    <p class="important">Buktikan bahwa a = b</p>
+                </div>
+            </section>
+
+            <!-- Slide 24: Latihan 5 - Penyelesaian a -->
+            <section>
+                <h3>Penyelesaian untuk a</h3>
+                <div class="example">
+                    <p>a = lim<sub>x→0</sub> <sup>√(1+sin x) - √(1-sin x)</sup>/<sub>2x</sub></p>
+                    <div class="fragment">
+                        <p>Kalikan dengan sekawan:</p>
+                        <p>= lim<sub>x→0</sub> <sup>(1+sin x) - (1-sin x)</sup>/<sub>2x(√(1+sin x) + √(1-sin x))</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= lim<sub>x→0</sub> <sup>2sin x</sup>/<sub>2x(√(1+sin x) + √(1-sin x))</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>1</sup>/<sub>√1 + √1</sub> = <strong>1/2</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 25: Latihan 5 - Penyelesaian b -->
+            <section>
+                <h3>Penyelesaian untuk b</h3>
+                <div class="example">
+                    <p>b = lim<sub>x→∞</sub> (√(4x² + x) - √(4x² - x))</p>
+                    <div class="fragment">
+                        <p>Kalikan dengan sekawan:</p>
+                        <p>= lim<sub>x→∞</sub> <sup>2x</sup>/<sub>√(4x² + x) + √(4x² - x)</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>Bagi dengan x:</p>
+                        <p>= lim<sub>x→∞</sub> <sup>2</sup>/<sub>√(4 + 1/x) + √(4 - 1/x)</sub></p>
+                    </div>
+                    <div class="fragment">
+                        <p>= <sup>2</sup>/<sub>2 + 2</sub> = <strong>1/2</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 26: Latihan 5 - Kesimpulan -->
+            <section data-background-color="#c8e6c9">
+                <h3>Kesimpulan Latihan 5</h3>
+                <div class="theorem">
+                    <p style="font-size: 1.5em; text-align: center;">a = 1/2</p>
+                    <p style="font-size: 1.5em; text-align: center;">b = 1/2</p>
+                    <br>
+                    <p style="font-size: 2em; text-align: center;" class="important">∴ a = b ✓</p>
+                    <br>
+                    <p style="text-align: center;">Terbukti!</p>
+                </div>
+            </section>
+
+            <!-- Slide 27: Tips dan Trik -->
+            <section>
+                <h2>Tips dan Trik</h2>
+                <div class="note">
+                    <h4>1. Kenali Bentuk Dasar</h4>
+                    <p>Selalu ingat: lim<sub>x→0</sub> (sin x)/x = 1</p>
+                </div>
+                <div class="note fragment">
+                    <h4>2. Perhatikan Koefisien</h4>
+                    <p>Koefisien sangat penting! sin 3x/x ≠ sin x/x</p>
+                </div>
+                <div class="note fragment">
+                    <h4>3. Gunakan Identitas</h4>
+                    <p>Identitas trigonometri membantu menyederhanakan</p>
+                </div>
+            </section>
+
+            <!-- Slide 28: Kesalahan Umum -->
+            <section>
+                <h2>Kesalahan yang Harus Dihindari</h2>
+                <div style="background: #ffcdd2; padding: 20px; border-radius: 5px; margin: 15px 0;">
+                    <h4>❌ Kesalahan 1: Langsung Substitusi pada 0/0</h4>
+                    <p>Jangan langsung simpulkan hasilnya 0!</p>
+                </div>
+                <div class="fragment" style="background: #ffcdd2; padding: 20px; border-radius: 5px; margin: 15px 0;">
+                    <h4>❌ Kesalahan 2: Lupa Koefisien</h4>
+                    <p>lim<sub>x→0</sub> (sin 3x)/x = 3, bukan 1</p>
+                </div>
+                <div class="fragment" style="background: #ffcdd2; padding: 20px; border-radius: 5px; margin: 15px 0;">
+                    <h4>❌ Kesalahan 3: Mengabaikan Domain</h4>
+                    <p>Perhatikan domain fungsi trigonometri!</p>
+                </div>
+            </section>
+
+            <!-- Slide 29: Aplikasi -->
+            <section>
+                <h2>Aplikasi Limit Trigonometri</h2>
+                <div class="two-column">
+                    <div>
+                        <h4>🔬 Fisika</h4>
+                        <ul>
+                            <li>Gerak harmonik</li>
+                            <li>Gelombang</li>
+                            <li>Getaran mekanik</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>🏗️ Teknik</h4>
+                        <ul>
+                            <li>Analisis struktur</li>
+                            <li>Sinyal processing</li>
+                            <li>Kontrol sistem</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <div class="two-column fragment">
+                    <div>
+                        <h4>📊 Matematika</h4>
+                        <ul>
+                            <li>Turunan fungsi</li>
+                            <li>Analisis kontinuitas</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>💼 Ekonomi</h4>
+                        <ul>
+                            <li>Siklus bisnis</li>
+                            <li>Model periodik</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 30: Rangkuman -->
+            <section data-background-color="#e1f5fe">
+                <h2>Rangkuman</h2>
+                <div class="formula-box">
+                    <h4>Rumus Penting:</h4>
+                    <ol>
+                        <li class="fragment">lim<sub>x→c</sub> sin x = sin c (untuk fungsi kontinu)</li>
+                        <li class="fragment">lim<sub>x→0</sub> (sin x)/x = 1 (fundamental)</li>
+                        <li class="fragment">lim<sub>x→0</sub> (sin ax)/(bx) = a/b</li>
+                        <li class="fragment">lim<sub>x→0</sub> (1 - cos x)/x = 0</li>
+                    </ol>
+                </div>
+                <div class="note fragment">
+                    <p><strong>Kunci Sukses:</strong> Pahami konsep dasar, latihan soal, dan perhatikan detail koefisien!</p>
+                </div>
+            </section>
+
+            <!-- Slide 31: Latihan Mandiri -->
+            <section>
+                <h2>Latihan Mandiri</h2>
+                <div class="example">
+                    <p>Coba kerjakan soal-soal berikut:</p>
+                    <ol>
+                        <li>lim<sub>x→0</sub> (sin 5x)/(sin 3x)</li>
+                        <li>lim<sub>x→0</sub> (tan 2x)/(3x)</li>
+                        <li>lim<sub>x→0</sub> (1 - cos 2x)/(sin² x)</li>
+                        <li>lim<sub>x→0</sub> (sin x - tan x)/x³</li>
+                        <li>lim<sub>x→π/6</sub> (2sin x - 1)/(6x - π)</li>
+                    </ol>
+                </div>
+                <br>
+                <p class="fragment important" style="text-align: center;">Selamat berlatih! 📚</p>
+            </section>
+
+            <!-- Slide 32: Penutup -->
+            <section class="center" data-background-gradient="linear-gradient(to bottom, #558b2f, #7cb342)">
+                <h1 style="color: white;">Terima Kasih</h1>
+                <br>
+                <h3 style="color: white;">Pertanyaan?</h3>
+                <br>
+                <p style="color: white; font-size: 1.2em;">Nadiza Lediwara, S.T., M.Eng.</p>
+                <br>
+                <p style="color: white;">Universitas Pertahanan</p>
+            </section>
+
+            <!-- Slide 33: Referensi -->
+            <section>
+                <h2>Referensi</h2>
+                <ol style="font-size: 0.8em;">
+                    <li>Stewart, J. (2015). <em>Calculus: Early Transcendentals</em>. Cengage Learning.</li>
+                    <li>Purcell, E. J., Varberg, D., & Rigdon, S. E. (2007). <em>Calculus</em>. Pearson Education.</li>
+                    <li>Anton, H., Bivens, I., & Davis, S. (2012). <em>Calculus: Early Transcendentals</em>. Wiley.</li>
+                    <li>Varberg, D., Purcell, E. J., & Rigdon, S. E. (2006). <em>Calculus</em>. Prentice Hall.</li>
+                </ol>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/math/math.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/search/search.js"></script>
+    
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            center: false,
+            width: 1280,
+            height: 720,
+            margin: 0.04,
+            plugins: [ 
+                RevealMarkdown, 
+                RevealHighlight, 
+                RevealNotes, 
+                RevealMath.KaTeX,
+                RevealZoom,
+                RevealSearch
+            ],
+            math: {
+                mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+                config: 'TeX-AMS_HTML-full',
+                TeX: {
+                    Macros: {
+                        R: '\\mathbb{R}',
+                        set: [ '\\left\\{#1 \\; ; \\; #2\\right\\}', 2 ]
+                    }
+                }
+            },
+            keyboard: {
+                82: function() { // tombol 'r' untuk reload
+                    location.reload();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
