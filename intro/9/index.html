@@ -13,65 +13,92 @@
         
         .reveal section {
             text-align: left;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
         
         .reveal section.center {
             text-align: center;
+            justify-content: center;
+        }
+        
+        /* Responsive font sizes */
+        .reveal h1 {
+            font-size: 2.2em;
+            margin-bottom: 0.3em;
+        }
+        
+        .reveal h2 {
+            font-size: 1.6em;
+            margin-bottom: 0.5em;
+        }
+        
+        .reveal h3 {
+            font-size: 1.2em;
+            margin-bottom: 0.3em;
+        }
+        
+        .reveal p, .reveal li {
+            font-size: 0.85em;
+            line-height: 1.4;
         }
         
         .alert-box {
             background: #ff4444;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 5px solid #cc0000;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #cc0000;
         }
         
         .success-box {
             background: #44ff44;
             color: #000;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 5px solid #00cc00;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #00cc00;
         }
         
         .info-box {
             background: #4444ff;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 5px solid #0000cc;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #0000cc;
         }
         
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 20px;
             align-items: center;
         }
         
         .emoji-large {
-            font-size: 4em;
+            font-size: 3em;
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         
         .comparison-table {
             width: 100%;
-            margin: 20px 0;
+            margin: 15px 0;
             border-collapse: collapse;
+            font-size: 0.8em;
         }
         
         .comparison-table th, .comparison-table td {
             border: 2px solid #fff;
-            padding: 15px;
+            padding: 10px;
             text-align: center;
         }
         
         .comparison-table th {
             background: #2a4;
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
         
         .good {
@@ -84,22 +111,24 @@
         
         .code-box {
             background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
             font-family: monospace;
-            margin: 20px 0;
+            margin: 10px 0;
             border: 2px solid #4a4;
+            font-size: 0.75em;
+            overflow-x: auto;
         }
         
         .step-number {
             background: #e74c3c;
             color: white;
-            padding: 10px 20px;
+            padding: 5px 12px;
             border-radius: 50%;
             font-weight: bold;
-            font-size: 1.5em;
+            font-size: 1em;
             display: inline-block;
-            margin-right: 15px;
+            margin-right: 10px;
         }
         
         .highlight {
@@ -109,25 +138,25 @@
         
         .diagram {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px auto;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px auto;
         }
         
-        ul.checklist li {
+        ul.checklist li, ul.crosslist li {
             list-style: none;
-            padding: 10px 0;
-            font-size: 1.1em;
+            padding: 6px 0;
+            font-size: 0.9em;
         }
         
         ul.checklist li:before {
             content: "✅ ";
-            margin-right: 10px;
+            margin-right: 8px;
         }
         
         ul.crosslist li:before {
             content: "❌ ";
-            margin-right: 10px;
+            margin-right: 8px;
         }
         
         .fragment.highlight-current-red.visible:not(.current-fragment) {
@@ -138,13 +167,45 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin: 30px 0;
-            font-size: 1.2em;
+            margin: 20px 0;
+            font-size: 1em;
+            flex-wrap: wrap;
         }
         
         .attack-flow .arrow {
-            font-size: 2em;
+            font-size: 1.5em;
             color: #e74c3c;
+        }
+        
+        /* Compact spacing for lists */
+        .reveal ul, .reveal ol {
+            margin: 10px 0;
+        }
+        
+        .reveal ul ul, .reveal ol ol {
+            margin: 5px 0;
+        }
+        
+        /* Ensure content fits */
+        .reveal .slides section {
+            overflow-y: auto;
+            padding: 10px 20px;
+        }
+        
+        /* Media query for smaller screens */
+        @media (max-width: 1024px) {
+            .reveal h1 {
+                font-size: 1.8em;
+            }
+            .reveal h2 {
+                font-size: 1.4em;
+            }
+            .reveal p, .reveal li {
+                font-size: 0.75em;
+            }
+            .two-column {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -156,8 +217,8 @@
             <section class="center" data-background-gradient="linear-gradient(to bottom, #1e3c72, #2a5298)">
                 <h1>🔒 PERTEMUAN 9</h1>
                 <h2>Sniffing dan Man-in-the-Middle Attack</h2>
-                <p style="margin-top: 50px;">Pengantar Keamanan Siber</p>
-                <p style="font-size: 0.8em; opacity: 0.8;">Tekan spasi atau panah untuk melanjutkan</p>
+                <p style="margin-top: 30px;">Pengantar Keamanan Siber</p>
+                <p style="font-size: 0.7em; opacity: 0.8;">Tekan spasi atau panah untuk melanjutkan</p>
             </section>
 
             <!-- Slide 2: Tujuan Pembelajaran -->
@@ -176,10 +237,10 @@
             <!-- Slide 3: Agenda -->
             <section>
                 <h2>📋 Agenda Hari Ini</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
                     <div class="info-box">
                         <h3>Part 1: Teori</h3>
-                        <ul>
+                        <ul style="font-size: 0.9em; margin: 5px 0;">
                             <li>Apa itu Sniffing?</li>
                             <li>Konsep Dasar Jaringan</li>
                             <li>ARP Poisoning</li>
@@ -188,7 +249,7 @@
                     </div>
                     <div class="info-box">
                         <h3>Part 2: Praktis</h3>
-                        <ul>
+                        <ul style="font-size: 0.9em; margin: 5px 0;">
                             <li>Tools untuk Sniffing</li>
                             <li>Cara Deteksi</li>
                             <li>Cara Melindungi Diri</li>
@@ -206,867 +267,806 @@
                 </section>
 
                 <section>
-                    <h2>Analogi Sederhana: Di Dalam Bus</h2>
-                    <div class="two-column">
-                        <div>
-                            <div class="emoji-large">🚌</div>
-                            <p><strong>Kondisi Normal:</strong></p>
-                            <p>Di dalam bus, Anda hanya mendengar pembicaraan yang ditujukan kepada Anda.</p>
-                        </div>
-                        <div class="fragment">
-                            <div class="emoji-large">👂</div>
-                            <p><strong>Saat Ada Sniffing:</strong></p>
-                            <p>Seseorang diam-diam menguping dan mendengar SEMUA pembicaraan di bus.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Definisi Network Sniffing</h2>
-                    <div class="info-box">
-                        <p style="font-size: 1.3em; text-align: center;">
-                            <strong>Network Sniffing</strong> adalah teknik menangkap dan membaca data yang lewat di jaringan komputer.
+                    <h2>Bayangkan Skenario Ini...</h2>
+                    <div class="emoji-large">📱 ➡️ 📡 ➡️ 💻</div>
+                    <p class="fragment" style="font-size: 1em;">Anda kirim pesan ke teman lewat jaringan WiFi publik...</p>
+                    <div class="fragment alert-box" style="margin-top: 20px;">
+                        <p style="text-align: center; font-size: 1em;">
+                            <strong>Ada orang yang bisa "mendengar" pesan Anda!</strong><br>
+                            Seperti orang menguping pembicaraan telepon Anda 👂
                         </p>
                     </div>
-                    <div class="fragment">
-                        <p>Data di jaringan berjalan dalam bentuk <span class="highlight">"paket"</span> - seperti amplop-amplop kecil yang membawa pesan.</p>
-                        <p>Dengan sniffing, seseorang bisa <span class="highlight">membuka amplop</span> ini dan membaca isinya.</p>
-                    </div>
+                    <p class="fragment" style="margin-top: 20px; font-size: 1em;">
+                        <strong>Itulah Network Sniffing!</strong>
+                    </p>
                 </section>
 
                 <section>
-                    <h2>🚨 Mengapa Sniffing Berbahaya?</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
-                        <div class="alert-box fragment">
-                            <h3>🔑 Pencurian Password</h3>
-                            <p>Username dan password bisa dicuri saat login</p>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>📧 Membaca Email</h3>
-                            <p>Email pribadi bisa dibaca orang lain</p>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>💳 Info Kartu Kredit</h3>
-                            <p>Nomor kartu kredit bisa dicuri saat belanja</p>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>🎭 Ambil Alih Akun</h3>
-                            <p>Penyerang bisa masuk ke akun Anda</p>
-                        </div>
+                    <h2>Apa itu Network Sniffing?</h2>
+                    <div class="info-box">
+                        <p><strong>Definisi:</strong></p>
+                        <p>Network sniffing adalah proses <span class="highlight">menangkap dan menganalisis</span> data yang lewat di jaringan komputer.</p>
                     </div>
-                </section>
-
-                <section>
-                    <h2>Dua Jenis Sniffing</h2>
-                    <div class="two-column" style="margin-top: 30px;">
-                        <div class="info-box">
-                            <h3>🎧 Passive Sniffing</h3>
-                            <p><strong>Hanya Mendengarkan</strong></p>
-                            <ul>
-                                <li>Tidak mengubah apapun</li>
-                                <li>Diam-diam merekam</li>
-                                <li>Sulit dideteksi</li>
-                                <li>Seperti CCTV tersembunyi</li>
-                            </ul>
+                    <div class="two-column" style="margin-top: 20px;">
+                        <div class="fragment">
+                            <div class="success-box">
+                                <p><strong>Penggunaan Legal:</strong></p>
+                                <ul style="font-size: 0.85em; margin: 5px 0;">
+                                    <li>Troubleshooting jaringan</li>
+                                    <li>Monitoring keamanan</li>
+                                    <li>Analisis performa</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="alert-box fragment">
-                            <h3>⚡ Active Sniffing</h3>
-                            <p><strong>Ikut Campur</strong></p>
-                            <ul>
-                                <li>Manipulasi jaringan</li>
-                                <li>Mengalihkan data</li>
-                                <li>Lebih mudah dideteksi</li>
-                                <li>Butuh trik khusus</li>
-                            </ul>
+                        <div class="fragment">
+                            <div class="alert-box">
+                                <p><strong>Penggunaan Illegal:</strong></p>
+                                <ul style="font-size: 0.85em; margin: 5px 0;">
+                                    <li>Mencuri password</li>
+                                    <li>Membaca email orang lain</li>
+                                    <li>Mengintip data pribadi</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Protokol Tidak Aman vs Aman</h2>
-                    <table class="comparison-table">
-                        <tr>
-                            <th class="bad">❌ TIDAK AMAN</th>
-                            <th class="good">✅ AMAN</th>
-                        </tr>
-                        <tr>
-                            <td class="fragment">HTTP<br><small>(seperti kartu pos)</small></td>
-                            <td class="fragment">HTTPS 🔒<br><small>(seperti amplop tertutup)</small></td>
-                        </tr>
-                        <tr>
-                            <td class="fragment">FTP<br><small>(file tanpa proteksi)</small></td>
-                            <td class="fragment">SFTP<br><small>(file terenkripsi)</small></td>
-                        </tr>
-                        <tr>
-                            <td class="fragment">Telnet<br><small>(akses tanpa enkripsi)</small></td>
-                            <td class="fragment">SSH<br><small>(akses terenkripsi)</small></td>
-                        </tr>
-                    </table>
+                    <h2>Analogi Sederhana: Pos dan Surat</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="fragment">
+                            <p><strong>Komunikasi Normal:</strong></p>
+                            <div class="info-box">
+                                <p>📬 Anda ➡️ Amplop Tertutup ➡️ Kantor Pos ➡️ 📭 Teman</p>
+                                <p>Hanya teman Anda yang bisa baca isi surat</p>
+                            </div>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Network Sniffing:</strong></p>
+                            <div class="alert-box">
+                                <p>📬 Anda ➡️ Kartu Pos (Terbuka!) ➡️ 👀 Petugas Pos Jahat ➡️ 📭 Teman</p>
+                                <p>Petugas pos bisa baca isi pesan Anda!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Data Apa yang Bisa Dicuri?</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="alert-box fragment">
+                            <p><strong>👤 Kredensial:</strong> Username, password, email</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>💳 Data Finansial:</strong> Nomor kartu kredit, PIN</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>📧 Komunikasi:</strong> Email, chat, pesan pribadi</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🌐 Browsing:</strong> Website yang dikunjungi, cookies</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>📁 File:</strong> Dokumen, foto yang di-upload/download</p>
+                        </div>
+                    </div>
                 </section>
             </section>
 
             <!-- SECTION: Konsep Dasar Jaringan -->
             <section>
                 <section class="center" data-background="#3498db">
-                    <h1>🌐 Part 2</h1>
-                    <h2>Konsep Dasar Jaringan</h2>
+                    <h1>🌐 Konsep Dasar</h1>
+                    <h2>Bagaimana Data Bergerak di Jaringan?</h2>
                 </section>
 
                 <section>
-                    <h2>Alamat MAC vs Alamat IP</h2>
-                    <div class="two-column">
-                        <div class="info-box fragment">
-                            <h3>🎫 Alamat MAC</h3>
-                            <p><strong>Seperti NIK (Nomor Induk)</strong></p>
-                            <ul>
-                                <li>Diberikan pabrik</li>
-                                <li>Tidak berubah (tetap)</li>
-                                <li>Contoh: 00:1A:2B:3C:4D:5E</li>
-                                <li>Untuk jaringan lokal</li>
-                            </ul>
-                        </div>
-                        <div class="info-box fragment">
-                            <h3>🏠 Alamat IP</h3>
-                            <p><strong>Seperti Alamat Rumah</strong></p>
-                            <ul>
-                                <li>Diberikan router</li>
-                                <li>Bisa berubah</li>
-                                <li>Contoh: 192.168.1.100</li>
-                                <li>Untuk komunikasi internet</li>
-                            </ul>
+                    <h2>Cara Kerja Komunikasi Jaringan</h2>
+                    <p style="font-size: 0.9em;">Saat Anda browsing atau kirim pesan, data tidak langsung ke tujuan.</p>
+                    <div class="fragment">
+                        <p style="font-size: 0.9em;"><strong>Data dipecah jadi paket-paket kecil:</strong></p>
+                        <div class="info-box">
+                            <p style="font-size: 0.85em;">📦 Paket 1: "Halo, "  📦 Paket 2: "ini " 📦 Paket 3: "saya!"</p>
                         </div>
                     </div>
+                    <div class="fragment" style="margin-top: 15px;">
+                        <p style="font-size: 0.9em;"><strong>Setiap paket punya "alamat":</strong></p>
+                        <ul style="font-size: 0.85em;">
+                            <li><strong>IP Address:</strong> Seperti alamat rumah (contoh: 192.168.1.10)</li>
+                            <li><strong>MAC Address:</strong> Seperti nomor KTP kartu jaringan (contoh: AA:BB:CC:DD:EE:FF)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Perbedaan IP vs MAC Address</h2>
+                    <table class="comparison-table" style="font-size: 0.75em;">
+                        <tr>
+                            <th>Aspek</th>
+                            <th>IP Address</th>
+                            <th>MAC Address</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Fungsi</strong></td>
+                            <td>Alamat logis dalam jaringan</td>
+                            <td>Alamat fisik kartu jaringan</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sifat</strong></td>
+                            <td>Bisa berubah</td>
+                            <td>Tetap (unique per device)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Contoh</strong></td>
+                            <td>192.168.1.100</td>
+                            <td>00:1A:2B:3C:4D:5E</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Layer</strong></td>
+                            <td>Layer 3 (Network)</td>
+                            <td>Layer 2 (Data Link)</td>
+                        </tr>
+                    </table>
                 </section>
 
                 <section>
                     <h2>Apa itu ARP?</h2>
                     <div class="info-box">
-                        <p style="font-size: 1.2em; text-align: center;">
-                            <strong>ARP (Address Resolution Protocol)</strong><br>
-                            Cara komputer mencari alamat MAC dari alamat IP
-                        </p>
+                        <p><strong>ARP = Address Resolution Protocol</strong></p>
+                        <p style="font-size: 0.85em;">Protokol untuk menterjemahkan IP Address ke MAC Address</p>
                     </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p><strong>Analogi di Kompleks Perumahan:</strong></p>
-                        <ol style="font-size: 1.1em;">
-                            <li>Anda tahu alamat rumah: "Jalan Mawar No. 10"</li>
-                            <li>Tapi tidak tahu siapa yang tinggal (NIK-nya)</li>
-                            <li>Anda berteriak: <span class="highlight">"Siapa yang tinggal di No. 10?"</span></li>
-                            <li>Orang di No. 10 jawab: <span class="highlight">"Saya, NIK 1234567890"</span></li>
-                            <li>Anda catat informasi ini</li>
-                        </ol>
+                    <div class="fragment" style="margin-top: 15px;">
+                        <p style="font-size: 0.9em;"><strong>Analogi:</strong></p>
+                        <p style="font-size: 0.85em;">Seperti buku telepon yang menghubungkan nama (IP) dengan nomor telepon (MAC)</p>
+                    </div>
+                    <div class="fragment" style="margin-top: 15px;">
+                        <p style="font-size: 0.9em;"><strong>Kenapa penting?</strong></p>
+                        <p style="font-size: 0.85em;">Komputer perlu tahu MAC address untuk mengirim data secara fisik di jaringan lokal</p>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Cara Kerja ARP</h2>
-                    <div style="background: white; padding: 30px; border-radius: 15px; color: #000;">
-                        <svg width="800" height="300" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Komputer A -->
-                            <rect x="50" y="100" width="150" height="100" fill="#3498db" stroke="#000" stroke-width="2" rx="10"/>
-                            <text x="125" y="145" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Komputer A</text>
-                            <text x="125" y="165" text-anchor="middle" fill="white" font-size="14">IP: 192.168.1.50</text>
-                            
-                            <!-- ARP Request -->
-                            <line x1="200" y1="120" x2="400" y2="80" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowred)"/>
-                            <text x="300" y="90" text-anchor="middle" fill="#e74c3c" font-size="16" font-weight="bold">1. ARP Request</text>
-                            <text x="300" y="110" text-anchor="middle" fill="#e74c3c" font-size="12">"Siapa punya IP 192.168.1.100?"</text>
-                            
-                            <!-- Komputer B -->
-                            <rect x="600" y="100" width="150" height="100" fill="#2ecc71" stroke="#000" stroke-width="2" rx="10"/>
-                            <text x="675" y="145" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Komputer B</text>
-                            <text x="675" y="165" text-anchor="middle" fill="white" font-size="14">IP: 192.168.1.100</text>
-                            
-                            <!-- ARP Reply -->
-                            <line x1="600" y1="180" x2="200" y2="180" stroke="#2ecc71" stroke-width="3" marker-end="url(#arrowgreen)"/>
-                            <text x="400" y="170" text-anchor="middle" fill="#2ecc71" font-size="16" font-weight="bold">2. ARP Reply</text>
-                            <text x="400" y="190" text-anchor="middle" fill="#2ecc71" font-size="12">"Saya! MAC: AA:BB:CC:DD:EE:FF"</text>
-                            
-                            <!-- Broadcast Cloud -->
-                            <ellipse cx="400" cy="250" rx="120" ry="30" fill="#ecf0f1" stroke="#95a5a6" stroke-width="2"/>
-                            <text x="400" y="255" text-anchor="middle" fill="#34495e" font-size="14">Broadcast ke semua</text>
-                            
-                            <defs>
-                                <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L9,3 z" fill="#e74c3c"/>
-                                </marker>
-                                <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L9,3 z" fill="#2ecc71"/>
-                                </marker>
-                            </defs>
-                        </svg>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>⚠️ Masalah Keamanan ARP</h2>
-                    <div class="alert-box" style="margin-top: 30px;">
-                        <h3 style="text-align: center; font-size: 1.5em;">ARP Terlalu Percaya!</h3>
-                        <p style="text-align: center; font-size: 1.2em;">ARP menerima semua jawaban tanpa verifikasi</p>
-                    </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p style="font-size: 1.2em;">Ini seperti bertanya di tempat ramai <span class="highlight">"Siapa yang bernama John?"</span> dan mempercayai siapa saja yang mengaku, tanpa minta bukti identitas!</p>
-                        <p style="font-size: 1.3em; text-align: center; margin-top: 30px;">
-                            ⚡ <strong>Kelemahan ini dieksploitasi dalam ARP Poisoning!</strong>
-                        </p>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Hub vs Switch</h2>
-                    <div class="two-column">
-                        <div class="alert-box fragment">
-                            <h3>📢 Hub (Lama)</h3>
-                            <p><strong>Seperti Pengeras Suara</strong></p>
-                            <ul>
-                                <li>Kirim ke SEMUA port</li>
-                                <li>Semua orang dengar</li>
-                                <li>Sangat tidak aman</li>
-                                <li>Sniffing mudah</li>
-                                <li>Sudah tidak dipakai</li>
-                            </ul>
+                    <h2>Cara Kerja ARP (Normal)</h2>
+                    <div style="font-size: 0.8em;">
+                        <div class="fragment">
+                            <p><span class="step-number">1</span> Komputer A mau kirim data ke 192.168.1.10</p>
                         </div>
-                        <div class="success-box fragment">
-                            <h3>📮 Switch (Modern)</h3>
-                            <p><strong>Seperti Kurir Pintar</strong></p>
-                            <ul>
-                                <li>Kirim hanya ke tujuan</li>
-                                <li>Punya "buku catatan"</li>
-                                <li>Lebih aman</li>
-                                <li>Sniffing lebih sulit</li>
-                                <li>Dipakai saat ini</li>
-                            </ul>
+                        <div class="fragment">
+                            <p><span class="step-number">2</span> Komputer A broadcast: "Siapa yang punya IP 192.168.1.10?"</p>
+                        </div>
+                        <div class="fragment">
+                            <p><span class="step-number">3</span> Komputer B jawab: "Saya! MAC saya adalah AA:BB:CC:DD:EE:FF"</p>
+                        </div>
+                        <div class="fragment">
+                            <p><span class="step-number">4</span> Komputer A simpan info ini di ARP cache</p>
+                        </div>
+                        <div class="fragment">
+                            <p><span class="step-number">5</span> Komputer A kirim data langsung ke MAC address Komputer B</p>
                         </div>
                     </div>
+                </section>
+
+                <section>
+                    <h2>ARP Cache Table</h2>
+                    <p style="font-size: 0.85em;">Setiap komputer punya tabel ARP yang menyimpan mapping IP-to-MAC:</p>
+                    <div class="code-box">
+                        <pre style="margin: 0;">IP Address        MAC Address           Type
+192.168.1.1      00:1A:2B:3C:4D:5E    dynamic
+192.168.1.10     AA:BB:CC:DD:EE:FF    dynamic
+192.168.1.20     11:22:33:44:55:66    dynamic</pre>
+                    </div>
+                    <p class="fragment" style="margin-top: 15px; font-size: 0.85em;">
+                        <strong>Masalah:</strong> ARP tidak punya mekanisme autentikasi! 
+                        Semua komputer percaya jawaban ARP tanpa verifikasi!
+                    </p>
                 </section>
             </section>
 
             <!-- SECTION: ARP Poisoning -->
             <section>
                 <section class="center" data-background="#e67e22">
-                    <h1>☠️ Part 3</h1>
-                    <h2>ARP Poisoning Attack</h2>
+                    <h1>☠️ ARP Poisoning</h1>
+                    <h2>Serangan yang Membahayakan</h2>
                 </section>
 
                 <section>
                     <h2>Apa itu ARP Poisoning?</h2>
                     <div class="alert-box">
-                        <p style="font-size: 1.2em; text-align: center;">
-                            <strong>ARP Poisoning</strong> adalah serangan dimana penyerang berbohong tentang alamat MAC-nya untuk mengalihkan data.
-                        </p>
+                        <p><strong>Definisi:</strong></p>
+                        <p style="font-size: 0.85em;">ARP Poisoning (ARP Spoofing) adalah teknik di mana penyerang mengirim ARP reply palsu untuk mengubah ARP cache korban</p>
                     </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p><strong>Analogi:</strong> Di kompleks perumahan, ada orang jahat yang menjawab duluan ketika Anda bertanya <span class="highlight">"Dimana Kantor Pos?"</span></p>
-                        <p>Orang jahat itu bilang: <span class="highlight">"Saya Kantor Pos!"</span> (padahal bohong)</p>
-                        <p>Anda percaya dan kirim semua paket ke orang jahat itu. Dia baca semua paket Anda sebelum teruskan ke Kantor Pos yang asli.</p>
+                    <div class="fragment" style="margin-top: 15px;">
+                        <p style="font-size: 0.9em;"><strong>Tujuan:</strong></p>
+                        <ul style="font-size: 0.85em;">
+                            <li>Mengalihkan traffic jaringan ke komputer penyerang</li>
+                            <li>Menjadi "man in the middle"</li>
+                            <li>Membaca/memodifikasi data yang lewat</li>
+                        </ul>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Kondisi Normal vs Setelah ARP Poisoning</h2>
-                    <div style="background: white; padding: 20px; border-radius: 15px;">
-                        <svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
-                            <!-- NORMAL -->
-                            <text x="400" y="30" text-anchor="middle" fill="#000" font-size="20" font-weight="bold">KONDISI NORMAL</text>
-                            
-                            <rect x="50" y="50" width="120" height="70" fill="#3498db" stroke="#000" stroke-width="2" rx="5"/>
-                            <text x="110" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Komputer</text>
-                            <text x="110" y="100" text-anchor="middle" fill="white" font-size="12">Anda</text>
-                            
-                            <line x1="170" y1="85" x2="280" y2="85" stroke="#2ecc71" stroke-width="4" marker-end="url(#arrowgreen2)"/>
-                            <text x="225" y="75" text-anchor="middle" fill="#2ecc71" font-size="14" font-weight="bold">Data Aman</text>
-                            
-                            <rect x="280" y="50" width="120" height="70" fill="#2ecc71" stroke="#000" stroke-width="2" rx="5"/>
-                            <text x="340" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Router</text>
-                            
-                            <line x1="400" y1="85" x2="510" y2="85" stroke="#2ecc71" stroke-width="4" marker-end="url(#arrowgreen2)"/>
-                            
-                            <ellipse cx="560" cy="85" rx="50" ry="35" fill="#87ceeb" stroke="#000" stroke-width="2"/>
-                            <text x="560" y="90" text-anchor="middle" fill="#000" font-size="14" font-weight="bold">Internet</text>
-                            
-                            <!-- AFTER POISONING -->
-                            <text x="400" y="210" text-anchor="middle" fill="#000" font-size="20" font-weight="bold">SETELAH ARP POISONING</text>
-                            
-                            <rect x="50" y="230" width="120" height="70" fill="#3498db" stroke="#000" stroke-width="2" rx="5"/>
-                            <text x="110" y="265" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Komputer</text>
-                            <text x="110" y="280" text-anchor="middle" fill="white" font-size="12">Anda</text>
-                            
-                            <line x1="170" y1="265" x2="280" y2="265" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrowred2)"/>
-                            <text x="225" y="255" text-anchor="middle" fill="#e74c3c" font-size="13" font-weight="bold">Disadap!</text>
-                            
-                            <rect x="280" y="230" width="120" height="70" fill="#e74c3c" stroke="#000" stroke-width="2" rx="5"/>
-                            <text x="340" y="260" text-anchor="middle" fill="white" font-size="14" font-weight="bold">PENYERANG</text>
-                            <text x="340" y="275" text-anchor="middle" fill="white" font-size="11">Membaca Data!</text>
-                            
-                            <line x1="400" y1="265" x2="510" y2="265" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrowred2)"/>
-                            <text x="455" y="255" text-anchor="middle" fill="#e74c3c" font-size="13" font-weight="bold">Diteruskan</text>
-                            
-                            <rect x="510" y="230" width="120" height="70" fill="#2ecc71" stroke="#000" stroke-width="2" rx="5"/>
-                            <text x="570" y="265" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Router</text>
-                            
-                            <text x="400" y="340" text-anchor="middle" fill="#e74c3c" font-size="16" font-weight="bold">⚠️ SEMUA DATA LEWAT PENYERANG!</text>
-                            
-                            <defs>
-                                <marker id="arrowgreen2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L9,3 z" fill="#2ecc71"/>
-                                </marker>
-                                <marker id="arrowred2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                    <path d="M0,0 L0,6 L9,3 z" fill="#e74c3c"/>
-                                </marker>
-                            </defs>
-                        </svg>
+                    <h2>Analogi: Penipu Paket</h2>
+                    <div style="font-size: 0.85em;">
+                        <p><strong>Situasi Normal:</strong></p>
+                        <div class="info-box">
+                            <p>📬 Anda ➡️ Kurir Jujur ➡️ 🏠 Teman</p>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>ARP Poisoning:</strong></p>
+                            <div class="alert-box">
+                                <p>👤 Penipu berpura-pura jadi kurir:</p>
+                                <p>"Hai, saya kurir! Kasih paket ke saya!"</p>
+                                <p>📬 Anda ➡️ 👤 Penipu (buka paket) ➡️ 🏠 Teman</p>
+                            </div>
+                        </div>
+                        <p class="fragment" style="margin-top: 15px; font-size: 0.9em;">
+                            Teman Anda tetap terima paket, tapi penipu sudah tahu isinya!
+                        </p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Cara Kerja ARP Poisoning</h2>
+                    <div style="font-size: 0.75em;">
+                        <div class="fragment">
+                            <p><strong>Sebelum Attack:</strong></p>
+                            <div class="info-box">
+                                <p>Client: "Gateway IP 192.168.1.1 = MAC: AA:AA:AA"</p>
+                                <p>Gateway: "Client IP 192.168.1.10 = MAC: BB:BB:BB"</p>
+                            </div>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Saat Attack:</strong></p>
+                            <div class="alert-box">
+                                <p>Attacker kirim ARP palsu ke Client:</p>
+                                <p>"Gateway 192.168.1.1 sekarang MAC: <span class="highlight">CC:CC:CC</span> (MAC Attacker)"</p>
+                                <p>Attacker kirim ARP palsu ke Gateway:</p>
+                                <p>"Client 192.168.1.10 sekarang MAC: <span class="highlight">CC:CC:CC</span> (MAC Attacker)"</p>
+                            </div>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Hasil:</strong></p>
+                            <p>Semua traffic Client ↔️ Gateway lewat Attacker!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Diagram ARP Poisoning</h2>
+                    <div style="font-size: 0.75em;">
+                        <p><strong>Kondisi Normal:</strong></p>
+                        <div class="attack-flow">
+                            <span>💻 Client</span>
+                            <span class="arrow">➡️</span>
+                            <span>🌐 Gateway</span>
+                            <span class="arrow">➡️</span>
+                            <span>🌍 Internet</span>
+                        </div>
+                        <div class="fragment" style="margin-top: 20px;">
+                            <p><strong>Setelah ARP Poisoning:</strong></p>
+                            <div class="attack-flow" style="flex-wrap: wrap;">
+                                <span>💻 Client</span>
+                                <span class="arrow">⬇️</span>
+                                <div style="width: 100%; text-align: center; margin: 10px 0;">
+                                    <span style="background: #e74c3c; padding: 8px 15px; border-radius: 8px;">
+                                        😈 Attacker (MITM)
+                                    </span>
+                                </div>
+                                <span class="arrow">⬇️</span>
+                                <span>🌐 Gateway</span>
+                                <span class="arrow">➡️</span>
+                                <span>🌍 Internet</span>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
                 <section>
                     <h2>Langkah-Langkah ARP Poisoning</h2>
-                    <div style="font-size: 0.9em;">
+                    <div style="font-size: 0.8em;">
                         <div class="fragment">
-                            <p><span class="step-number">1</span> <strong>Bergabung ke Jaringan</strong><br>
-                            Penyerang connect ke WiFi/jaringan yang sama</p>
+                            <p><span class="step-number">1</span> <strong>Reconnaissance</strong></p>
+                            <p style="margin-left: 50px;">Scan jaringan, cari target (korban dan gateway)</p>
                         </div>
                         <div class="fragment">
-                            <p><span class="step-number">2</span> <strong>Scan Jaringan</strong><br>
-                            Cari tahu IP address korban dan router</p>
+                            <p><span class="step-number">2</span> <strong>Enable IP Forwarding</strong></p>
+                            <p style="margin-left: 50px;">Agar data terus mengalir (tidak putus koneksi korban)</p>
                         </div>
                         <div class="fragment">
-                            <p><span class="step-number">3</span> <strong>Kirim Pesan Bohong</strong><br>
-                            Kirim ARP palsu: "Saya router, MAC saya [MAC penyerang]"</p>
+                            <p><span class="step-number">3</span> <strong>Kirim ARP Palsu</strong></p>
+                            <p style="margin-left: 50px;">Broadcast ARP reply palsu secara terus-menerus</p>
                         </div>
                         <div class="fragment">
-                            <p><span class="step-number">4</span> <strong>Korban Tertipu</strong><br>
-                            Komputer korban percaya dan update tabel ARP-nya</p>
+                            <p><span class="step-number">4</span> <strong>Start Sniffing</strong></p>
+                            <p style="margin-left: 50px;">Tangkap dan analisis semua traffic yang lewat</p>
                         </div>
                         <div class="fragment">
-                            <p><span class="step-number">5</span> <strong>Posisi MITM</strong><br>
-                            Semua data lewat penyerang dulu sebelum ke internet</p>
+                            <p><span class="step-number">5</span> <strong>Extract Data</strong></p>
+                            <p style="margin-left: 50px;">Cari password, cookies, data sensitif</p>
                         </div>
-                        <div class="fragment">
-                            <p><span class="step-number">6</span> <strong>Sniffing</strong><br>
-                            Penyerang baca password, email, dan data lainnya</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Kenapa ARP Poisoning Berbahaya?</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="alert-box fragment">
+                            <p><strong>😎 Mudah dilakukan:</strong> Tools gratis tersedia (Ettercap, Bettercap)</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🕵️ Sulit terdeteksi:</strong> Korban tidak tahu sedang di-sniff</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🎯 Efektif:</strong> Bisa tangkap semua traffic korban</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🌐 Luas dampak:</strong> Bisa target banyak device sekaligus</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🔓 Bypass enkripsi lemah:</strong> Bisa downgrade ke protokol tidak aman</p>
                         </div>
                     </div>
                 </section>
             </section>
 
-            <!-- SECTION: MITM Attack -->
+            <!-- SECTION: Man-in-the-Middle (MITM) Attack -->
             <section>
                 <section class="center" data-background="#9b59b6">
-                    <h1>🕵️ Part 4</h1>
-                    <h2>Man-in-the-Middle Attack</h2>
+                    <h1>👹 MITM Attack</h1>
+                    <h2>Man-in-the-Middle</h2>
                 </section>
 
                 <section>
-                    <h2>Apa itu MITM?</h2>
-                    <div class="alert-box">
-                        <p style="font-size: 1.3em; text-align: center;">
-                            <strong>Man-in-the-Middle (MITM)</strong><br>
-                            Serangan dimana penyerang berada DI TENGAH komunikasi untuk sadap atau ubah data
-                        </p>
+                    <h2>Apa itu MITM Attack?</h2>
+                    <div class="info-box">
+                        <p><strong>Definisi:</strong></p>
+                        <p style="font-size: 0.85em;">Serangan di mana penyerang diam-diam menjadi perantara antara dua pihak yang berkomunikasi</p>
                     </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <div class="emoji-large">🧑 ↔️ 🕵️ ↔️ 🧑</div>
-                        <p style="text-align: center; font-size: 1.2em;">
-                            Seperti ada orang ketiga yang diam-diam berdiri di antara Anda dan teman saat berbicara
-                        </p>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Apa yang Bisa Dilakukan Penyerang?</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="alert-box fragment">
-                            <h3>👀 Membaca Semua Data</h3>
-                            <ul>
-                                <li>Password</li>
-                                <li>Email</li>
-                                <li>Chat</li>
-                                <li>Nomor kartu kredit</li>
-                            </ul>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>✏️ Mengubah Data</h3>
-                            <ul>
-                                <li>Ubah nomor rekening</li>
-                                <li>Sisipkan malware</li>
-                                <li>Ubah website</li>
-                            </ul>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>🔑 Mencuri Session</h3>
-                            <ul>
-                                <li>Masuk tanpa password</li>
-                                <li>Ambil alih akun</li>
-                                <li>Akses email/sosmed</li>
-                            </ul>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>🎭 Impersonation</h3>
-                            <ul>
-                                <li>Pura-pura jadi Anda</li>
-                                <li>Kirim pesan palsu</li>
-                                <li>Transaksi atas nama Anda</li>
-                            </ul>
-                        </div>
+                    <div class="fragment" style="margin-top: 15px;">
+                        <p style="font-size: 0.9em;"><strong>Penyerang bisa:</strong></p>
+                        <ul style="font-size: 0.85em;">
+                            <li>Membaca semua komunikasi</li>
+                            <li>Memodifikasi data yang dikirim</li>
+                            <li>Menyuntikkan data palsu</li>
+                            <li>Mencuri kredensial</li>
+                        </ul>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Contoh MITM: Evil Twin WiFi</h2>
-                    <div style="font-size: 0.95em;">
-                        <div class="fragment">
-                            <div class="info-box">
-                                <p><strong>WiFi Asli:</strong> <span class="highlight">Starbucks_WiFi</span> ✅</p>
-                            </div>
+                    <h2>Analogi MITM: Penyadap Telepon</h2>
+                    <div style="font-size: 0.85em;">
+                        <p><strong>Komunikasi Normal:</strong></p>
+                        <div class="info-box">
+                            <p>👨 Andi telepon 👩 Budi</p>
+                            <p>"Andi: Hai Budi!" ➡️ "Budi: Hai Andi!"</p>
                         </div>
-                        <div class="fragment" style="margin: 20px 0;">
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>MITM Attack:</strong></p>
                             <div class="alert-box">
-                                <p><strong>WiFi Palsu:</strong> <span class="highlight">Starbucks_Free_WiFi</span> ❌</p>
-                                <p style="text-align: center; font-size: 0.9em;">atau bahkan nama yang sama persis!</p>
+                                <p>👨 Andi ➡️ 😈 Charlie (penyadap) ➡️ 👩 Budi</p>
+                                <p>Andi: "Hai Budi!"</p>
+                                <p>Charlie dengar, teruskan: "Hai Budi!"</p>
+                                <p>Budi: "Hai Andi!"</p>
+                                <p>Charlie dengar, teruskan: "Hai Andi!"</p>
                             </div>
                         </div>
-                        <div class="fragment">
-                            <p style="font-size: 1.1em;">📱 Anda connect ke WiFi palsu tanpa sadar</p>
-                            <p style="font-size: 1.1em;">🕵️ Semua yang Anda lakukan lewat komputer penyerang</p>
-                            <p style="font-size: 1.1em;">⚠️ Password, banking, semuanya bisa dicuri!</p>
+                        <p class="fragment" style="margin-top: 15px;">Andi dan Budi tidak tahu Charlie mendengarkan!</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Tipe-Tipe MITM Attack</h2>
+                    <div style="font-size: 0.8em;">
+                        <div class="alert-box fragment">
+                            <p><strong>1. ARP Spoofing:</strong> Mengubah ARP cache (yang kita bahas tadi)</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>2. DNS Spoofing:</strong> Mengalihkan domain ke IP palsu</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>3. HTTPS Spoofing:</strong> Fake certificate untuk intercept HTTPS</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>4. WiFi Eavesdropping:</strong> Membuat fake WiFi hotspot</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>5. Session Hijacking:</strong> Mencuri session cookie</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Skenario Real: Evil Twin Attack</h2>
+                    <div style="font-size: 0.8em;">
+                        <p><strong>Setup:</strong></p>
+                        <div class="info-box">
+                            <p>📍 Di coffee shop ada WiFi: "CoffeeShop_Free"</p>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Attack:</strong></p>
+                            <div class="alert-box">
+                                <p>😈 Hacker buat WiFi palsu dengan nama sama: "CoffeeShop_Free"</p>
+                                <p>💪 Signal lebih kuat dari yang asli!</p>
+                            </div>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Result:</strong></p>
+                            <ul style="font-size: 0.9em;">
+                                <li>Korban connect ke WiFi palsu</li>
+                                <li>Semua traffic lewat laptop hacker</li>
+                                <li>Password, email, banking data dicuri!</li>
+                            </ul>
                         </div>
                     </div>
                 </section>
 
                 <section>
                     <h2>SSL Stripping Attack</h2>
-                    <div class="two-column">
-                        <div>
-                            <h3>Yang Seharusnya Terjadi:</h3>
-                            <div class="success-box fragment">
-                                <p style="text-align: center;">Anda ↔️ 🔒 HTTPS ↔️ Bank</p>
-                                <p style="text-align: center; font-size: 0.9em;">Semua terenkripsi dan aman</p>
-                            </div>
-                        </div>
-                        <div>
-                            <h3>Setelah SSL Stripping:</h3>
-                            <div class="alert-box fragment">
-                                <p style="text-align: center;">Anda ↔️ HTTP ↔️ Penyerang ↔️ 🔒 HTTPS ↔️ Bank</p>
-                                <p style="text-align: center; font-size: 0.9em;">Anda tidak aman, data bisa dibaca!</p>
+                    <div style="font-size: 0.8em;">
+                        <p>Teknik untuk "menurunkan" koneksi HTTPS jadi HTTP</p>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Cara Kerja:</strong></p>
+                            <div style="font-size: 0.85em;">
+                                <div class="fragment">
+                                    <p><span class="step-number">1</span> Korban minta akses ke https://bank.com</p>
+                                </div>
+                                <div class="fragment">
+                                    <p><span class="step-number">2</span> Request lewat attacker (MITM)</p>
+                                </div>
+                                <div class="fragment">
+                                    <p><span class="step-number">3</span> Attacker forward ke server asli (HTTPS)</p>
+                                </div>
+                                <div class="fragment">
+                                    <p><span class="step-number">4</span> Attacker terima response HTTPS</p>
+                                </div>
+                                <div class="fragment">
+                                    <p><span class="step-number">5</span> Attacker ubah semua link jadi HTTP</p>
+                                </div>
+                                <div class="fragment">
+                                    <p><span class="step-number">6</span> Korban lihat http://bank.com (tidak aman!)</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p class="highlight" style="text-align: center; font-size: 1.2em;">
-                            ⚠️ Selalu cek ada gembok 🔒 di browser!
-                        </p>
+                </section>
+
+                <section>
+                    <h2>Dampak MITM Attack</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="alert-box fragment">
+                            <p><strong>💳 Finansial:</strong> Pencurian data kartu kredit, internet banking</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🔐 Privasi:</strong> Email, pesan pribadi, foto terbaca</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🏢 Bisnis:</strong> Data perusahaan, rahasia dagang bocor</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>🎭 Identitas:</strong> Account takeover, identity theft</p>
+                        </div>
+                        <div class="alert-box fragment">
+                            <p><strong>⚖️ Legal:</strong> Hacker bisa lakukan transaksi atas nama korban</p>
+                        </div>
                     </div>
                 </section>
             </section>
 
-            <!-- SECTION: Serangan Lainnya -->
+            <!-- SECTION: Tools untuk Sniffing -->
             <section>
                 <section class="center" data-background="#16a085">
-                    <h1>⚡ Part 5</h1>
-                    <h2>Serangan Lainnya</h2>
-                </section>
-
-                <section>
-                    <h2>MAC Flooding</h2>
-                    <div class="info-box">
-                        <p style="font-size: 1.1em;">Serangan yang membanjiri switch dengan alamat MAC palsu sampai "buku catatan" switch penuh.</p>
-                    </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p><strong>Analogi:</strong></p>
-                        <p>Seperti kantor pos yang hanya bisa catat 100 alamat. Seseorang datang dengan 1000 paket dengan alamat pengirim berbeda-beda (palsu). Buku catatan penuh! Petugas bingung dan mulai bagikan semua surat ke semua rumah.</p>
-                    </div>
-                    <div class="fragment alert-box" style="margin-top: 20px;">
-                        <p><strong>Akibat:</strong> Switch jadi seperti hub, semua data ke semua port → sniffing jadi mudah!</p>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>MAC Spoofing</h2>
-                    <div class="info-box">
-                        <p style="font-size: 1.1em;">Mengubah alamat MAC untuk pura-pura jadi perangkat lain.</p>
-                    </div>
-                    <div class="two-column" style="margin-top: 30px;">
-                        <div class="fragment">
-                            <h3>Tujuan:</h3>
-                            <ul>
-                                <li>🔓 Bypass MAC filtering</li>
-                                <li>🎭 Menyembunyikan identitas</li>
-                                <li>🎟️ Dapat akses gratis lagi</li>
-                                <li>👤 Pura-pura jadi orang lain</li>
-                            </ul>
-                        </div>
-                        <div class="fragment">
-                            <div class="alert-box">
-                                <p style="text-align: center; font-size: 1.1em;">Seperti menggunakan NIK orang lain untuk berpura-pura jadi dia!</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>DHCP Starvation</h2>
-                    <div class="info-box">
-                        <p style="font-size: 1.1em;">Menghabiskan semua alamat IP yang tersedia di DHCP server.</p>
-                    </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p><strong>Analogi:</strong> Seperti parkir mall yang hanya punya 100 tempat. Orang jahat datang dengan 100 mobil palsu dan isi semua tempat parkir. Pengunjung asli tidak dapat parkir.</p>
-                    </div>
-                    <div class="fragment alert-box" style="margin-top: 20px;">
-                        <p><strong>Akibat:</strong></p>
-                        <ul>
-                            <li>Orang baru tidak bisa connect (DoS)</li>
-                            <li>Penyerang bisa setup DHCP server palsu</li>
-                            <li>Arahkan traffic ke komputer penyerang (MITM setup)</li>
-                        </ul>
-                    </div>
-                </section>
-            </section>
-
-            <!-- SECTION: Tools -->
-            <section>
-                <section class="center" data-background="#c0392b">
-                    <h1>🛠️ Part 6</h1>
+                    <h1>🛠️ Part 2</h1>
                     <h2>Tools untuk Sniffing</h2>
-                    <p style="font-size: 0.8em; margin-top: 30px;">(Hanya untuk pembelajaran dan testing legal!)</p>
                 </section>
 
                 <section>
-                    <h2>Wireshark - CCTV Jaringan</h2>
-                    <div class="two-column">
-                        <div>
-                            <div class="emoji-large">📹</div>
-                            <h3>Fungsi:</h3>
-                            <ul>
-                                <li>Menangkap paket data</li>
-                                <li>Melihat isi paket</li>
-                                <li>Analisis protokol</li>
-                                <li>Filter data tertentu</li>
+                    <h2>Wireshark - Network Protocol Analyzer</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="success-box">
+                            <p><strong>Tool paling populer untuk packet capture dan analysis</strong></p>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <p><strong>Fitur:</strong></p>
+                            <ul style="font-size: 0.9em;">
+                                <li>Capture live traffic dari network interface</li>
+                                <li>Filter dan search packet dengan mudah</li>
+                                <li>Deep inspection semua layer protokol</li>
+                                <li>Export data untuk analisis lebih lanjut</li>
                             </ul>
                         </div>
-                        <div class="fragment">
-                            <div class="info-box">
-                                <h3>Kegunaan Legal:</h3>
-                                <ul>
-                                    <li>✅ Troubleshooting jaringan</li>
-                                    <li>✅ Belajar protokol</li>
-                                    <li>✅ Security testing (izin)</li>
-                                    <li>✅ Analisis performa</li>
-                                </ul>
-                            </div>
+                        <div class="fragment info-box" style="margin-top: 15px;">
+                            <p><strong>Penggunaan Legal:</strong> Network troubleshooting, security analysis</p>
                         </div>
                     </div>
-                    <div class="fragment code-box" style="margin-top: 20px;">
-                        <p><strong>Filter Wireshark:</strong></p>
-                        <p>http → Hanya traffic HTTP</p>
-                        <p>ip.addr == 192.168.1.100 → Traffic dari/ke IP tertentu</p>
+                </section>
+
+                <section>
+                    <h2>Ettercap - Comprehensive MITM Tool</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="info-box">
+                            <p><strong>Tool untuk melakukan ARP poisoning dan MITM attack</strong></p>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <p><strong>Fitur:</strong></p>
+                            <ul style="font-size: 0.9em;">
+                                <li>ARP poisoning otomatis</li>
+                                <li>Password harvesting</li>
+                                <li>SSL/TLS interception</li>
+                                <li>Plugin untuk berbagai attack</li>
+                            </ul>
+                        </div>
+                        <div class="fragment alert-box" style="margin-top: 15px;">
+                            <p><strong>⚠️ HANYA untuk lab testing!</strong></p>
+                        </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Ettercap - Tool MITM</h2>
-                    <div class="alert-box">
-                        <p style="text-align: center; font-size: 1.1em;">
-                            Tool khusus untuk Man-in-the-Middle attack<br>
-                            <strong>⚠️ HANYA untuk security testing dengan izin!</strong>
-                        </p>
-                    </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <h3>Kemampuan:</h3>
-                        <ul style="font-size: 1.1em;">
-                            <li>🎯 ARP poisoning otomatis</li>
-                            <li>🔑 Menangkap password berbagai protokol</li>
-                            <li>✏️ Mengubah data on-the-fly</li>
-                            <li>🔌 Banyak plugin tambahan</li>
-                        </ul>
+                    <h2>Bettercap - Modern MITM Framework</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="info-box">
+                            <p><strong>Tool MITM modern dengan interface yang lebih baik</strong></p>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <p><strong>Keunggulan:</strong></p>
+                            <ul style="font-size: 0.9em;">
+                                <li>Web UI yang user-friendly</li>
+                                <li>Support berbagai protokol (WiFi, BLE, TCP, UDP)</li>
+                                <li>Real-time monitoring dan logging</li>
+                                <li>Modular dan extensible</li>
+                            </ul>
+                        </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>TCPDump - Perekam Simple</h2>
-                    <div class="info-box">
-                        <p style="font-size: 1.1em;">Command-line packet analyzer yang ringan dan powerful.</p>
+                    <h2>Tools Lainnya</h2>
+                    <table class="comparison-table" style="font-size: 0.7em;">
+                        <tr>
+                            <th>Tool</th>
+                            <th>Fungsi Utama</th>
+                            <th>Level</th>
+                        </tr>
+                        <tr>
+                            <td><strong>tcpdump</strong></td>
+                            <td>CLI packet analyzer</td>
+                            <td>Advanced</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arpspoof</strong></td>
+                            <td>Simple ARP spoofing</td>
+                            <td>Beginner</td>
+                        </tr>
+                        <tr>
+                            <td><strong>mitmproxy</strong></td>
+                            <td>HTTP/HTTPS proxy</td>
+                            <td>Intermediate</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SSLstrip</strong></td>
+                            <td>HTTPS downgrade</td>
+                            <td>Intermediate</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Demo Command: Ettercap</h2>
+                    <div class="code-box">
+                        <pre style="margin: 0; font-size: 0.75em;"># Scan jaringan untuk cari host
+sudo ettercap -T -i eth0
+
+# ARP poisoning
+# Target: 192.168.1.10, Gateway: 192.168.1.1
+sudo ettercap -T -M arp:remote /192.168.1.1// /192.168.1.10//
+
+# Dengan GUI
+sudo ettercap -G</pre>
                     </div>
-                    <div class="code-box fragment" style="margin-top: 30px;">
-                        <p><strong>Contoh Perintah:</strong></p>
-                        <p>tcpdump -i wlan0<br>
-                        <span style="color: #888;">→ Rekam paket di WiFi</span></p>
-                        <p>tcpdump port 80<br>
-                        <span style="color: #888;">→ Rekam traffic website</span></p>
-                        <p>tcpdump -w hasil.pcap<br>
-                        <span style="color: #888;">→ Simpan ke file</span></p>
-                    </div>
-                    <div class="fragment" style="margin-top: 20px;">
-                        <p>✅ Cocok untuk server (tanpa GUI)</p>
-                        <p>✅ Ringan dan cepat</p>
+                    <div class="alert-box" style="margin-top: 15px;">
+                        <p style="font-size: 0.85em;"><strong>⚠️ JANGAN coba di jaringan orang lain!</strong> Ini ILLEGAL!</p>
                     </div>
                 </section>
             </section>
 
-            <!-- SECTION: Deteksi -->
-            <section>
-                <section class="center" data-background="#d35400">
-                    <h1>🔍 Part 7</h1>
-                    <h2>Cara Mendeteksi Serangan</h2>
-                </section>
-
-                <section>
-                    <h2>Tanda-Tanda ARP Poisoning</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="alert-box fragment">
-                            <h3>🐌 Internet Lambat</h3>
-                            <p>Tiba-tiba jadi lemot tanpa alasan jelas</p>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>📡 Koneksi Putus-Putus</h3>
-                            <p>Sering disconnect dan reconnect</p>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>⚠️ Warning Browser</h3>
-                            <p>Certificate error di website yang biasanya aman</p>
-                        </div>
-                        <div class="alert-box fragment">
-                            <h3>🔄 MAC Address Sama</h3>
-                            <p>Banyak IP punya MAC yang sama di tabel ARP</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Cara Cek Tabel ARP</h2>
-                    <div class="two-column">
-                        <div>
-                            <h3>Windows:</h3>
-                            <div class="code-box fragment">
-                                <p>1. Tekan Win+R</p>
-                                <p>2. Ketik: cmd</p>
-                                <p>3. Ketik: arp -a</p>
-                                <p>4. Lihat hasilnya</p>
-                            </div>
-                        </div>
-                        <div>
-                            <h3>Linux/Mac:</h3>
-                            <div class="code-box fragment">
-                                <p>1. Buka Terminal</p>
-                                <p>2. Ketik: arp -n</p>
-                                <p>atau</p>
-                                <p>ip neigh show</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fragment alert-box" style="margin-top: 30px;">
-                        <p style="text-align: center; font-size: 1.1em;">
-                            <strong>⚠️ Jika banyak IP dengan MAC yang sama → Kemungkinan besar ada ARP Poisoning!</strong>
-                        </p>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Tools untuk Deteksi</h2>
-                    <div style="font-size: 0.95em;">
-                        <div class="info-box fragment">
-                            <h3>🛡️ XArp</h3>
-                            <p>Program yang otomatis detect ARP poisoning dan kasih alert real-time. Seperti alarm pencuri untuk jaringan.</p>
-                        </div>
-                        <div class="info-box fragment">
-                            <h3>👁️ Arpwatch (Linux)</h3>
-                            <p>Mencatat semua aktivitas ARP dan kirim email kalau ada yang mencurigakan.</p>
-                        </div>
-                        <div class="info-box fragment">
-                            <h3>🚨 Network IDS/IPS</h3>
-                            <p>Snort atau Suricata - sistem yang monitor jaringan 24/7 dan detect berbagai serangan.</p>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- SECTION: Proteksi -->
+            <!-- SECTION: Deteksi dan Mitigasi -->
             <section>
                 <section class="center" data-background="#27ae60">
-                    <h1>🛡️ Part 8</h1>
-                    <h2>Cara Melindungi Diri</h2>
+                    <h1>🛡️ Perlindungan</h1>
+                    <h2>Cara Deteksi dan Melindungi Diri</h2>
                 </section>
 
                 <section>
-                    <h2>🥇 #1 Perlindungan: VPN</h2>
-                    <div class="success-box" style="font-size: 1.1em;">
-                        <p style="text-align: center; font-size: 1.3em;">
-                            <strong>VPN adalah perlindungan PALING AMPUH!</strong>
-                        </p>
-                    </div>
-                    <div class="two-column fragment" style="margin-top: 30px;">
-                        <div>
-                            <h3>Tanpa VPN:</h3>
-                            <div class="alert-box">
-                                <p style="text-align: center;">Anda → Penyerang<br>👀 Bisa lihat semua!</p>
+                    <h2>Cara Deteksi ARP Poisoning</h2>
+                    <div style="font-size: 0.8em;">
+                        <div class="fragment info-box">
+                            <p><strong>1. Cek ARP Cache secara manual</strong></p>
+                            <div class="code-box" style="font-size: 0.85em;">
+                                <pre style="margin: 0;"># Windows
+arp -a
+
+# Linux/Mac
+arp -n</pre>
                             </div>
+                            <p style="font-size: 0.9em;">Cari duplikat MAC address untuk IP berbeda!</p>
                         </div>
-                        <div>
-                            <h3>Dengan VPN:</h3>
-                            <div class="success-box">
-                                <p style="text-align: center;">Anda → [🔒 Enkripsi] → Penyerang<br>❌ Tidak bisa baca!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p style="font-size: 1.2em; text-align: center;">
-                            VPN = Terowongan aman untuk semua data Anda
-                        </p>
-                    </div>
-                </section>
-
-                <section>
-                    <h2>Cara Pakai VPN</h2>
-                    <div style="font-size: 0.95em;">
-                        <div class="fragment">
-                            <p><span class="step-number">1</span> <strong>Pilih Provider VPN</strong><br>
-                            Contoh: NordVPN, ExpressVPN, ProtonVPN</p>
-                        </div>
-                        <div class="fragment">
-                            <p><span class="step-number">2</span> <strong>Daftar & Bayar</strong><br>
-                            Hindari VPN gratis yang mencurigakan</p>
-                        </div>
-                        <div class="fragment">
-                            <p><span class="step-number">3</span> <strong>Download Aplikasi</strong><br>
-                            Install di laptop dan HP</p>
-                        </div>
-                        <div class="fragment">
-                            <p><span class="step-number">4</span> <strong>Login</strong><br>
-                            Buka app dan login dengan akun Anda</p>
-                        </div>
-                        <div class="fragment">
-                            <p><span class="step-number">5</span> <strong>Klik Connect</strong><br>
-                            Aktifkan SEBELUM browsing!</p>
+                        <div class="fragment info-box" style="margin-top: 10px;">
+                            <p><strong>2. Gunakan tools monitoring</strong></p>
+                            <ul style="font-size: 0.9em; margin: 5px 0;">
+                                <li>XArp (Windows) - alert saat ada ARP changes</li>
+                                <li>arpwatch (Linux) - monitor ARP table</li>
+                            </ul>
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Selalu Cek HTTPS</h2>
-                    <div style="background: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
-                        <svg width="700" height="200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- HTTP - Tidak Aman -->
-                            <rect x="50" y="30" width="250" height="60" fill="#ffcccc" stroke="#cc0000" stroke-width="3" rx="10"/>
-                            <text x="175" y="65" text-anchor="middle" fill="#000" font-size="20" font-weight="bold">❌ http://website.com</text>
-                            <text x="175" y="115" text-anchor="middle" fill="#cc0000" font-size="18" font-weight="bold">TIDAK AMAN!</text>
-                            
-                            <!-- HTTPS - Aman -->
-                            <rect x="400" y="30" width="250" height="60" fill="#ccffcc" stroke="#00cc00" stroke-width="3" rx="10"/>
-                            <text x="525" y="65" text-anchor="middle" fill="#000" font-size="20" font-weight="bold">✅ 🔒 https://website.com</text>
-                            <text x="525" y="115" text-anchor="middle" fill="#00cc00" font-size="18" font-weight="bold">AMAN!</text>
-                        </svg>
-                    </div>
-                    <div class="fragment alert-box">
-                        <p style="text-align: center; font-size: 1.2em;">
-                            <strong>JANGAN pernah masukkan password di situs tanpa gembok 🔒</strong>
-                        </p>
+                    <h2>Tanda-Tanda Sedang Kena MITM</h2>
+                    <ul style="font-size: 0.85em;">
+                        <li class="fragment">⚠️ <strong>Koneksi tiba-tiba jadi lambat</strong></li>
+                        <li class="fragment">⚠️ <strong>Browser warning tentang certificate</strong></li>
+                        <li class="fragment">⚠️ <strong>Website tiba-tiba jadi HTTP (bukan HTTPS)</strong></li>
+                        <li class="fragment">⚠️ <strong>Session sering logout sendiri</strong></li>
+                        <li class="fragment">⚠️ <strong>Aktivitas aneh di account</strong></li>
+                        <li class="fragment">⚠️ <strong>WiFi dengan nama sama tapi signal beda</strong></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>🛡️ Cara Melindungi Diri</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="success-box fragment">
+                            <p><strong>#1 PALING PENTING: Gunakan VPN!</strong></p>
+                            <p>VPN mengenkripsi semua traffic Anda</p>
+                        </div>
+                        <div class="success-box fragment">
+                            <p><strong>#2: Selalu cek HTTPS</strong></p>
+                            <p>Jangan login di website tanpa 🔒 icon</p>
+                        </div>
+                        <div class="success-box fragment">
+                            <p><strong>#3: Aktifkan 2FA (Two-Factor Authentication)</strong></p>
+                            <p>Meskipun password dicuri, akun tetap aman</p>
+                        </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Checklist Keamanan</h2>
-                    <div style="font-size: 1em;">
+                    <h2>Best Practices di WiFi Publik</h2>
+                    <div style="font-size: 0.85em;">
                         <ul class="checklist">
-                            <li class="fragment">Gunakan VPN di WiFi publik</li>
-                            <li class="fragment">Cek HTTPS sebelum login</li>
-                            <li class="fragment">Aktifkan 2FA di semua akun</li>
-                            <li class="fragment">Jangan akses banking di WiFi publik</li>
-                            <li class="fragment">Matikan file sharing</li>
-                            <li class="fragment">Update software secara rutin</li>
-                            <li class="fragment">Verifikasi nama WiFi dengan petugas</li>
-                            <li class="fragment">"Forget" network setelah pakai</li>
+                            <li class="fragment">WAJIB pakai VPN</li>
+                            <li class="fragment">Jangan akses banking/data sensitif</li>
+                            <li class="fragment">Disable automatic WiFi connection</li>
+                            <li class="fragment">Verifikasi nama WiFi ke staff</li>
+                            <li class="fragment">Forget network setelah selesai</li>
+                            <li class="fragment">Enable firewall</li>
+                            <li class="fragment">Update OS dan aplikasi</li>
                         </ul>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Yang JANGAN Dilakukan di WiFi Publik</h2>
-                    <div style="font-size: 1.1em;">
-                        <ul class="crosslist">
-                            <li class="fragment">Internet banking</li>
-                            <li class="fragment">Belanja online (kasih kartu kredit)</li>
-                            <li class="fragment">Login email penting</li>
-                            <li class="fragment">Akses data kerja rahasia</li>
-                            <li class="fragment">Isi formulir dengan data pribadi</li>
-                            <li class="fragment">Abaikan warning keamanan browser</li>
-                        </ul>
-                    </div>
-                    <div class="fragment success-box" style="margin-top: 30px;">
-                        <p style="text-align: center; font-size: 1.2em;">
-                            <strong>Alternatif: Gunakan data seluler (4G/5G) untuk hal-hal penting!</strong>
-                        </p>
+                    <h2>Mitigasi untuk Administrator</h2>
+                    <div style="font-size: 0.8em;">
+                        <div class="success-box fragment">
+                            <p><strong>1. Enable Dynamic ARP Inspection (DAI)</strong></p>
+                            <p>Validasi ARP packets di switch</p>
+                        </div>
+                        <div class="success-box fragment">
+                            <p><strong>2. Implement Port Security</strong></p>
+                            <p>Batasi MAC address per port</p>
+                        </div>
+                        <div class="success-box fragment">
+                            <p><strong>3. Client Isolation di WiFi</strong></p>
+                            <p>Prevent client-to-client communication</p>
+                        </div>
+                        <div class="success-box fragment">
+                            <p><strong>4. Network Monitoring</strong></p>
+                            <p>Deploy IDS/IPS untuk deteksi anomali</p>
+                        </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2>Two-Factor Authentication (2FA)</h2>
-                    <div class="info-box">
-                        <p style="font-size: 1.1em; text-align: center;">Keamanan ganda: Password + Kode dari HP</p>
+                    <h2>Konfigurasi Static ARP</h2>
+                    <p style="font-size: 0.85em;">Untuk device kritikal, bisa set static ARP entry:</p>
+                    <div class="code-box">
+                        <pre style="margin: 0; font-size: 0.75em;"># Windows
+arp -s 192.168.1.1 00-aa-bb-cc-dd-ee
+
+# Linux
+sudo arp -s 192.168.1.1 00:aa:bb:cc:dd:ee
+
+# Permanent di Linux
+sudo nano /etc/ethers
+# Add: 192.168.1.1 00:aa:bb:cc:dd:ee</pre>
                     </div>
-                    <div class="two-column fragment" style="margin-top: 30px;">
-                        <div>
-                            <h3>Tanpa 2FA:</h3>
-                            <div class="alert-box">
-                                <p>1. Penyerang dapat password</p>
-                                <p>2. ❌ Langsung bisa login!</p>
-                            </div>
-                        </div>
-                        <div>
-                            <h3>Dengan 2FA:</h3>
-                            <div class="success-box">
-                                <p>1. Penyerang dapat password</p>
-                                <p>2. Butuh kode dari HP Anda</p>
-                                <p>3. ✅ Tidak bisa login!</p>
-                            </div>
-                        </div>
+                    <div class="info-box" style="margin-top: 10px; font-size: 0.85em;">
+                        <p><strong>Note:</strong> Hanya praktis untuk jaringan kecil</p>
                     </div>
-                    <div class="fragment" style="margin-top: 30px;">
-                        <p style="text-align: center; font-size: 1.2em;">
-                            <strong>Aktifkan di: Email, Sosmed, Banking, Semua Akun Penting!</strong>
-                        </p>
-                    </div>
+                </section>
+
+                <section>
+                    <h2>Teknologi Perlindungan Modern</h2>
+                    <table class="comparison-table" style="font-size: 0.7em;">
+                        <tr>
+                            <th>Teknologi</th>
+                            <th>Fungsi</th>
+                            <th>Efektivitas</th>
+                        </tr>
+                        <tr class="good">
+                            <td><strong>HTTPS</strong></td>
+                            <td>Enkripsi web traffic</td>
+                            <td>Tinggi</td>
+                        </tr>
+                        <tr class="good">
+                            <td><strong>VPN</strong></td>
+                            <td>Enkripsi semua traffic</td>
+                            <td>Sangat Tinggi</td>
+                        </tr>
+                        <tr class="good">
+                            <td><strong>TLS 1.3</strong></td>
+                            <td>Protokol enkripsi terbaru</td>
+                            <td>Tinggi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DNSSEC</strong></td>
+                            <td>Secure DNS queries</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr class="good">
+                            <td><strong>HSTS</strong></td>
+                            <td>Force HTTPS connection</td>
+                            <td>Tinggi</td>
+                        </tr>
+                    </table>
                 </section>
             </section>
 
             <!-- SECTION: Studi Kasus -->
             <section>
-                <section class="center" data-background="#8e44ad">
-                    <h1>📖 Part 9</h1>
-                    <h2>Studi Kasus: Serangan di Warnet</h2>
+                <section class="center" data-background="#c0392b">
+                    <h1>📖 Studi Kasus</h1>
+                    <h2>Kisah Nyata: Andi di Warnet</h2>
                 </section>
 
                 <section>
-                    <h2>Scenario</h2>
-                    <div class="info-box">
-                        <p><strong>Tokoh:</strong></p>
-                        <ul>
-                            <li>Andi - Mahasiswa yang sering ke warnet</li>
-                            <li>Budi - Mahasiswa IT yang "jail" melakukan serangan</li>
-                        </ul>
-                    </div>
-                    <div class="fragment info-box" style="margin-top: 20px;">
-                        <p><strong>Setup Warnet:</strong></p>
-                        <ul>
-                            <li>WiFi: "WarnetMaju_Free" password "12345678"</li>
-                            <li>Tidak ada client isolation</li>
-                            <li>Tidak ada monitoring keamanan</li>
-                            <li>30-40 orang connect setiap hari</li>
-                        </ul>
+                    <h2>Situasi Awal</h2>
+                    <div style="font-size: 0.85em;">
+                        <div class="info-box">
+                            <p><strong>Tokoh:</strong></p>
+                            <ul style="font-size: 0.9em; margin: 5px 0;">
+                                <li>👨 Andi: Mahasiswa, butuh internet</li>
+                                <li>😈 Budi: Hacker pemula, user lain di warnet yang sama</li>
+                            </ul>
+                        </div>
+                        <div class="fragment" style="margin-top: 15px;">
+                            <p><strong>Tempat:</strong></p>
+                            <div class="info-box">
+                                <p>🏪 Warnet dekat kampus, WiFi shared, tanpa client isolation</p>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
                 <section>
                     <h2>Timeline Serangan</h2>
-                    <div style="font-size: 0.9em;">
-                        <div class="fragment">
-                            <p><strong>Hari ke-1:</strong> Andi pakai WiFi untuk browsing biasa. Semua normal.</p>
+                    <div style="font-size: 0.8em;">
+                        <div class="fragment info-box" style="margin: 10px 0;">
+                            <p><strong>Hari ke-1:</strong> Andi browsing biasa, cek Instagram, YouTube</p>
                         </div>
-                        <div class="fragment alert-box" style="margin: 15px 0;">
-                            <p><strong>Hari ke-3:</strong> Andi login Instagram. Keesokan hari, akunnya posting iklan aneh yang tidak dia buat.</p>
+                        <div class="fragment alert-box" style="margin: 10px 0;">
+                            <p><strong>Hari ke-3:</strong> Budi mulai ARP poisoning, sniffing traffic Andi</p>
                         </div>
-                        <div class="fragment alert-box" style="margin: 15px 0;">
+                        <div class="fragment alert-box" style="margin: 10px 0;">
+                            <p><strong>Hari ke-5:</strong> Budi berhasil capture password Instagram Andi (HTTP login!)</p>
+                        </div>
+                        <div class="fragment alert-box" style="margin: 10px 0;">
                             <p><strong>Hari ke-7:</strong> Andi akses internet banking. Beberapa jam kemudian ada transaksi mencurigakan!</p>
                         </div>
-                        <div class="fragment alert-box" style="margin: 15px 0;">
+                        <div class="fragment alert-box" style="margin: 10px 0;">
                             <p><strong>Hari ke-9:</strong> Password email Andi berubah, tidak bisa login.</p>
                         </div>
                     </div>
@@ -1074,7 +1074,7 @@
 
                 <section>
                     <h2>Yang Dilakukan Budi</h2>
-                    <div style="font-size: 0.9em;">
+                    <div style="font-size: 0.8em;">
                         <div class="fragment">
                             <p><span class="step-number">1</span> Connect ke WiFi warnet yang sama</p>
                         </div>
@@ -1098,7 +1098,7 @@
 
                 <section>
                     <h2>Kesalahan Andi</h2>
-                    <ul class="crosslist" style="font-size: 1.1em;">
+                    <ul class="crosslist" style="font-size: 0.95em;">
                         <li class="fragment">Akses banking di WiFi publik</li>
                         <li class="fragment">Tidak pakai VPN</li>
                         <li class="fragment">Ignore warning keamanan browser</li>
@@ -1109,15 +1109,15 @@
 
                 <section>
                     <h2>Yang Seharusnya Dilakukan Andi</h2>
-                    <ul class="checklist" style="font-size: 1em;">
+                    <ul class="checklist" style="font-size: 0.9em;">
                         <li class="fragment">Gunakan VPN SELALU di WiFi publik</li>
                         <li class="fragment">Jangan akses banking/hal sensitif di warnet</li>
                         <li class="fragment">Cek HTTPS sebelum login</li>
                         <li class="fragment">Aktifkan 2FA di semua akun</li>
                         <li class="fragment">Monitor aktivitas akun secara rutin</li>
                     </ul>
-                    <div class="fragment success-box" style="margin-top: 30px;">
-                        <p style="text-align: center; font-size: 1.2em;">
+                    <div class="fragment success-box" style="margin-top: 20px;">
+                        <p style="text-align: center; font-size: 1em;">
                             <strong>Dengan VPN dan 2FA, meskipun ada ARP poisoning, data Andi tetap aman!</strong>
                         </p>
                     </div>
@@ -1125,11 +1125,11 @@
 
                 <section>
                     <h2>Yang Harus Dilakukan Warnet</h2>
-                    <div style="font-size: 0.95em;">
+                    <div style="font-size: 0.85em;">
                         <div class="fragment success-box" style="margin: 10px 0;">
                             <p><strong>🔒 #1 PALING PENTING:</strong> Aktifkan Client Isolation!</p>
                         </div>
-                        <ul class="checklist fragment">
+                        <ul class="checklist fragment" style="font-size: 0.9em;">
                             <li>Ganti password WiFi berkala</li>
                             <li>Setup monitoring network</li>
                             <li>Pasang poster peringatan keamanan</li>
@@ -1148,7 +1148,7 @@
 
                 <section>
                     <h2>Poin-Poin Penting</h2>
-                    <div style="font-size: 0.95em;">
+                    <div style="font-size: 0.85em;">
                         <div class="info-box fragment">
                             <p><strong>Sniffing:</strong> Menyadap data di jaringan, seperti menguping pembicaraan</p>
                         </div>
@@ -1169,15 +1169,15 @@
 
                 <section>
                     <h2>Yang HARUS Diingat</h2>
-                    <div style="font-size: 1.1em;">
+                    <div style="font-size: 0.95em;">
                         <div class="alert-box fragment">
-                            <p style="text-align: center; font-size: 1.2em;">
+                            <p style="text-align: center; font-size: 1.1em;">
                                 <strong>WiFi Publik = BAHAYA</strong><br>
                                 Jangan pernah akses data sensitif tanpa VPN!
                             </p>
                         </div>
-                        <div class="success-box fragment" style="margin-top: 20px;">
-                            <p style="text-align: center; font-size: 1.2em;">
+                        <div class="success-box fragment" style="margin-top: 15px;">
+                            <p style="text-align: center; font-size: 1.1em;">
                                 <strong>VPN + HTTPS + 2FA = AMAN</strong><br>
                                 Triple protection untuk data Anda!
                             </p>
@@ -1189,15 +1189,15 @@
                     <h2>⚖️ Etika dan Hukum</h2>
                     <div class="alert-box">
                         <h3 style="text-align: center;">PENTING SEKALI!</h3>
-                        <p style="font-size: 1.1em;">Semua teknik yang dipelajari HANYA untuk:</p>
-                        <ul class="checklist">
+                        <p style="font-size: 0.95em;">Semua teknik yang dipelajari HANYA untuk:</p>
+                        <ul class="checklist" style="font-size: 0.9em;">
                             <li>Belajar (di lab sendiri)</li>
                             <li>Testing keamanan DENGAN IZIN tertulis</li>
                             <li>Melindungi diri dan organisasi</li>
                         </ul>
                     </div>
-                    <div class="fragment alert-box" style="margin-top: 20px;">
-                        <p style="text-align: center; font-size: 1.3em;">
+                    <div class="fragment alert-box" style="margin-top: 15px;">
+                        <p style="text-align: center; font-size: 1.1em;">
                             <strong>❌ Sniffing tanpa izin = ILLEGAL = PIDANA</strong>
                         </p>
                     </div>
@@ -1205,9 +1205,9 @@
 
                 <section class="center" data-background-gradient="linear-gradient(to bottom, #1e3c72, #2a5298)">
                     <h1>🛡️ Ingat Selalu:</h1>
-                    <h2 style="margin-top: 50px;">Keamanan Cyber adalah</h2>
+                    <h2 style="margin-top: 30px;">Keamanan Cyber adalah</h2>
                     <h2>Tanggung Jawab Kita Semua!</h2>
-                    <div style="margin-top: 80px; font-size: 1.2em;">
+                    <div style="margin-top: 40px; font-size: 1em;">
                         <p>✅ Gunakan VPN</p>
                         <p>✅ Cek HTTPS</p>
                         <p>✅ Aktifkan 2FA</p>
@@ -1217,8 +1217,8 @@
 
                 <section class="center" data-background="#27ae60">
                     <h1>🎉 Terima Kasih!</h1>
-                    <h2 style="margin-top: 50px;">Pertanyaan?</h2>
-                    <p style="margin-top: 80px; font-size: 1.2em;">
+                    <h2 style="margin-top: 30px;">Pertanyaan?</h2>
+                    <p style="margin-top: 50px; font-size: 1em;">
                         Gunakan ilmu ini untuk kebaikan! 🔒
                     </p>
                 </section>
@@ -1236,9 +1236,9 @@
             backgroundTransition: 'fade',
             progress: true,
             center: false,
-            width: 1200,
+            width: 960,
             height: 700,
-            margin: 0.04,
+            margin: 0.1,
             minScale: 0.2,
             maxScale: 2.0,
             controls: true,
