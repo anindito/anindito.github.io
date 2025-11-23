@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turunan Fungsi - Kalkulus Diferensial</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/sky.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            text-transform: none;
+        }
+        .reveal section {
+            text-align: left;
+        }
+        .reveal .center-text {
+            text-align: center;
+        }
+        .definition-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .example-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        .rule-box {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .tip-box {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .reveal ul, .reveal ol {
+            margin-left: 40px;
+        }
+        .reveal li {
+            margin-bottom: 10px;
+        }
+        .math-large {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .highlight-green {
+            color: #43e97b;
+            font-weight: bold;
+        }
+        .highlight-blue {
+            color: #4facfe;
+            font-weight: bold;
+        }
+        .highlight-purple {
+            color: #667eea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <div class="center-text" style="color: white;">
+                    <h1>Minggu 10 - Turunan Fungsi</h1>
+                    <h3>Kalkulus 1</h3>
+                    <br>
+                    <p>Anindito, S.Kom., S.S., S.H., MTI., CHFI.</p>
+                    <br>
+                    <p><small>Tekan tombol panah untuk navigasi</small></p>
+                </div>
+            </section>
+
+            <!-- Slide 2: Outline -->
+            <section>
+                <h2>Agenda Pembelajaran</h2>
+                <ol>
+                    <li>Konsep Turunan Fungsi</li>
+                    <li>Turunan Fungsi Konstan</li>
+                    <li>Sifat-Sifat Turunan Fungsi</li>
+                    <li>Aturan Rantai untuk Fungsi Komposisi</li>
+                    <li>Contoh Soal dan Latihan</li>
+                </ol>
+            </section>
+
+            <!-- Slide 3: Pendahuluan -->
+            <section>
+                <section>
+                    <h2>Apa itu Turunan?</h2>
+                    <div class="definition-box">
+                        <p>Turunan fungsi adalah konsep fundamental dalam kalkulus yang mengukur <strong>laju perubahan</strong> suatu fungsi terhadap variabelnya.</p>
+                    </div>
+                    <br>
+                    <p>Turunan memberitahu kita <strong>seberapa cepat</strong> nilai fungsi berubah ketika variabel inputnya berubah.</p>
+                </section>
+
+                <section>
+                    <h2>Aplikasi Turunan</h2>
+                    <ul>
+                        <li><span class="highlight-blue">Fisika:</span> Kecepatan (turunan posisi terhadap waktu)</li>
+                        <li><span class="highlight-green">Ekonomi:</span> Biaya marginal, pendapatan marginal</li>
+                        <li><span class="highlight-purple">Teknik:</span> Optimasi desain, analisis sistem</li>
+                        <li><span class="highlight-blue">Biologi:</span> Laju pertumbuhan populasi</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- Slide 4: Konsep Turunan -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                    <div class="center-text" style="color: white;">
+                        <h2>Konsep Turunan Fungsi</h2>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Definisi Turunan</h2>
+                    <p>Jika sebuah fungsi dimisalkan sebagai <strong>y = f(x)</strong>, maka turunan dari fungsi tersebut dituliskan:</p>
+                    <div class="formula-box">
+                        <p><strong>y' = f'(x)</strong></p>
+                        <p>atau</p>
+                        <p><strong>dy/dx</strong></p>
+                    </div>
+                    <p>yang artinya fungsi <strong>y</strong> diturunkan terhadap variabel <strong>x</strong>.</p>
+                </section>
+
+                <section>
+                    <h2>Definisi Formal (Menggunakan Limit)</h2>
+                    <p>Turunan fungsi <strong>f</strong> di titik <strong>c</strong> didefinisikan sebagai:</p>
+                    <div class="formula-box">
+                        <p><strong>f'(c) = lim<sub>h→0</sub> [f(c + h) - f(c)] / h</strong></p>
+                    </div>
+                    <br>
+                    <div class="tip-box">
+                        <p><strong>💡 Interpretasi:</strong> Limit dari rasio perubahan fungsi ketika perubahan variabel (h) mendekati nol.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Notasi Turunan</h2>
+                    <table style="width: 100%; font-size: 0.9em;">
+                        <tr style="background-color: #667eea; color: white;">
+                            <th>Notasi</th>
+                            <th>Penemu/Nama</th>
+                            <th>Contoh</th>
+                        </tr>
+                        <tr>
+                            <td><strong>f'(x), y'</strong></td>
+                            <td>Lagrange</td>
+                            <td>Paling umum digunakan</td>
+                        </tr>
+                        <tr>
+                            <td><strong>dy/dx, df/dx</strong></td>
+                            <td>Leibniz</td>
+                            <td>Baik untuk aturan rantai</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ẏ</strong></td>
+                            <td>Newton</td>
+                            <td>Digunakan dalam fisika</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Df, D<sub>x</sub>f</strong></td>
+                            <td>Euler</td>
+                            <td>Notasi operator</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Interpretasi Geometris</h2>
+                    <div class="rule-box">
+                        <p>Turunan <strong>f'(c)</strong> merepresentasikan <strong>kemiringan (slope) garis singgung</strong> terhadap kurva y = f(x) pada titik (c, f(c)).</p>
+                    </div>
+                    <br>
+                    <p>Dengan kata lain:</p>
+                    <ul>
+                        <li>f'(c) > 0 → Fungsi naik di titik c</li>
+                        <li>f'(c) < 0 → Fungsi turun di titik c</li>
+                        <li>f'(c) = 0 → Garis singgung horizontal (titik stasioner)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Interpretasi Fisik</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>f(t)</strong> merepresentasikan posisi suatu objek pada waktu t, maka <strong>f'(t)</strong> merepresentasikan <strong>kecepatan sesaat</strong> objek tersebut pada waktu t.</p>
+                    </div>
+                    <br>
+                    <div class="example-box">
+                        <p><strong>Contoh:</strong> Jika posisi mobil adalah s(t) = 5t² meter, maka kecepatan pada waktu t adalah v(t) = s'(t) = 10t m/s.</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 5: Turunan Fungsi Konstan -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                    <div class="center-text" style="color: white;">
+                        <h2>Turunan Fungsi Konstan</h2>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Aturan Fungsi Konstan</h2>
+                    <div class="formula-box">
+                        <p>Jika <strong>f(x) = k</strong> (k adalah konstanta)</p>
+                        <p>Maka untuk sebarang x:</p>
+                        <p><strong>f'(x) = 0</strong></p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Pembuktian</h2>
+                    <p>Menggunakan definisi turunan:</p>
+                    <div style="font-size: 0.9em;">
+                        <p><strong>f'(x)</strong> = lim<sub>h→0</sub> [f(x + h) - f(x)] / h</p>
+                        <p style="margin-left: 60px;">= lim<sub>h→0</sub> [k - k] / h</p>
+                        <p style="margin-left: 60px;">= lim<sub>h→0</sub> 0 / h</p>
+                        <p style="margin-left: 60px;">= <strong>0</strong></p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Dengan definisi, tentukan turunan dari f(x) = 10</p>
+                        <br>
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>f'(x) = lim<sub>h→0</sub> [f(x + h) - f(x)] / h</p>
+                        <p style="margin-left: 40px;">= lim<sub>h→0</sub> [10 - 10] / h</p>
+                        <p style="margin-left: 40px;">= lim<sub>h→0</sub> 0 / h</p>
+                        <p style="margin-left: 40px;">= <strong>0</strong></p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Interpretasi</h2>
+                    <div class="tip-box">
+                        <p><strong>💡 Mengapa turunan konstanta adalah nol?</strong></p>
+                    </div>
+                    <br>
+                    <p>Fungsi konstan memiliki grafik berupa <strong>garis horizontal</strong>.</p>
+                    <br>
+                    <p>Karena <strong>tidak ada perubahan</strong> nilai fungsi saat x berubah, maka laju perubahannya (turunan) adalah <strong>nol</strong>.</p>
+                </section>
+            </section>
+
+            <!-- Slide 6: Sifat-Sifat Turunan -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                    <div class="center-text" style="color: white;">
+                        <h2>Sifat-Sifat Turunan Fungsi</h2>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>1. Turunan Fungsi Konstan</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>y = a</strong></p>
+                        <p>Maka <strong>y' = 0</strong></p>
+                    </div>
+                    <br>
+                    <div class="example-box">
+                        <p><strong>Contoh:</strong></p>
+                        <ul>
+                            <li>y = 7 → y' = 0</li>
+                            <li>y = -3 → y' = 0</li>
+                            <li>y = π → y' = 0</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>2. Turunan Fungsi Linear</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>y = ax</strong></p>
+                        <p>Maka <strong>y' = a</strong></p>
+                    </div>
+                    <br>
+                    <div class="example-box">
+                        <p><strong>Contoh:</strong></p>
+                        <ul>
+                            <li>y = 5x → y' = 5</li>
+                            <li>y = -3x → y' = -3</li>
+                            <li>y = x → y' = 1</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>3. Aturan Pangkat (Power Rule)</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>y = ax<sup>n</sup></strong></p>
+                        <p>Maka <strong>y' = an·x<sup>n-1</sup></strong></p>
+                    </div>
+                    <br>
+                    <div class="tip-box">
+                        <p><strong>💡 Cara mudah:</strong> Turunkan pangkat menjadi koefisien, lalu kurangi pangkat sebesar 1.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh Aturan Pangkat</h2>
+                    <div class="example-box">
+                        <table style="width: 100%; color: white;">
+                            <tr style="background-color: rgba(255,255,255,0.2);">
+                                <th>Fungsi</th>
+                                <th>Turunan</th>
+                            </tr>
+                            <tr>
+                                <td>y = x<sup>5</sup></td>
+                                <td>y' = 5x<sup>4</sup></td>
+                            </tr>
+                            <tr>
+                                <td>y = 3x<sup>4</sup></td>
+                                <td>y' = 12x<sup>3</sup></td>
+                            </tr>
+                            <tr>
+                                <td>y = x<sup>2</sup></td>
+                                <td>y' = 2x</td>
+                            </tr>
+                            <tr>
+                                <td>y = x<sup>-2</sup></td>
+                                <td>y' = -2x<sup>-3</sup></td>
+                            </tr>
+                            <tr>
+                                <td>y = √x = x<sup>1/2</sup></td>
+                                <td>y' = (1/2)x<sup>-1/2</sup></td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>4. Aturan Penjumlahan & Pengurangan</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>f(x) = u ± v</strong></p>
+                        <p>Maka <strong>f'(x) = u' ± v'</strong></p>
+                    </div>
+                    <br>
+                    <div class="example-box">
+                        <p><strong>Contoh:</strong></p>
+                        <ul>
+                            <li>f(x) = x³ + 2x² → f'(x) = 3x² + 4x</li>
+                            <li>f(x) = 5x⁴ - 3x² + 7 → f'(x) = 20x³ - 6x</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>5. Aturan Perkalian (Product Rule)</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>y = u·v</strong></p>
+                        <p>Maka <strong>y' = u'·v + u·v'</strong></p>
+                    </div>
+                    <br>
+                    <div class="tip-box">
+                        <p><strong>💡 Ingat:</strong> "Turunan pertama kali kedua, plus pertama kali turunan kedua"</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh Aturan Perkalian</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> y = (2x + 1)(x² - 3)</p>
+                        <br>
+                        <p><strong>Penyelesaian:</strong></p>
+                        <ul>
+                            <li>u = 2x + 1, u' = 2</li>
+                            <li>v = x² - 3, v' = 2x</li>
+                            <li>y' = u'v + uv'</li>
+                            <li>y' = 2(x² - 3) + (2x + 1)(2x)</li>
+                            <li>y' = 2x² - 6 + 4x² + 2x</li>
+                            <li><strong>y' = 6x² + 2x - 6</strong></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>6. Aturan Pembagian (Quotient Rule)</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>y = u/v</strong></p>
+                        <p>Maka <strong>y' = (u'·v - u·v') / v²</strong></p>
+                    </div>
+                    <br>
+                    <div class="tip-box">
+                        <p><strong>💡 Ingat:</strong> "Lo d-Hi minus Hi d-Lo, dibagi square dari yang dibawah"</p>
+                        <p><small>(Lo = u, Hi = v, d = turunan)</small></p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh Aturan Pembagian</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> y = (x² + 1)/(x - 2)</p>
+                        <br>
+                        <p><strong>Penyelesaian:</strong></p>
+                        <ul style="font-size: 0.85em;">
+                            <li>u = x² + 1, u' = 2x</li>
+                            <li>v = x - 2, v' = 1</li>
+                            <li>y' = (u'v - uv')/v²</li>
+                            <li>y' = [2x(x - 2) - (x² + 1)(1)] / (x - 2)²</li>
+                            <li>y' = [2x² - 4x - x² - 1] / (x - 2)²</li>
+                            <li><strong>y' = (x² - 4x - 1) / (x - 2)²</strong></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Ringkasan Sifat-Sifat Turunan</h2>
+                    <table style="width: 100%; font-size: 0.75em;">
+                        <tr style="background-color: #667eea; color: white;">
+                            <th>Jika y =</th>
+                            <th>Maka y' =</th>
+                        </tr>
+                        <tr>
+                            <td>a (konstanta)</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>ax</td>
+                            <td>a</td>
+                        </tr>
+                        <tr>
+                            <td>ax<sup>n</sup></td>
+                            <td>an·x<sup>n-1</sup></td>
+                        </tr>
+                        <tr>
+                            <td>u ± v</td>
+                            <td>u' ± v'</td>
+                        </tr>
+                        <tr>
+                            <td>u·v</td>
+                            <td>u'v + uv'</td>
+                        </tr>
+                        <tr>
+                            <td>u/v</td>
+                            <td>(u'v - uv')/v²</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <!-- Slide 7: Aturan Rantai -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                    <div class="center-text" style="color: white;">
+                        <h2>Aturan Rantai untuk Fungsi Komposisi</h2>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Apa itu Fungsi Komposisi?</h2>
+                    <p>Andaikan fungsi:</p>
+                    <ul>
+                        <li><strong>y = f(u)</strong> dengan f sebagai fungsi u</li>
+                        <li><strong>u = g(x)</strong> dengan g sebagai fungsi x</li>
+                    </ul>
+                    <br>
+                    <p>Maka fungsi komposisi adalah:</p>
+                    <div class="formula-box">
+                        <p><strong>y = f(g(x))</strong></p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Aturan Rantai (Chain Rule)</h2>
+                    <div class="rule-box">
+                        <p>Jika <strong>y = f(u)</strong> dan <strong>u = g(x)</strong></p>
+                        <p>Maka:</p>
+                        <p><strong>dy/dx = (dy/du) · (du/dx)</strong></p>
+                    </div>
+                    <br>
+                    <div class="tip-box">
+                        <p><strong>💡 Interpretasi:</strong> Turunkan fungsi luar, lalu kalikan dengan turunan fungsi dalam.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Notasi Alternatif</h2>
+                    <div class="formula-box">
+                        <p><strong>d/dx[f(g(x))] = f'(g(x)) · g'(x)</strong></p>
+                    </div>
+                    <br>
+                    <p>Atau dengan notasi yang lebih sederhana:</p>
+                    <div class="formula-box">
+                        <p><strong>y' = f'(u) · u'</strong></p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh 1: Fungsi Pangkat Komposisi</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari y = (x² + 3x)⁵</p>
+                        <br>
+                        <p><strong>Penyelesaian:</strong></p>
+                        <ul>
+                            <li>Misalkan u = x² + 3x, maka y = u⁵</li>
+                            <li>dy/du = 5u⁴</li>
+                            <li>du/dx = 2x + 3</li>
+                            <li>dy/dx = (dy/du) · (du/dx)</li>
+                            <li>dy/dx = 5u⁴ · (2x + 3)</li>
+                            <li><strong>dy/dx = 5(x² + 3x)⁴ · (2x + 3)</strong></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh 2: Fungsi Akar</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari y = √(2x + 5)</p>
+                        <br>
+                        <p><strong>Penyelesaian:</strong></p>
+                        <ul>
+                            <li>Tulis ulang: y = (2x + 5)^(1/2)</li>
+                            <li>Misalkan u = 2x + 5, maka y = u^(1/2)</li>
+                            <li>dy/du = (1/2)u^(-1/2)</li>
+                            <li>du/dx = 2</li>
+                            <li>dy/dx = (1/2)u^(-1/2) · 2 = u^(-1/2)</li>
+                            <li><strong>dy/dx = 1/√(2x + 5)</strong></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Contoh 3: Kombinasi Aturan</h2>
+                    <div class="example-box" style="font-size: 0.85em;">
+                        <p><strong>Soal:</strong> y = (3x + 5)(x² - 3)³</p>
+                        <br>
+                        <p><strong>Penyelesaian:</strong> Perkalian + Aturan Rantai</p>
+                        <ul>
+                            <li>u = 3x + 5, u' = 3</li>
+                            <li>v = (x² - 3)³, gunakan aturan rantai:</li>
+                            <li style="margin-left: 20px;">w = x² - 3, v = w³</li>
+                            <li style="margin-left: 20px;">v' = 3w² · 2x = 6x(x² - 3)²</li>
+                            <li>y' = u'v + uv'</li>
+                            <li>y' = 3(x² - 3)³ + (3x + 5)·6x(x² - 3)²</li>
+                            <li><strong>y' = 3(x² - 3)²(7x² + 10x - 3)</strong></li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 8: Latihan Soal -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #fa709a 0%, #fee140 100%)">
+                    <div class="center-text" style="color: white;">
+                        <h2>Latihan Soal</h2>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Latihan 1</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Dengan menggunakan definisi, tentukan turunan dari f(x) = 1/x</p>
+                        <br>
+                        <p><strong>Petunjuk:</strong> Gunakan definisi</p>
+                        <p>f'(c) = lim<sub>h→0</sub> [f(c+h) - f(c)]/h</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Latihan 2</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari fungsi</p>
+                        <p>y = (x² - 3x⁶ + 21)³</p>
+                        <br>
+                        <p><strong>Petunjuk:</strong> Gunakan aturan rantai dengan</p>
+                        <p>u = x² - 3x⁶ + 21</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Latihan 3</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari fungsi</p>
+                        <p>y = (3x + 5)(x² - 3)³</p>
+                        <br>
+                        <p><strong>Petunjuk:</strong> Gunakan aturan perkalian dikombinasikan dengan aturan rantai</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Latihan 4</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari fungsi</p>
+                        <p>y = 3x√(x⁴ - 6x² + 9)</p>
+                        <br>
+                        <p><strong>Petunjuk:</strong></p>
+                        <ul>
+                            <li>Tulis ulang akar sebagai pangkat 1/2</li>
+                            <li>Gunakan aturan perkalian dan aturan rantai</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Latihan 5</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari fungsi</p>
+                        <p>y = (x - 3)/(3x + 1)</p>
+                        <br>
+                        <p><strong>Petunjuk:</strong> Gunakan aturan pembagian</p>
+                        <p>y' = (u'v - uv')/v²</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Latihan 6</h2>
+                    <div class="example-box">
+                        <p><strong>Soal:</strong> Tentukan turunan dari fungsi</p>
+                        <p>y = √(x - 7) + x/(x² - 1) - 9</p>
+                        <br>
+                        <p><strong>Petunjuk:</strong></p>
+                        <ul>
+                            <li>Pisahkan menjadi tiga bagian</li>
+                            <li>Gunakan aturan penjumlahan</li>
+                            <li>Aturan rantai untuk akar</li>
+                            <li>Aturan pembagian untuk pecahan</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 9: Tips dan Trik -->
+            <section>
+                <h2>Tips Menyelesaikan Soal Turunan</h2>
+                <ol>
+                    <li><strong>Identifikasi jenis fungsi</strong>
+                        <ul>
+                            <li>Pangkat, perkalian, pembagian, atau komposisi?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pilih aturan yang tepat</strong>
+                        <ul>
+                            <li>Sesuai dengan struktur fungsi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Sederhanakan ekspresi</strong>
+                        <ul>
+                            <li>Sebelum menurunkan jika memungkinkan</li>
+                        </ul>
+                    </li>
+                    <li><strong>Gunakan aturan rantai</strong>
+                        <ul>
+                            <li>Untuk fungsi komposisi</li>
+                        </ul>
+                    </li>
+                    <li><strong>Periksa hasil akhir</strong>
+                        <ul>
+                            <li>Sederhanakan jawaban</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+
+            <!-- Slide 10: Kesalahan Umum -->
+            <section>
+                <h2>Kesalahan Umum yang Harus Dihindari</h2>
+                <div class="tip-box" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
+                    <ul>
+                        <li>❌ Menurunkan konstanta menjadi selain nol</li>
+                        <li>❌ Lupa menggunakan aturan rantai pada fungsi komposisi</li>
+                        <li>❌ Salah mengaplikasikan aturan perkalian: (uv)' ≠ u'v'</li>
+                        <li>❌ Salah mengaplikasikan aturan pembagian</li>
+                        <li>❌ Tidak menyederhanakan hasil akhir</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 11: Rangkuman -->
+            <section>
+                <section data-background-gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                    <div class="center-text" style="color: white;">
+                        <h2>Rangkuman</h2>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Konsep Utama</h2>
+                    <div class="rule-box">
+                        <p><strong>1. Definisi Turunan:</strong></p>
+                        <p>f'(c) = lim<sub>h→0</sub> [f(c + h) - f(c)] / h</p>
+                    </div>
+                    <div class="rule-box">
+                        <p><strong>2. Turunan Konstan:</strong></p>
+                        <p>Jika f(x) = k, maka f'(x) = 0</p>
+                    </div>
+                    <div class="rule-box">
+                        <p><strong>3. Aturan Rantai:</strong></p>
+                        <p>dy/dx = (dy/du) · (du/dx)</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Aturan Dasar (Summary)</h2>
+                    <table style="width: 100%; font-size: 0.7em;">
+                        <tr style="background-color: #667eea; color: white;">
+                            <th>Fungsi</th>
+                            <th>Turunan</th>
+                        </tr>
+                        <tr><td>y = a</td><td>y' = 0</td></tr>
+                        <tr><td>y = ax</td><td>y' = a</td></tr>
+                        <tr><td>y = ax<sup>n</sup></td><td>y' = anx<sup>n-1</sup></td></tr>
+                        <tr><td>y = u ± v</td><td>y' = u' ± v'</td></tr>
+                        <tr><td>y = u·v</td><td>y' = u'v + uv'</td></tr>
+                        <tr><td>y = u/v</td><td>y' = (u'v - uv')/v²</td></tr>
+                        <tr><td>y = f(u), u = g(x)</td><td>y' = f'(u)·g'(x)</td></tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Aplikasi Turunan</h2>
+                    <ul>
+                        <li>📊 <strong>Analisis Grafik:</strong> Menentukan titik maksimum dan minimum</li>
+                        <li>🚗 <strong>Fisika:</strong> Kecepatan dan percepatan</li>
+                        <li>💰 <strong>Ekonomi:</strong> Optimasi keuntungan</li>
+                        <li>🏗️ <strong>Teknik:</strong> Desain optimal</li>
+                        <li>🔬 <strong>Sains:</strong> Laju perubahan dalam berbagai fenomena</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- Slide 12: Closing -->
+            <section data-background-gradient="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                <div class="center-text" style="color: white;">
+                    <h2>Terima Kasih</h2>
+                    <br>
+                    <h3>Pertanyaan?</h3>
+                    <br>
+                    <p>Anindito, S.Kom., S.S., S.H., MTI., CHFI.</p>
+                    <br>
+                    <p><small>Materi ini dapat diakses kembali untuk pembelajaran mandiri</small></p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/math/math.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            center: true,
+            plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+        });
+    </script>
+</body>
+</html>
