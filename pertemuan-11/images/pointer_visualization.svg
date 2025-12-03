@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold" fill="#2c3e50">
+    Visualisasi Pointer dan Alamat Memori
+  </text>
+  
+  <!-- Variable 'x' -->
+  <rect x="50" y="100" width="200" height="100" fill="#3498db" stroke="#2c3e50" stroke-width="3"/>
+  <text x="150" y="130" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="white">
+    Variabel: x
+  </text>
+  <text x="150" y="155" text-anchor="middle" font-family="Arial" font-size="16" fill="white">
+    Nilai: 42
+  </text>
+  <text x="150" y="180" text-anchor="middle" font-family="Arial" font-size="14" fill="#ecf0f1">
+    Alamat: 0x1000
+  </text>
+  
+  <!-- Memory address label for x -->
+  <rect x="50" y="220" width="200" height="30" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="150" y="240" text-anchor="middle" font-family="Arial" font-size="14" fill="#2c3e50">
+    Lokasi Memori: 0x1000
+  </text>
+  
+  <!-- Pointer 'ptr' -->
+  <rect x="400" y="100" width="200" height="100" fill="#e74c3c" stroke="#2c3e50" stroke-width="3"/>
+  <text x="500" y="130" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="white">
+    Pointer: ptr
+  </text>
+  <text x="500" y="155" text-anchor="middle" font-family="Arial" font-size="16" fill="white">
+    Nilai: 0x1000
+  </text>
+  <text x="500" y="180" text-anchor="middle" font-family="Arial" font-size="14" fill="#ecf0f1">
+    Alamat: 0x2000
+  </text>
+  
+  <!-- Memory address label for ptr -->
+  <rect x="400" y="220" width="200" height="30" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  <text x="500" y="240" text-anchor="middle" font-family="Arial" font-size="14" fill="#2c3e50">
+    Lokasi Memori: 0x2000
+  </text>
+  
+  <!-- Arrow from ptr to x -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#e74c3c" />
+    </marker>
+  </defs>
+  <path d="M 400 150 Q 300 80, 250 150" stroke="#e74c3c" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="300" y="90" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#e74c3c">
+    ptr menunjuk ke x
+  </text>
+  
+  <!-- Code examples -->
+  <rect x="50" y="300" width="700" height="170" fill="#2c3e50" stroke="#34495e" stroke-width="2" rx="10"/>
+  <text x="70" y="330" font-family="Courier New" font-size="14" fill="#ecf0f1">
+    int x = 42;              // Deklarasi variabel x dengan nilai 42
+  </text>
+  <text x="70" y="355" font-family="Courier New" font-size="14" fill="#ecf0f1">
+    int* ptr = &amp;x;           // ptr menyimpan alamat x (0x1000)
+  </text>
+  <text x="70" y="380" font-family="Courier New" font-size="14" fill="#ecf0f1">
+    cout &lt;&lt; x;               // Output: 42 (nilai x)
+  </text>
+  <text x="70" y="405" font-family="Courier New" font-size="14" fill="#ecf0f1">
+    cout &lt;&lt; &amp;x;              // Output: 0x1000 (alamat x)
+  </text>
+  <text x="70" y="430" font-family="Courier New" font-size="14" fill="#ecf0f1">
+    cout &lt;&lt; ptr;             // Output: 0x1000 (nilai ptr = alamat x)
+  </text>
+  <text x="70" y="455" font-family="Courier New" font-size="14" fill="#ecf0f1">
+    cout &lt;&lt; *ptr;            // Output: 42 (dereference: nilai di alamat 0x1000)
+  </text>
+  
+  <!-- Legend -->
+  <text x="50" y="490" font-family="Arial" font-size="12" fill="#7f8c8d">
+    Operator &amp; = mendapatkan alamat | Operator * = dereference (akses nilai yang ditunjuk)
+  </text>
+</svg>
