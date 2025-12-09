@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pertemuan 11 - Turunan Fungsi Trigonometri</title>
+    <title>Turunan Fungsi Trigonometri</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
@@ -19,59 +19,64 @@
         }
         .reveal .slides section {
             text-align: left;
+            font-size: 0.75em;
         }
         .reveal .slides section.center-slide {
             text-align: center;
         }
+        /* Enable scrolling for slides with overflow */
+        .reveal .slides section.scrollable {
+            height: 100%;
+            overflow-y: auto !important;
+        }
+        .reveal .slides {
+            overflow: visible !important;
+        }
         .formula-box {
             background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #2e7d32;
-            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2e7d32;
+            margin: 10px 0;
             text-align: center;
         }
         .formula-box-blue {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #1976d2;
-            margin: 20px 0;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+            margin: 10px 0;
             text-align: center;
         }
         .formula-box-orange {
             background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #f57c00;
-            margin: 20px 0;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #f57c00;
+            margin: 10px 0;
         }
         .proof-step {
             background: #f5f5f5;
-            padding: 10px 15px;
-            margin: 8px 0;
-            border-radius: 5px;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 4px;
             font-size: 0.85em;
         }
         .important-note {
             background: #fff9c4;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             border: 2px solid #fbc02d;
-            margin: 15px 0;
-        }
-        .table-container {
-            display: flex;
-            justify-content: center;
+            margin: 10px 0;
         }
         table {
             border-collapse: collapse;
-            margin: 15px auto;
+            margin: 10px auto;
             font-size: 0.8em;
         }
         th, td {
             border: 1px solid #ccc;
-            padding: 10px 20px;
+            padding: 8px 15px;
             text-align: center;
         }
         th {
@@ -83,13 +88,10 @@
         }
         .two-column {
             display: flex;
-            gap: 30px;
+            gap: 20px;
         }
         .column {
             flex: 1;
-        }
-        .small-text {
-            font-size: 0.75em;
         }
         .highlight {
             color: #d32f2f;
@@ -98,25 +100,27 @@
         .green-text {
             color: #2e7d32;
         }
-        .blue-text {
-            color: #1976d2;
-        }
-        ul {
-            margin-left: 20px;
+        ul, ol {
+            margin-left: 15px;
         }
         li {
-            margin: 8px 0;
+            margin: 5px 0;
         }
         .slide-title {
-            border-bottom: 3px solid #2e7d32;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
+            border-bottom: 2px solid #2e7d32;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
         }
         .example-box {
             background: #fce4ec;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+        .small-table th, .small-table td {
+            padding: 5px 10px;
+            font-size: 0.75em;
         }
     </style>
 </head>
@@ -126,11 +130,11 @@
             
             <!-- SLIDE 1: Title -->
             <section class="center-slide" data-background="linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%)">
-                <h1 style="color: white;">Turunan Fungsi Trigonometri</h1>
+                <h1 style="color: white; font-size: 2em;">Turunan Fungsi Trigonometri</h1>
                 <h3 style="color: #c8e6c9;">Kalkulus Diferensial</h3>
-                <p style="color: white; margin-top: 50px;">
+                <p style="color: white; margin-top: 40px;">
                     Berdasarkan materi oleh<br>
-                    <strong>Nadiza Lediwara, S.T., M.Eng</strong>
+                    <strong>Anindito, S.Kom., S.S., S.H., M.TI., CHFI.</strong>
                 </p>
             </section>
 
@@ -157,500 +161,293 @@
                 </div>
             </section>
 
-            <!-- SLIDE 3: Prasyarat -->
-            <section>
-                <h2 class="slide-title">🎯 Prasyarat Pengetahuan</h2>
-                <p>Sebelum mempelajari materi ini, pastikan memahami:</p>
-                <ul>
-                    <li><strong>Definisi turunan</strong> menggunakan limit</li>
-                    <li><strong>Identitas trigonometri</strong> dasar</li>
-                    <li><strong>Aturan turunan:</strong> hasil kali, hasil bagi, rantai</li>
-                    <li><strong>Limit trigonometri</strong> khusus</li>
-                </ul>
-            </section>
-
-            <!-- SLIDE 4: Definisi Turunan -->
+            <!-- SLIDE 3: Definisi Turunan -->
             <section>
                 <h2 class="slide-title">📐 Definisi Turunan</h2>
                 <div class="formula-box">
-                    <p style="font-size: 1.3em;">
+                    <p style="font-size: 1.2em;">
                         \[f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}\]
                     </p>
                 </div>
-                <p style="margin-top: 30px;">Definisi ini menjadi dasar untuk menurunkan semua rumus turunan fungsi trigonometri.</p>
+                <p style="margin-top: 20px;">Definisi ini menjadi dasar untuk menurunkan semua rumus turunan fungsi trigonometri.</p>
             </section>
 
-            <!-- SLIDE 5: Limit Trigonometri Penting -->
+            <!-- SLIDE 4: Limit Trigonometri Penting -->
             <section>
                 <h2 class="slide-title">⭐ Limit Trigonometri Penting</h2>
                 <div class="two-column">
                     <div class="column">
                         <div class="formula-box-blue">
                             <p><strong>Limit Pertama</strong></p>
-                            <p style="font-size: 1.2em;">
-                                \[\lim_{x \to 0} \frac{\sin x}{x} = 1\]
-                            </p>
+                            <p>\[\lim_{x \to 0} \frac{\sin x}{x} = 1\]</p>
                         </div>
                     </div>
                     <div class="column">
                         <div class="formula-box-blue">
                             <p><strong>Limit Kedua</strong></p>
-                            <p style="font-size: 1.2em;">
-                                \[\lim_{x \to 0} \frac{\cos x - 1}{x} = 0\]
-                            </p>
+                            <p>\[\lim_{x \to 0} \frac{\cos x - 1}{x} = 0\]</p>
                         </div>
                     </div>
                 </div>
-                <div class="important-note" style="margin-top: 20px;">
-                    💡 <strong>Ingat:</strong> Kedua limit ini sangat penting dalam pembuktian turunan sin x dan cos x!
+                <div class="important-note">
+                    💡 Kedua limit ini sangat penting dalam pembuktian turunan sin x dan cos x!
                 </div>
             </section>
 
-            <!-- SLIDE 6: Identitas Trigonometri -->
+            <!-- SLIDE 5: Identitas Trigonometri -->
             <section>
                 <h2 class="slide-title">🔢 Identitas Trigonometri</h2>
-                <h4>Rumus Penjumlahan Sudut</h4>
                 <table>
-                    <tr>
-                        <th>Identitas</th>
-                        <th>Rumus</th>
-                    </tr>
-                    <tr>
-                        <td>\(\sin(A + B)\)</td>
-                        <td>\(\sin A \cos B + \cos A \sin B\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\sin(A - B)\)</td>
-                        <td>\(\sin A \cos B - \cos A \sin B\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\cos(A + B)\)</td>
-                        <td>\(\cos A \cos B - \sin A \sin B\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\cos(A - B)\)</td>
-                        <td>\(\cos A \cos B + \sin A \sin B\)</td>
-                    </tr>
+                    <tr><th>Identitas</th><th>Rumus</th></tr>
+                    <tr><td>\(\sin(A + B)\)</td><td>\(\sin A \cos B + \cos A \sin B\)</td></tr>
+                    <tr><td>\(\sin(A - B)\)</td><td>\(\sin A \cos B - \cos A \sin B\)</td></tr>
+                    <tr><td>\(\cos(A + B)\)</td><td>\(\cos A \cos B - \sin A \sin B\)</td></tr>
+                    <tr><td>\(\cos(A - B)\)</td><td>\(\cos A \cos B + \sin A \sin B\)</td></tr>
                 </table>
             </section>
 
-            <!-- SLIDE 7: Turunan Sinus - Teorema -->
+            <!-- SLIDE 6: Turunan Sinus - Teorema -->
             <section>
-                <section>
-                    <h2 class="slide-title">📘 Turunan Fungsi Sinus</h2>
-                    <div class="formula-box">
-                        <h3 style="color: #2e7d32;">Teorema</h3>
-                        <p style="font-size: 1.5em;">
-                            \[f(x) = \sin x \Rightarrow f'(x) = \cos x\]
-                        </p>
-                    </div>
-                    <p style="text-align: center; margin-top: 30px;">
-                        <em>Tekan ↓ untuk melihat pembuktian lengkap</em>
-                    </p>
-                </section>
-
-                <!-- SLIDE 7a: Pembuktian Sinus -->
-                <section>
-                    <h3>Pembuktian Turunan sin x</h3>
-                    <div class="proof-step">
-                        <strong>Langkah 1:</strong> Definisi turunan<br>
-                        \[f'(x) = \lim_{h \to 0} \frac{\sin(x+h) - \sin x}{h}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 2:</strong> Gunakan identitas sin(A+B)<br>
-                        \[= \lim_{h \to 0} \frac{\sin x \cos h + \cos x \sin h - \sin x}{h}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 3:</strong> Kelompokkan<br>
-                        \[= \lim_{h \to 0} \frac{\sin x (\cos h - 1) + \cos x \sin h}{h}\]
-                    </div>
-                </section>
-
-                <!-- SLIDE 7b: Pembuktian Sinus (lanjutan) -->
-                <section>
-                    <h3>Pembuktian (lanjutan)</h3>
-                    <div class="proof-step">
-                        <strong>Langkah 4:</strong> Pisahkan limit<br>
-                        \[= \sin x \lim_{h \to 0} \frac{\cos h - 1}{h} + \cos x \lim_{h \to 0} \frac{\sin h}{h}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 5:</strong> Substitusi nilai limit<br>
-                        \[= \sin x \cdot (0) + \cos x \cdot (1)\]
-                    </div>
-                    <div class="formula-box">
-                        <strong>Langkah 6:</strong> Hasil akhir<br>
-                        \[f'(x) = \cos x \quad \checkmark\]
-                    </div>
-                </section>
+                <h2 class="slide-title">📘 Turunan Fungsi Sinus</h2>
+                <div class="formula-box">
+                    <h3 style="color: #2e7d32; margin: 0;">Teorema</h3>
+                    <p style="font-size: 1.3em;">\[f(x) = \sin x \Rightarrow f'(x) = \cos x\]</p>
+                </div>
             </section>
 
-            <!-- SLIDE 8: Turunan Cosinus -->
+            <!-- SLIDE 7: Pembuktian Sinus Part 1 -->
             <section>
-                <section>
-                    <h2 class="slide-title">📗 Turunan Fungsi Cosinus</h2>
-                    <div class="formula-box">
-                        <h3 style="color: #2e7d32;">Teorema</h3>
-                        <p style="font-size: 1.5em;">
-                            \[f(x) = \cos x \Rightarrow f'(x) = -\sin x\]
-                        </p>
-                    </div>
-                    <div class="important-note">
-                        ⚠️ <strong>Perhatikan tanda negatif!</strong> Ini adalah kesalahan umum yang sering terjadi.
-                    </div>
-                    <p style="text-align: center;">
-                        <em>Tekan ↓ untuk melihat pembuktian</em>
-                    </p>
-                </section>
-
-                <!-- SLIDE 8a: Pembuktian Cosinus -->
-                <section>
-                    <h3>Pembuktian Turunan cos x</h3>
-                    <div class="proof-step">
-                        <strong>Langkah 1:</strong> Definisi turunan<br>
-                        \[f'(x) = \lim_{h \to 0} \frac{\cos(x+h) - \cos x}{h}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 2:</strong> Gunakan identitas cos(A+B)<br>
-                        \[= \lim_{h \to 0} \frac{\cos x \cos h - \sin x \sin h - \cos x}{h}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 3:</strong> Kelompokkan dan substitusi limit<br>
-                        \[= \cos x \cdot (0) - \sin x \cdot (1) = -\sin x\]
-                    </div>
-                </section>
+                <h2 class="slide-title">Pembuktian Turunan sin x (1/2)</h2>
+                <div class="proof-step">
+                    <strong>Langkah 1:</strong> Definisi turunan<br>
+                    \[f'(x) = \lim_{h \to 0} \frac{\sin(x+h) - \sin x}{h}\]
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 2:</strong> Gunakan identitas sin(A+B)<br>
+                    \[= \lim_{h \to 0} \frac{\sin x \cos h + \cos x \sin h - \sin x}{h}\]
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 3:</strong> Kelompokkan<br>
+                    \[= \lim_{h \to 0} \frac{\sin x (\cos h - 1) + \cos x \sin h}{h}\]
+                </div>
             </section>
 
-            <!-- SLIDE 9: Turunan Tangen -->
+            <!-- SLIDE 8: Pembuktian Sinus Part 2 -->
             <section>
-                <section>
-                    <h2 class="slide-title">📙 Turunan Fungsi Tangen</h2>
-                    <div class="formula-box">
-                        <h3 style="color: #2e7d32;">Teorema</h3>
-                        <p style="font-size: 1.5em;">
-                            \[f(x) = \tan x \Rightarrow f'(x) = \sec^2 x\]
-                        </p>
-                    </div>
-                    <p style="margin-top: 20px;">
-                        Karena \(\tan x = \frac{\sin x}{\cos x}\), kita gunakan <strong>aturan hasil bagi</strong>.
-                    </p>
-                </section>
-
-                <!-- SLIDE 9a: Pembuktian Tangen -->
-                <section>
-                    <h3>Pembuktian dengan Aturan Hasil Bagi</h3>
-                    <div class="proof-step">
-                        <strong>Langkah 1:</strong> Identifikasi u dan v<br>
-                        \[u = \sin x, \quad v = \cos x\]
-                        \[u' = \cos x, \quad v' = -\sin x\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 2:</strong> Terapkan aturan hasil bagi<br>
-                        \[\frac{d}{dx}(\tan x) = \frac{\cos x \cdot \cos x - \sin x \cdot (-\sin x)}{\cos^2 x}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Langkah 3:</strong> Sederhanakan<br>
-                        \[= \frac{\cos^2 x + \sin^2 x}{\cos^2 x} = \frac{1}{\cos^2 x} = \sec^2 x\]
-                    </div>
-                </section>
+                <h2 class="slide-title">Pembuktian Turunan sin x (2/2)</h2>
+                <div class="proof-step">
+                    <strong>Langkah 4:</strong> Pisahkan limit<br>
+                    \[= \sin x \lim_{h \to 0} \frac{\cos h - 1}{h} + \cos x \lim_{h \to 0} \frac{\sin h}{h}\]
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 5:</strong> Substitusi nilai limit<br>
+                    \[= \sin x \cdot (0) + \cos x \cdot (1)\]
+                </div>
+                <div class="formula-box">
+                    <strong>Hasil:</strong> \[f'(x) = \cos x \quad \checkmark\]
+                </div>
             </section>
 
-            <!-- SLIDE 10: Turunan Trigonometri Lainnya -->
+            <!-- SLIDE 9: Turunan Cosinus -->
+            <section>
+                <h2 class="slide-title">📗 Turunan Fungsi Cosinus</h2>
+                <div class="formula-box">
+                    <h3 style="color: #2e7d32; margin: 0;">Teorema</h3>
+                    <p style="font-size: 1.3em;">\[f(x) = \cos x \Rightarrow f'(x) = -\sin x\]</p>
+                </div>
+                <div class="important-note">
+                    ⚠️ <strong>Perhatikan tanda negatif!</strong> Ini adalah kesalahan umum yang sering terjadi.
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Pembuktian Cosinus -->
+            <section>
+                <h2 class="slide-title">Pembuktian Turunan cos x</h2>
+                <div class="proof-step">
+                    <strong>Langkah 1:</strong> \[f'(x) = \lim_{h \to 0} \frac{\cos(x+h) - \cos x}{h}\]
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 2:</strong> Gunakan identitas cos(A+B)<br>
+                    \[= \lim_{h \to 0} \frac{\cos x \cos h - \sin x \sin h - \cos x}{h}\]
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 3:</strong> Substitusi limit<br>
+                    \[= \cos x \cdot (0) - \sin x \cdot (1) = -\sin x\]
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Turunan Tangen -->
+            <section>
+                <h2 class="slide-title">📙 Turunan Fungsi Tangen</h2>
+                <div class="formula-box">
+                    <h3 style="color: #2e7d32; margin: 0;">Teorema</h3>
+                    <p style="font-size: 1.3em;">\[f(x) = \tan x \Rightarrow f'(x) = \sec^2 x\]</p>
+                </div>
+                <p>Karena \(\tan x = \frac{\sin x}{\cos x}\), gunakan <strong>aturan hasil bagi</strong>.</p>
+            </section>
+
+            <!-- SLIDE 12: Pembuktian Tangen -->
+            <section>
+                <h2 class="slide-title">Pembuktian Turunan tan x</h2>
+                <div class="proof-step">
+                    <strong>Langkah 1:</strong> u = sin x → u' = cos x, v = cos x → v' = -sin x
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 2:</strong> Terapkan aturan hasil bagi<br>
+                    \[\frac{d}{dx}(\tan x) = \frac{\cos x \cdot \cos x - \sin x \cdot (-\sin x)}{\cos^2 x}\]
+                </div>
+                <div class="proof-step">
+                    <strong>Langkah 3:</strong> Sederhanakan<br>
+                    \[= \frac{\cos^2 x + \sin^2 x}{\cos^2 x} = \frac{1}{\cos^2 x} = \sec^2 x\]
+                </div>
+            </section>
+
+            <!-- SLIDE 13: Turunan Trigonometri Lainnya -->
             <section>
                 <h2 class="slide-title">📕 Turunan Trigonometri Lainnya</h2>
-                <p>Diperoleh dengan menerapkan aturan turunan \(\frac{u}{v}\):</p>
                 <table>
-                    <tr>
-                        <th>Fungsi f(x)</th>
-                        <th>Turunan f'(x)</th>
-                    </tr>
-                    <tr>
-                        <td>\(\tan x\)</td>
-                        <td class="green-text">\(\sec^2 x\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\cot x\)</td>
-                        <td class="highlight">\(-\csc^2 x\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\sec x\)</td>
-                        <td class="green-text">\(\sec x \cdot \tan x\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\csc x\)</td>
-                        <td class="highlight">\(-\csc x \cdot \cot x\)</td>
-                    </tr>
+                    <tr><th>Fungsi f(x)</th><th>Turunan f'(x)</th></tr>
+                    <tr><td>\(\tan x\)</td><td class="green-text">\(\sec^2 x\)</td></tr>
+                    <tr><td>\(\cot x\)</td><td class="highlight">\(-\csc^2 x\)</td></tr>
+                    <tr><td>\(\sec x\)</td><td class="green-text">\(\sec x \cdot \tan x\)</td></tr>
+                    <tr><td>\(\csc x\)</td><td class="highlight">\(-\csc x \cdot \cot x\)</td></tr>
                 </table>
             </section>
 
-            <!-- SLIDE 11: Pola Tanda -->
+            <!-- SLIDE 14: Pola Tanda -->
             <section>
                 <h2 class="slide-title">🎨 Tips Mengingat Tanda</h2>
                 <div class="two-column">
                     <div class="column">
                         <div class="formula-box">
-                            <h4>✅ Positif</h4>
-                            <p>sin x → <strong>cos x</strong></p>
-                            <p>tan x → <strong>sec² x</strong></p>
-                            <p>sec x → <strong>sec x tan x</strong></p>
+                            <h4 style="margin: 0;">✅ Positif</h4>
+                            <p style="margin: 5px 0;">sin x → <strong>cos x</strong></p>
+                            <p style="margin: 5px 0;">tan x → <strong>sec² x</strong></p>
+                            <p style="margin: 5px 0;">sec x → <strong>sec x tan x</strong></p>
                         </div>
                     </div>
                     <div class="column">
                         <div class="formula-box-orange">
-                            <h4>❌ Negatif (Co-fungsi)</h4>
-                            <p>cos x → <strong>−sin x</strong></p>
-                            <p>cot x → <strong>−csc² x</strong></p>
-                            <p>csc x → <strong>−csc x cot x</strong></p>
+                            <h4 style="margin: 0;">❌ Negatif (Co-fungsi)</h4>
+                            <p style="margin: 5px 0;">cos x → <strong>−sin x</strong></p>
+                            <p style="margin: 5px 0;">cot x → <strong>−csc² x</strong></p>
+                            <p style="margin: 5px 0;">csc x → <strong>−csc x cot x</strong></p>
                         </div>
                     </div>
                 </div>
-                <div class="important-note" style="margin-top: 20px;">
-                    💡 <strong>Pola:</strong> Co-fungsi (cos, cot, csc) selalu menghasilkan turunan <span class="highlight">negatif</span>!
-                </div>
             </section>
 
-            <!-- SLIDE 12: Aturan Rantai -->
+            <!-- SLIDE 15: Aturan Rantai -->
             <section>
                 <h2 class="slide-title">🔗 Aturan Rantai</h2>
                 <p>Jika \(u = u(x)\), maka:</p>
-                <table>
-                    <tr>
-                        <th>Fungsi</th>
-                        <th>Turunan</th>
-                    </tr>
-                    <tr>
-                        <td>\(\sin u\)</td>
-                        <td>\(\cos u \cdot \frac{du}{dx}\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\cos u\)</td>
-                        <td>\(-\sin u \cdot \frac{du}{dx}\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\tan u\)</td>
-                        <td>\(\sec^2 u \cdot \frac{du}{dx}\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(\sec u\)</td>
-                        <td>\(\sec u \tan u \cdot \frac{du}{dx}\)</td>
-                    </tr>
+                <table class="small-table">
+                    <tr><th>Fungsi</th><th>Turunan</th></tr>
+                    <tr><td>\(\sin u\)</td><td>\(\cos u \cdot \frac{du}{dx}\)</td></tr>
+                    <tr><td>\(\cos u\)</td><td>\(-\sin u \cdot \frac{du}{dx}\)</td></tr>
+                    <tr><td>\(\tan u\)</td><td>\(\sec^2 u \cdot \frac{du}{dx}\)</td></tr>
+                    <tr><td>\(\sec u\)</td><td>\(\sec u \tan u \cdot \frac{du}{dx}\)</td></tr>
                 </table>
             </section>
 
-            <!-- SLIDE 13: Contoh 1 -->
+            <!-- SLIDE 16: Contoh 1 -->
             <section>
-                <section>
-                    <h2 class="slide-title">✏️ Contoh Soal 1</h2>
-                    <div class="example-box">
-                        <p><strong>Tentukan \(\frac{dy}{dx}\) dari:</strong></p>
-                        <p style="font-size: 1.4em; text-align: center;">
-                            \[y = \sin^4(x^3 + 5)\]
-                        </p>
-                    </div>
-                    <p style="text-align: center; margin-top: 30px;">
-                        <em>Tekan ↓ untuk melihat penyelesaian</em>
-                    </p>
-                </section>
-
-                <section>
-                    <h3>Penyelesaian Soal 1</h3>
-                    <div class="proof-step">
-                        <strong>Identifikasi struktur:</strong><br>
-                        \[y = [\sin(x^3 + 5)]^4\]
-                        <p>Fungsi terluar: \(u^4\), Fungsi tengah: \(\sin v\), Fungsi dalam: \(v = x^3 + 5\)</p>
-                    </div>
-                    <div class="proof-step">
-                        <strong>Terapkan aturan rantai:</strong><br>
-                        \[\frac{dy}{dx} = 4[\sin(x^3+5)]^3 \cdot \cos(x^3+5) \cdot 3x^2\]
-                    </div>
-                    <div class="formula-box">
-                        <strong>Jawaban:</strong><br>
-                        \[\frac{dy}{dx} = 12x^2 \sin^3(x^3+5) \cos(x^3+5)\]
-                    </div>
-                </section>
+                <h2 class="slide-title">✏️ Contoh 1</h2>
+                <div class="example-box">
+                    <p><strong>Tentukan turunan dari:</strong> \(y = \sin^4(x^3 + 5)\)</p>
+                </div>
+                <div class="proof-step">
+                    <strong>Identifikasi:</strong> y = [sin(x³ + 5)]⁴
+                </div>
+                <div class="proof-step">
+                    <strong>Aturan rantai:</strong><br>
+                    \(\frac{dy}{dx} = 4[\sin(x^3+5)]^3 \cdot \cos(x^3+5) \cdot 3x^2\)
+                </div>
+                <div class="formula-box">
+                    \(\frac{dy}{dx} = 12x^2 \sin^3(x^3+5) \cos(x^3+5)\)
+                </div>
             </section>
 
-            <!-- SLIDE 14: Contoh 2 -->
+            <!-- SLIDE 17: Contoh 2 -->
             <section>
-                <section>
-                    <h2 class="slide-title">✏️ Contoh Soal 2</h2>
-                    <div class="example-box">
-                        <p><strong>Carilah turunan dari:</strong></p>
-                        <p style="font-size: 1.4em; text-align: center;">
-                            \[y = \frac{1 - \cos x}{1 + \cos x}\]
-                        </p>
-                    </div>
-                    <p style="text-align: center; margin-top: 30px;">
-                        <em>Tekan ↓ untuk melihat penyelesaian</em>
-                    </p>
-                </section>
-
-                <section>
-                    <h3>Penyelesaian Soal 2</h3>
-                    <div class="proof-step">
-                        <strong>Gunakan aturan hasil bagi:</strong><br>
-                        \[u = 1 - \cos x \Rightarrow u' = \sin x\]
-                        \[v = 1 + \cos x \Rightarrow v' = -\sin x\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Terapkan rumus:</strong><br>
-                        \[\frac{dy}{dx} = \frac{(\sin x)(1+\cos x) - (1-\cos x)(-\sin x)}{(1+\cos x)^2}\]
-                    </div>
-                    <div class="formula-box">
-                        <strong>Jawaban:</strong><br>
-                        \[\frac{dy}{dx} = \frac{2\sin x}{(1 + \cos x)^2}\]
-                    </div>
-                </section>
+                <h2 class="slide-title">✏️ Contoh 2</h2>
+                <div class="example-box">
+                    <p><strong>Carilah turunan dari:</strong> \(y = \frac{1 - \cos x}{1 + \cos x}\)</p>
+                </div>
+                <div class="proof-step">
+                    <strong>Aturan hasil bagi:</strong> u = 1 - cos x → u' = sin x, v = 1 + cos x → v' = -sin x
+                </div>
+                <div class="proof-step">
+                    \(\frac{dy}{dx} = \frac{(\sin x)(1+\cos x) - (1-\cos x)(-\sin x)}{(1+\cos x)^2} = \frac{2\sin x}{(1+\cos x)^2}\)
+                </div>
+                <div class="formula-box">
+                    \(\frac{dy}{dx} = \frac{2\sin x}{(1 + \cos x)^2}\)
+                </div>
             </section>
 
-            <!-- SLIDE 15: Contoh 3 -->
+            <!-- SLIDE 18: Contoh 3 -->
             <section>
-                <section>
-                    <h2 class="slide-title">✏️ Contoh Soal 3</h2>
-                    <div class="example-box">
-                        <p><strong>Carilah turunan dari:</strong></p>
-                        <p style="font-size: 1.4em; text-align: center;">
-                            \[y = \frac{\sin x \cdot \sec x}{1 + \tan x}\]
-                        </p>
-                    </div>
-                    <p style="text-align: center; margin-top: 30px;">
-                        <em>Tekan ↓ untuk melihat penyelesaian</em>
-                    </p>
-                </section>
-
-                <section>
-                    <h3>Penyelesaian Soal 3</h3>
-                    <div class="proof-step">
-                        <strong>Sederhanakan terlebih dahulu:</strong><br>
-                        \[y = \frac{\sin x \cdot \frac{1}{\cos x}}{1 + \tan x} = \frac{\tan x}{1 + \tan x}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Gunakan aturan hasil bagi:</strong><br>
-                        \[u = \tan x, \quad v = 1 + \tan x\]
-                        \[u' = \sec^2 x, \quad v' = \sec^2 x\]
-                    </div>
-                    <div class="formula-box">
-                        <strong>Jawaban:</strong><br>
-                        \[\frac{dy}{dx} = \frac{\sec^2 x}{(1 + \tan x)^2}\]
-                    </div>
-                </section>
+                <h2 class="slide-title">✏️ Contoh 3</h2>
+                <div class="example-box">
+                    <p><strong>Carilah turunan dari:</strong> \(y = \frac{\sin x \cdot \sec x}{1 + \tan x}\)</p>
+                </div>
+                <div class="proof-step">
+                    <strong>Sederhanakan:</strong> \(y = \frac{\tan x}{1 + \tan x}\)
+                </div>
+                <div class="proof-step">
+                    <strong>Aturan hasil bagi:</strong> u = tan x, v = 1 + tan x
+                </div>
+                <div class="formula-box">
+                    \(\frac{dy}{dx} = \frac{\sec^2 x}{(1 + \tan x)^2}\)
+                </div>
             </section>
 
-            <!-- SLIDE 16: Contoh 4 -->
+            <!-- SLIDE 19: Contoh 4 -->
             <section>
-                <section>
-                    <h2 class="slide-title">✏️ Contoh Soal 4</h2>
-                    <div class="example-box">
-                        <p><strong>Carilah turunan dari:</strong></p>
-                        <p style="font-size: 1.3em; text-align: center;">
-                            \[y = \sqrt{\frac{a\cos^2 x + b\sin^2 x}{\cos^2 x}}\]
-                        </p>
-                        <p style="text-align: center;"><em>dengan a dan b adalah konstanta</em></p>
-                    </div>
-                </section>
-
-                <section>
-                    <h3>Penyelesaian Soal 4</h3>
-                    <div class="proof-step">
-                        <strong>Sederhanakan:</strong><br>
-                        \[y = \sqrt{a + b\tan^2 x} = (a + b\tan^2 x)^{1/2}\]
-                    </div>
-                    <div class="proof-step">
-                        <strong>Terapkan aturan rantai:</strong><br>
-                        \[\frac{dy}{dx} = \frac{1}{2}(a + b\tan^2 x)^{-1/2} \cdot 2b\tan x \sec^2 x\]
-                    </div>
-                    <div class="formula-box">
-                        <strong>Jawaban:</strong><br>
-                        \[\frac{dy}{dx} = \frac{b\tan x \sec^2 x}{\sqrt{a + b\tan^2 x}}\]
-                    </div>
-                </section>
+                <h2 class="slide-title">✏️ Contoh 4</h2>
+                <div class="example-box">
+                    <p><strong>Carilah turunan dari:</strong> \(y = \sqrt{\frac{a\cos^2 x + b\sin^2 x}{\cos^2 x}}\)</p>
+                </div>
+                <div class="proof-step">
+                    <strong>Sederhanakan:</strong> \(y = \sqrt{a + b\tan^2 x}\)
+                </div>
+                <div class="formula-box">
+                    \(\frac{dy}{dx} = \frac{b\tan x \sec^2 x}{\sqrt{a + b\tan^2 x}}\)
+                </div>
             </section>
 
-            <!-- SLIDE 17: Contoh 5 -->
+            <!-- SLIDE 20: Contoh 5 -->
             <section>
-                <section>
-                    <h2 class="slide-title">✏️ Contoh Soal 5</h2>
-                    <div class="example-box">
-                        <p><strong>Carilah turunan dari:</strong></p>
-                        <p style="font-size: 1.4em; text-align: center;">
-                            \[y = \frac{2\sin^3 2x}{\cos^2 2x}\]
-                        </p>
-                    </div>
-                </section>
-
-                <section>
-                    <h3>Penyelesaian Soal 5</h3>
-                    <div class="proof-step">
-                        <strong>Gunakan aturan hasil bagi:</strong><br>
-                        \[u = 2\sin^3(2x), \quad v = \cos^2(2x)\]
-                        \[u' = 12\sin^2(2x)\cos(2x)\]
-                        \[v' = -4\sin(2x)\cos(2x)\]
-                    </div>
-                    <div class="formula-box">
-                        <strong>Jawaban (setelah penyederhanaan):</strong><br>
-                        \[\frac{dy}{dx} = \frac{4\sin^2(2x)(2 + \cos^2(2x))}{\cos^3(2x)}\]
-                    </div>
-                </section>
+                <h2 class="slide-title">✏️ Contoh 5</h2>
+                <div class="example-box">
+                    <p><strong>Carilah turunan dari:</strong> \(y = \frac{2\sin^3 2x}{\cos^2 2x}\)</p>
+                </div>
+                <div class="proof-step">
+                    <strong>Gunakan aturan hasil bagi</strong> dengan u = 2sin³(2x), v = cos²(2x)
+                </div>
+                <div class="formula-box">
+                    \(\frac{dy}{dx} = \frac{4\sin^2(2x)(2 + \cos^2(2x))}{\cos^3(2x)}\)
+                </div>
             </section>
 
-            <!-- SLIDE 18: Ringkasan Rumus -->
+            <!-- SLIDE 21: Ringkasan Rumus -->
             <section>
                 <h2 class="slide-title">📋 Ringkasan Rumus</h2>
-                <table style="font-size: 0.9em;">
-                    <tr>
-                        <th>No</th>
-                        <th>Fungsi f(x)</th>
-                        <th>Turunan f'(x)</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>\(\sin x\)</td>
-                        <td>\(\cos x\)</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>\(\cos x\)</td>
-                        <td>\(-\sin x\)</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>\(\tan x\)</td>
-                        <td>\(\sec^2 x\)</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>\(\cot x\)</td>
-                        <td>\(-\csc^2 x\)</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>\(\sec x\)</td>
-                        <td>\(\sec x \tan x\)</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>\(\csc x\)</td>
-                        <td>\(-\csc x \cot x\)</td>
-                    </tr>
+                <table class="small-table">
+                    <tr><th>No</th><th>Fungsi f(x)</th><th>Turunan f'(x)</th></tr>
+                    <tr><td>1</td><td>\(\sin x\)</td><td>\(\cos x\)</td></tr>
+                    <tr><td>2</td><td>\(\cos x\)</td><td>\(-\sin x\)</td></tr>
+                    <tr><td>3</td><td>\(\tan x\)</td><td>\(\sec^2 x\)</td></tr>
+                    <tr><td>4</td><td>\(\cot x\)</td><td>\(-\csc^2 x\)</td></tr>
+                    <tr><td>5</td><td>\(\sec x\)</td><td>\(\sec x \tan x\)</td></tr>
+                    <tr><td>6</td><td>\(\csc x\)</td><td>\(-\csc x \cot x\)</td></tr>
                 </table>
             </section>
 
-            <!-- SLIDE 19: Latihan -->
-            <section>
-                <h2 class="slide-title">📝 Latihan Mandiri</h2>
-                <p>Tentukan turunan dari fungsi-fungsi berikut:</p>
-                <ol>
-                    <li>\(y = \sin(5x)\)</li>
-                    <li>\(y = \cos(x^2 + 1)\)</li>
-                    <li>\(y = \tan(3x)\)</li>
-                    <li>\(y = \sin^2 x \cdot \cos x\)</li>
-                    <li>\(y = \sec(x^3)\)</li>
-                </ol>
-            </section>
-
-            <!-- SLIDE 20: Kesimpulan -->
+            <!-- SLIDE 22: Kesimpulan -->
             <section class="center-slide" data-background="linear-gradient(135deg, #1976d2 0%, #64b5f6 100%)">
                 <h2 style="color: white;">🎓 Kesimpulan</h2>
-                <div style="color: white; text-align: left; max-width: 700px; margin: 0 auto;">
+                <div style="color: white; text-align: left; max-width: 600px; margin: 0 auto; font-size: 0.9em;">
                     <p>✓ Turunan fungsi trigonometri dasar menggunakan <strong>definisi limit</strong></p>
                     <p>✓ Gunakan <strong>aturan hasil bagi</strong> untuk tan, cot, sec, csc</p>
                     <p>✓ Perhatikan <strong>tanda negatif</strong> pada co-fungsi</p>
@@ -658,11 +455,11 @@
                 </div>
             </section>
 
-            <!-- SLIDE 21: Penutup -->
+            <!-- SLIDE 23: Penutup -->
             <section class="center-slide" data-background="linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%)">
                 <h1 style="color: white;">Terima Kasih</h1>
                 <h3 style="color: #c8e6c9;">Selamat Belajar!</h3>
-                <p style="color: white; margin-top: 40px;">
+                <p style="color: white; margin-top: 30px;">
                     <em>Berdasarkan materi oleh</em><br>
                     <strong>Nadiza Lediwara, S.T., M.Eng</strong>
                 </p>
@@ -677,12 +474,14 @@
             hash: true,
             slideNumber: true,
             progress: true,
-            center: false,
+            center: true,
             transition: 'slide',
             backgroundTransition: 'fade',
-            width: 1200,
+            width: 1100,
             height: 700,
-            margin: 0.1
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 1.5
         });
     </script>
 </body>
