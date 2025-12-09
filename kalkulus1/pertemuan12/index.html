@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turunan Fungsi Logaritma - Pertemuan 12</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #81C784;
+            --accent-color: #4CAF50;
+            --dark-color: #1B5E20;
+            --light-color: #E8F5E9;
+            --text-color: #263238;
+        }
+        
+        .reveal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: none;
+        }
+        
+        .reveal h1 {
+            font-size: 2.2em;
+        }
+        
+        .reveal h2 {
+            font-size: 1.6em;
+            border-bottom: 4px solid var(--accent-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .reveal h3 {
+            font-size: 1.3em;
+            color: var(--dark-color);
+        }
+        
+        .reveal .slides section {
+            text-align: left;
+        }
+        
+        .reveal .slides section.center-slide {
+            text-align: center;
+        }
+        
+        .reveal p, .reveal li {
+            font-size: 0.85em;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+        
+        .reveal ul, .reveal ol {
+            margin-left: 0;
+        }
+        
+        .reveal li {
+            margin-bottom: 12px;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, var(--light-color) 0%, #C8E6C9 100%);
+            border-left: 6px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.15);
+        }
+        
+        .formula-box .katex {
+            font-size: 1.4em;
+        }
+        
+        .example-box {
+            background: #FFF8E1;
+            border-left: 6px solid #FFA000;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .example-box h4 {
+            color: #E65100;
+            margin-top: 0;
+            font-size: 0.95em;
+        }
+        
+        .info-box {
+            background: #E3F2FD;
+            border-left: 6px solid #1976D2;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .warning-box {
+            background: #FFEBEE;
+            border-left: 6px solid #D32F2F;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .two-column > div {
+            flex: 1;
+        }
+        
+        .reveal pre {
+            width: 100%;
+            font-size: 0.7em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        
+        .reveal code {
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        .step-box {
+            background: white;
+            border: 2px solid var(--secondary-color);
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .highlight-green {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .title-slide {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
+        }
+        
+        .title-slide h1, .title-slide p {
+            color: white !important;
+        }
+        
+        .title-slide .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .title-slide .author {
+            margin-top: 40px;
+            font-size: 1em;
+        }
+        
+        table.formula-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.8em;
+        }
+        
+        table.formula-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        
+        table.formula-table td {
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        table.formula-table tr:nth-child(even) {
+            background: var(--light-color);
+        }
+        
+        .slide-number {
+            font-size: 12px !important;
+            color: var(--primary-color) !important;
+        }
+        
+        .footer-text {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            font-size: 0.6em;
+            color: #666;
+        }
+        
+        .katex { font-size: 1.1em; }
+        
+        .reveal .progress {
+            background: var(--light-color);
+        }
+        
+        .reveal .progress span {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section class="center-slide title-slide" data-background-color="#2E7D32">
+                <h1>Turunan Fungsi Logaritma</h1>
+                <p class="subtitle">Pertemuan 12 - Kalkulus</p>
+                <p class="author">Nadiza Lediwara, S.T., M.Eng</p>
+            </section>
+            
+            <!-- Slide 2: Daftar Isi -->
+            <section>
+                <h2>📋 Daftar Materi</h2>
+                <ol>
+                    <li>Konsep Dasar Logaritma</li>
+                    <li>Turunan Logaritma Natural (ln)</li>
+                    <li>Turunan Logaritma Umum (basis a)</li>
+                    <li>Penerapan Aturan Rantai</li>
+                    <li>Kombinasi dengan Aturan Turunan Lainnya</li>
+                    <li>Aplikasi dalam Statistik</li>
+                    <li>Latihan Soal</li>
+                </ol>
+            </section>
+            
+            <!-- Slide 3: Konsep Dasar -->
+            <section>
+                <h2>📌 Konsep Dasar Logaritma</h2>
+                <div class="info-box">
+                    <strong>Definisi:</strong> Logaritma adalah operasi kebalikan (invers) dari eksponensial.
+                    <br><br>
+                    Jika <span class="katex">a^b = c</span>, maka <span class="katex">\log_a c = b</span>
+                </div>
+                <h3>Jenis-Jenis Logaritma:</h3>
+                <ul>
+                    <li><strong>Logaritma Natural (ln):</strong> basis <span class="katex">e \approx 2.71828</span></li>
+                    <li><strong>Logaritma Umum (log):</strong> basis 10</li>
+                    <li><strong>Logaritma Basis a:</strong> <span class="katex">^a\log(x)</span> atau <span class="katex">\log_a(x)</span></li>
+                </ul>
+            </section>
+            
+            <!-- Slide 4: Bilangan Euler -->
+            <section>
+                <h2>🔢 Bilangan Euler (e)</h2>
+                <div class="formula-box">
+                    <span class="katex">e = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n \approx 2.71828182845...</span>
+                </div>
+                <h3>Sifat Penting:</h3>
+                <ul>
+                    <li><span class="katex">e</span> adalah bilangan <strong>irasional</strong> dan <strong>transenden</strong></li>
+                    <li>Muncul secara alami dalam pertumbuhan eksponensial</li>
+                    <li>Fundamental dalam kalkulus: <span class="katex">\frac{d}{dx}[e^x] = e^x</span></li>
+                </ul>
+            </section>
+            
+            <!-- Slide 5: Sifat Logaritma -->
+            <section>
+                <h2>📐 Sifat-Sifat Logaritma</h2>
+                <table class="formula-table">
+                    <tr>
+                        <th>Sifat</th>
+                        <th>Rumus</th>
+                    </tr>
+                    <tr>
+                        <td>Perkalian</td>
+                        <td><span class="katex">\log_a(xy) = \log_a(x) + \log_a(y)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Pembagian</td>
+                        <td><span class="katex">\log_a\left(\frac{x}{y}\right) = \log_a(x) - \log_a(y)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Pangkat</td>
+                        <td><span class="katex">\log_a(x^n) = n \cdot \log_a(x)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Perubahan Basis</td>
+                        <td><span class="katex">\log_a(x) = \frac{\ln(x)}{\ln(a)}</span></td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Slide 6: Rumus Turunan ln -->
+            <section>
+                <h2>📊 Turunan Logaritma Natural (ln)</h2>
+                <div class="formula-box" style="text-align: center;">
+                    <p>Jika <span class="katex">y = \ln(u)</span>, maka:</p>
+                    <span class="katex" style="font-size: 1.6em;">y' = \frac{1}{u} \cdot u'</span>
+                </div>
+                <div class="info-box">
+                    <strong>Kasus Khusus:</strong><br>
+                    Jika <span class="katex">u = x</span>, maka <span class="katex">u' = 1</span>
+                    <br><br>
+                    <span class="katex">\frac{d}{dx}[\ln(x)] = \frac{1}{x}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 7: Contoh 1 - ln sederhana -->
+            <section>
+                <h2>✏️ Contoh 1: Turunan ln Sederhana</h2>
+                <div class="example-box">
+                    <h4>Soal:</h4>
+                    Tentukan turunan dari <span class="katex">y = \ln(2x)</span>
+                </div>
+                <h3>Penyelesaian:</h3>
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    Misalkan <span class="katex">u = 2x</span>, maka <span class="katex">u' = 2</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <span class="katex">y' = \frac{1}{u} \cdot u' = \frac{1}{2x} \cdot 2</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <span class="katex">y' = \frac{2}{2x} = \frac{1}{x}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 8: Contoh 2 - dengan fungsi kuadrat -->
+            <section>
+                <h2>✏️ Contoh 2: ln dengan Fungsi Kuadrat</h2>
+                <div class="example-box">
+                    <h4>Soal:</h4>
+                    Tentukan turunan dari <span class="katex">y = \ln(x^2 + 1)</span>
+                </div>
+                <h3>Penyelesaian:</h3>
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <span class="katex">u = x^2 + 1</span>, maka <span class="katex">u' = 2x</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <span class="katex">y' = \frac{1}{x^2 + 1} \cdot 2x</span>
+                </div>
+                <div class="formula-box" style="text-align: center;">
+                    <span class="katex">y' = \frac{2x}{x^2 + 1}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 9: Contoh 3 - dengan trigonometri -->
+            <section>
+                <h2>✏️ Contoh 3: ln dengan Trigonometri</h2>
+                <div class="example-box">
+                    <h4>Soal:</h4>
+                    Tentukan turunan dari <span class="katex">y = \ln(\sin 3x)</span>
+                </div>
+                <h3>Penyelesaian:</h3>
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <span class="katex">u = \sin 3x</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <span class="katex">u' = \cos 3x \cdot 3 = 3\cos 3x</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <span class="katex">y' = \frac{3\cos 3x}{\sin 3x} = 3\cot 3x</span>
+                </div>
+            </section>
+            
+            <!-- Slide 10: Turunan Logaritma Umum -->
+            <section>
+                <h2>📊 Turunan Logaritma Umum (Basis a)</h2>
+                <div class="formula-box" style="text-align: center;">
+                    <p>Jika <span class="katex">y = {^a}\log(u)</span>, maka:</p>
+                    <span class="katex" style="font-size: 1.6em;">y' = \frac{1}{u} \cdot u' \cdot \frac{1}{\ln a}</span>
+                </div>
+                <div class="info-box">
+                    <strong>Atau dapat ditulis:</strong><br><br>
+                    <span class="katex">\frac{d}{dx}[\log_a(u)] = \frac{u'}{u \cdot \ln a}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 11: Pembuktian log basis a -->
+            <section>
+                <h2>🔍 Pembuktian Rumus</h2>
+                <p>Dengan menggunakan rumus perubahan basis:</p>
+                <div class="step-box">
+                    <span class="katex">\log_a(u) = \frac{\ln(u)}{\ln(a)}</span>
+                </div>
+                <p>Karena <span class="katex">\ln(a)</span> adalah konstanta:</p>
+                <div class="step-box">
+                    <span class="katex">\frac{d}{dx}[\log_a(u)] = \frac{1}{\ln(a)} \cdot \frac{d}{dx}[\ln(u)]</span>
+                </div>
+                <div class="step-box">
+                    <span class="katex">= \frac{1}{\ln(a)} \cdot \frac{u'}{u} = \frac{u'}{u \cdot \ln a}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 12: Contoh log basis 2 -->
+            <section>
+                <h2>✏️ Contoh 4: Logaritma Basis 2</h2>
+                <div class="example-box">
+                    <h4>Soal:</h4>
+                    Tentukan turunan dari <span class="katex">y = {^2}\log(3x + 1)</span>
+                </div>
+                <h3>Penyelesaian:</h3>
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <span class="katex">u = 3x + 1</span>, maka <span class="katex">u' = 3</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <span class="katex">a = 2</span>, maka <span class="katex">\ln a = \ln 2</span>
+                </div>
+                <div class="formula-box" style="text-align: center;">
+                    <span class="katex">y' = \frac{3}{(3x + 1) \cdot \ln 2}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 13: Contoh log basis a -->
+            <section>
+                <h2>✏️ Contoh 5: Logaritma Basis a</h2>
+                <div class="example-box">
+                    <h4>Soal:</h4>
+                    Tentukan turunan dari <span class="katex">y = {^a}\log(3x^2 - 5)</span>
+                </div>
+                <h3>Penyelesaian:</h3>
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <span class="katex">u = 3x^2 - 5</span>, maka <span class="katex">u' = 6x</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    Terapkan rumus: <span class="katex">y' = \frac{u'}{u \cdot \ln a}</span>
+                </div>
+                <div class="formula-box" style="text-align: center;">
+                    <span class="katex">y' = \frac{6x}{(3x^2 - 5) \cdot \ln a}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 14: Aturan Rantai pada Logaritma -->
+            <section>
+                <h2>🔗 Penerapan Aturan Rantai</h2>
+                <div class="info-box">
+                    <strong>Konsep:</strong> Aturan rantai diperlukan ketika argument logaritma merupakan fungsi komposit.
+                </div>
+                <p>Jika <span class="katex">y = \ln(f(g(x)))</span>, maka:</p>
+                <div class="formula-box" style="text-align: center;">
+                    <span class="katex">y' = \frac{1}{f(g(x))} \cdot f'(g(x)) \cdot g'(x)</span>
+                </div>
+            </section>
+            
+            <!-- Slide 15: Contoh ln pangkat -->
+            <section>
+                <h2>✏️ Contoh 6: Logaritma Pangkat</h2>
+                <div class="example-box">
+                    <h4>Soal:</h4>
+                    Tentukan turunan dari <span class="katex">y = \ln(x + 3)^2</span>
+                </div>
+                <div class="two-column">
+                    <div>
+                        <h4>Metode 1:</h4>
+                        <div class="step-box">
+                            <span class="katex">y = 2\ln(x + 3)</span>
+                        </div>
+                        <div class="step-box">
+                            <span class="katex">y' = \frac{2}{x + 3}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Metode 2:</h4>
+                        <div class="step-box">
+                            <span class="katex">u = (x+3)^2</span><br>
+                            <span class="katex">u' = 2(x+3)</span>
+                        </div>
+                        <div class="step-box">
+                            <span class="katex">y' = \frac{2(x+3)}{(x+3)^2} = \frac{2}{x+3}</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 16: Aturan Perkalian -->
+            <section>
+                <h2>✖️ Kombinasi: Aturan Perkalian</h2>
+                <div class="info-box">
+                    Jika <span class="katex">y = f(x) \cdot \log_a(g(x))</span>, gunakan aturan perkalian!
+                </div>
+                <div class="example-box">
+                    <h4>Contoh:</h4>
+                    <span class="katex">y = x \cdot \log(3x^2 - 5)</span>
+                </div>
+                <div class="step-box">
+                    <span class="katex">y' = 1 \cdot \log(3x^2 - 5) + x \cdot \frac{6x}{(3x^2 - 5) \ln 10}</span>
+                </div>
+                <div class="formula-box" style="text-align: center;">
+                    <span class="katex">y' = \log(3x^2 - 5) + \frac{6x^2}{(3x^2 - 5) \ln 10}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 17: Aturan Pembagian -->
+            <section>
+                <h2>➗ Kombinasi: Aturan Pembagian</h2>
+                <div class="example-box">
+                    <h4>Contoh:</h4>
+                    Tentukan turunan dari <span class="katex">y = \frac{\ln x}{\sin x}</span>
+                </div>
+                <h3>Penyelesaian:</h3>
+                <div class="step-box">
+                    <span class="katex">f(x) = \ln x \Rightarrow f'(x) = \frac{1}{x}</span>
+                </div>
+                <div class="step-box">
+                    <span class="katex">g(x) = \sin x \Rightarrow g'(x) = \cos x</span>
+                </div>
+                <div class="formula-box" style="text-align: center;">
+                    <span class="katex">y' = \frac{\frac{\sin x}{x} - \ln x \cdot \cos x}{\sin^2 x}</span>
+                </div>
+            </section>
+            
+            <!-- Slide 18: Aplikasi Statistik - Intro -->
+            <section>
+                <h2>📈 Aplikasi dalam Statistik</h2>
+                <h3>Transformasi Logaritma digunakan untuk:</h3>
+                <ul>
+                    <li><strong>Mengubah distribusi miring</strong> menjadi lebih simetris</li>
+                    <li><strong>Menstabilkan varians</strong> pada data heteroskedastis</li>
+                    <li><strong>Memenuhi asumsi normalitas</strong> dalam analisis parametrik</li>
+                </ul>
+                <div class="info-box">
+                    <strong>Pentingnya:</strong> Banyak uji statistik (uji-t, ANOVA, regresi) mensyaratkan data berdistribusi normal.
+                </div>
+            </section>
+            
+            <!-- Slide 19: Contoh R - Sebelum -->
+            <section>
+                <h2>💻 Contoh: Data Tidak Normal</h2>
+                <pre><code class="language-r">data <- c(2, 3, 3, 4, 4, 5, 6, 7, 25, 30, 40)
+shapiro.test(data)</code></pre>
+                <div class="warning-box">
+                    <strong>Hasil:</strong><br>
+                    <code>W = 0.72049, p-value = 0.0008595</code>
+                    <br><br>
+                    p-value < 0.05 → Data <strong>TIDAK</strong> berdistribusi normal
+                </div>
+            </section>
+            
+            <!-- Slide 20: Contoh R - Sesudah -->
+            <section>
+                <h2>💻 Setelah Transformasi Logaritma</h2>
+                <pre><code class="language-r"># Dilakukan transformasi data
+data_log <- log(data)
+shapiro.test(data_log)</code></pre>
+                <div class="formula-box">
+                    <strong>Hasil:</strong><br>
+                    <code>W = 0.86995, p-value = 0.0774</code>
+                    <br><br>
+                    p-value > 0.05 → Data <strong>berdistribusi normal!</strong> ✓
+                </div>
+            </section>
+            
+            <!-- Slide 21: Latihan Soal -->
+            <section>
+                <h2>📝 Latihan Soal</h2>
+                <p>Carilah turunan dari fungsi-fungsi berikut:</p>
+                <div class="two-column">
+                    <div>
+                        <div class="step-box">
+                            <strong>1.</strong> <span class="katex">y = \ln(\sin 3x)</span>
+                        </div>
+                        <div class="step-box">
+                            <strong>2.</strong> <span class="katex">y = x \cdot \log(3x^2 - 5)</span>
+                        </div>
+                        <div class="step-box">
+                            <strong>3.</strong> <span class="katex">y = {^a}\log(3x^2 - 5)</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="step-box">
+                            <strong>4.</strong> <span class="katex">y = \ln(x + 3)^2</span>
+                        </div>
+                        <div class="step-box">
+                            <strong>5.</strong> <span class="katex">y = \frac{\ln x}{\sin x}</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 22: Rangkuman Rumus -->
+            <section>
+                <h2>📋 Rangkuman Rumus</h2>
+                <table class="formula-table">
+                    <tr>
+                        <th>Fungsi</th>
+                        <th>Turunan</th>
+                    </tr>
+                    <tr>
+                        <td><span class="katex">y = \ln x</span></td>
+                        <td><span class="katex">y' = \frac{1}{x}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="katex">y = \ln u</span></td>
+                        <td><span class="katex">y' = \frac{u'}{u}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="katex">y = \log_a x</span></td>
+                        <td><span class="katex">y' = \frac{1}{x \ln a}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="katex">y = \log_a u</span></td>
+                        <td><span class="katex">y' = \frac{u'}{u \ln a}</span></td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Slide 23: Tips -->
+            <section>
+                <h2>💡 Tips Mengerjakan Soal</h2>
+                <div class="step-box">
+                    <span class="step-number">1</span>
+                    <strong>Identifikasi</strong> jenis logaritma (natural atau basis a)
+                </div>
+                <div class="step-box">
+                    <span class="step-number">2</span>
+                    <strong>Tentukan</strong> fungsi <span class="katex">u</span> yang ada di dalam logaritma
+                </div>
+                <div class="step-box">
+                    <span class="step-number">3</span>
+                    <strong>Hitung</strong> turunan dari <span class="katex">u</span>
+                </div>
+                <div class="step-box">
+                    <span class="step-number">4</span>
+                    <strong>Terapkan</strong> rumus yang sesuai
+                </div>
+                <div class="step-box">
+                    <span class="step-number">5</span>
+                    <strong>Sederhanakan</strong> hasil akhir
+                </div>
+            </section>
+            
+            <!-- Slide 24: Penutup -->
+            <section class="center-slide title-slide" data-background-color="#2E7D32">
+                <h1>Terima Kasih</h1>
+                <p class="subtitle">Selamat Belajar!</p>
+                <br>
+                <p>Pertanyaan?</p>
+            </section>
+            
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/math/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            plugins: [ RevealMath.KaTeX, RevealHighlight ]
+        });
+        
+        // Render KaTeX for inline math
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+        
+        // Re-render math after each slide change
+        Reveal.on('slidechanged', function(event) {
+            renderMathInElement(event.currentSlide, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</body>
+</html>
