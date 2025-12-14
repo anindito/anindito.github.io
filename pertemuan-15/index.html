@@ -1,884 +1,890 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pertemuan 15: File Handling dan Exception Handling</title>
+    <title>Pertemuan 15: C++ di Platform Lain & Review UAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
     <style>
         .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
-        .reveal h1 { font-size: 2.2em; color: #1976d2; }
-        .reveal h2 { font-size: 1.8em; color: #1976d2; margin-bottom: 20px; }
-        .reveal h3 { font-size: 1.4em; color: #0288d1; }
-        .reveal code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
-        .reveal pre code { max-height: 500px; font-size: 0.85em; line-height: 1.3; }
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .important { color: #d32f2f; font-weight: bold; }
-        .success { color: #388e3c; font-weight: bold; }
-        .warning { color: #f57c00; font-weight: bold; }
-        .code-label { font-size: 0.8em; color: #666; font-style: italic; margin-bottom: 10px; }
-        .highlight-box { background: #e3f2fd; padding: 20px; border-left: 5px solid #1976d2; margin: 20px 0; }
-        .warning-box { background: #fff3e0; padding: 20px; border-left: 5px solid #f57c00; margin: 20px 0; }
-        .success-box { background: #e8f5e9; padding: 20px; border-left: 5px solid #388e3c; margin: 20px 0; }
-        ul { text-align: left; }
-        table { font-size: 0.8em; }
-        img { max-height: 450px; }
+        .reveal h1 { font-size: 2.2em; color: #3498db; }
+        .reveal h2 { font-size: 1.6em; color: #2ecc71; }
+        .reveal h3 { font-size: 1.3em; color: #f39c12; }
+        .reveal pre { width: 100%; font-size: 0.5em; }
+        .reveal code { background: #2d2d2d; padding: 2px 8px; border-radius: 4px; }
+        .reveal ul, .reveal ol { display: block; text-align: left; margin-left: 1em; }
+        .reveal li { margin: 0.5em 0; font-size: 0.85em; }
+        .reveal .small-text { font-size: 0.7em; }
+        .reveal .highlight-box { background: rgba(52, 152, 219, 0.2); padding: 20px; border-radius: 10px; border-left: 4px solid #3498db; }
+        .reveal .warning-box { background: rgba(231, 76, 60, 0.2); padding: 20px; border-radius: 10px; border-left: 4px solid #e74c3c; }
+        .reveal .success-box { background: rgba(46, 204, 113, 0.2); padding: 20px; border-radius: 10px; border-left: 4px solid #2ecc71; }
+        .reveal .info-box { background: rgba(155, 89, 182, 0.2); padding: 20px; border-radius: 10px; border-left: 4px solid #9b59b6; }
+        .two-columns { display: flex; justify-content: space-between; }
+        .two-columns > div { width: 48%; }
+        .reveal table { margin: 0 auto; border-collapse: collapse; font-size: 0.7em; }
+        .reveal th, .reveal td { border: 1px solid #555; padding: 8px 15px; }
+        .reveal th { background: #3498db; }
+        .platform-icon { font-size: 2em; margin: 10px; }
+        .emoji-large { font-size: 1.5em; }
     </style>
 </head>
 <body>
     <div class="reveal">
         <div class="slides">
-            
             <!-- Slide 1: Title -->
             <section>
-                <h1>File Handling dan Exception Handling</h1>
-                <h3>Pertemuan 15</h3>
-                <p>Dasar-Dasar Pemrograman C++</p>
+                <h1>🚀 C++ di Platform Lain</h1>
+                <h2>& Review UAS</h2>
+                <p style="color: #95a5a6;">Pertemuan 15 - Dasar-Dasar Pemrograman</p>
+                <p class="small-text" style="margin-top: 50px;">
+                    <span class="platform-icon">🔧</span>
+                    <span class="platform-icon">🏆</span>
+                    <span class="platform-icon">🎮</span>
+                    <span class="platform-icon">💻</span>
+                </p>
             </section>
 
-            <!-- Slide 2: Tujuan Pembelajaran -->
+            <!-- Slide 2: Agenda -->
             <section>
-                <h2>🎯 Tujuan Pembelajaran</h2>
-                <div class="highlight-box">
-                    <p>Setelah pertemuan ini, mahasiswa diharapkan mampu:</p>
-                    <ul>
-                        <li>Memahami konsep file handling dan operasi file di C++</li>
-                        <li>Menggunakan stream classes untuk membaca dan menulis file</li>
-                        <li>Bekerja dengan file teks dan file binary</li>
-                        <li>Memahami konsep exception handling</li>
-                        <li>Mengimplementasikan try-catch untuk error handling</li>
-                        <li>Menggunakan standard exception classes</li>
-                        <li>Membuat custom exception classes</li>
-                    </ul>
+                <h2>📋 Agenda Pertemuan</h2>
+                <div class="two-columns">
+                    <div class="highlight-box">
+                        <h3>Bagian 1: Materi Baru</h3>
+                        <ul>
+                            <li>C++ untuk Embedded Systems</li>
+                            <li>C++ untuk Competitive Programming</li>
+                            <li>C++ untuk Game Development</li>
+                            <li>Development Tools</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <h3>Bagian 2: Review UAS</h3>
+                        <ul>
+                            <li>Array (1D & 2D)</li>
+                            <li>Pointer & Memori Dinamis</li>
+                            <li>Struct & OOP</li>
+                            <li>File & Exception Handling</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
-            <!-- BAGIAN 1: FILE HANDLING -->
+            <!-- Slide 3: C++ Serbaguna -->
+            <section>
+                <h2>🌍 C++ Bahasa Serbaguna</h2>
+                <p>C++ digunakan di berbagai industri dan platform:</p>
+                <table>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Contoh Aplikasi</th>
+                        <th>Alasan</th>
+                    </tr>
+                    <tr>
+                        <td>🔧 Embedded</td>
+                        <td>Arduino, ESP32, IoT</td>
+                        <td>Kontrol hardware langsung</td>
+                    </tr>
+                    <tr>
+                        <td>🏆 Competitive</td>
+                        <td>Codeforces, ICPC</td>
+                        <td>Kecepatan eksekusi</td>
+                    </tr>
+                    <tr>
+                        <td>🎮 Games</td>
+                        <td>Unreal Engine, AAA Games</td>
+                        <td>Performa grafis</td>
+                    </tr>
+                    <tr>
+                        <td>💻 OS</td>
+                        <td>Windows, Linux Kernel</td>
+                        <td>Low-level access</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- BAGIAN: EMBEDDED SYSTEMS -->
             <section>
                 <section>
-                    <h1>Bagian 1</h1>
-                    <h2>File Handling</h2>
+                    <h1>🔧 C++ untuk Embedded Systems</h1>
+                    <p>Pemrograman Mikrokontroler</p>
                 </section>
 
-                <!-- Konsep Dasar File Handling -->
                 <section>
-                    <h2>Mengapa File Handling?</h2>
-                    <div class="two-column">
+                    <h2>Apa itu Embedded Systems?</h2>
+                    <div class="highlight-box">
+                        <p><strong>Embedded System</strong> = Sistem komputer khusus untuk tugas tertentu</p>
+                    </div>
+                    <div class="two-columns" style="margin-top: 30px;">
                         <div>
-                            <h3 class="important">❌ Tanpa File Handling</h3>
+                            <h3>Contoh:</h3>
                             <ul>
-                                <li>Data hilang saat program ditutup</li>
-                                <li>Harus input ulang setiap kali</li>
-                                <li>Tidak ada persistensi data</li>
-                                <li>Tidak bisa berbagi data</li>
+                                <li>🌡️ Sensor suhu ruangan</li>
+                                <li>🚗 Sistem kontrol mobil</li>
+                                <li>🏠 Smart home devices</li>
+                                <li>🎮 Remote control</li>
                             </ul>
                         </div>
                         <div>
-                            <h3 class="success">✅ Dengan File Handling</h3>
+                            <h3>Karakteristik:</h3>
                             <ul>
-                                <li>Data tersimpan permanen</li>
-                                <li>Bisa dimuat kembali</li>
-                                <li>Persistensi data terjaga</li>
-                                <li>Mudah dibagikan</li>
+                                <li>Sumber daya terbatas</li>
+                                <li>Real-time response</li>
+                                <li>Low power consumption</li>
+                                <li>Dedicated function</li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- Stream Classes -->
                 <section>
-                    <h2>Stream Classes di C++</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Class</th>
-                                <th>Header</th>
-                                <th>Fungsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>ifstream</code></td>
-                                <td><code>&lt;fstream&gt;</code></td>
-                                <td><span class="success">Input</span> - Membaca file</td>
-                            </tr>
-                            <tr>
-                                <td><code>ofstream</code></td>
-                                <td><code>&lt;fstream&gt;</code></td>
-                                <td><span class="warning">Output</span> - Menulis file</td>
-                            </tr>
-                            <tr>
-                                <td><code>fstream</code></td>
-                                <td><code>&lt;fstream&gt;</code></td>
-                                <td><span class="important">Both</span> - Baca & Tulis</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-
-                <!-- Alur File Handling -->
-                <section>
-                    <h2>Alur Kerja File Handling</h2>
-                    <img src="images/file-handling-flow.svg" alt="File Handling Flow">
-                </section>
-
-                <!-- Membuka File -->
-                <section>
-                    <h2>Membuka File</h2>
-                    <div class="two-column">
+                    <h2>Platform Arduino</h2>
+                    <div class="two-columns">
                         <div>
-                            <div class="code-label">Cara 1: Constructor</div>
-                            <pre><code class="cpp">// Menulis
-ofstream file("data.txt");
-
-// Membaca
-ifstream file("data.txt");
-
-// Keduanya
-fstream file("data.txt", 
-            ios::in | ios::out);</code></pre>
+                            <h3>Komponen:</h3>
+                            <ul>
+                                <li><strong>Board</strong>: Arduino Uno, Nano, Mega</li>
+                                <li><strong>MCU</strong>: ATmega328P</li>
+                                <li><strong>Pins</strong>: Digital & Analog I/O</li>
+                                <li><strong>IDE</strong>: Arduino IDE</li>
+                            </ul>
                         </div>
                         <div>
-                            <div class="code-label">Cara 2: Method open()</div>
-                            <pre><code class="cpp">ofstream file;
-file.open("data.txt");
-
-ifstream input;
-input.open("data.txt");
-
-fstream both;
-both.open("data.txt");</code></pre>
+                            <h3>Keunggulan:</h3>
+                            <ul>
+                                <li>✅ Open-source</li>
+                                <li>✅ Mudah dipelajari</li>
+                                <li>✅ Dokumentasi lengkap</li>
+                                <li>✅ Komunitas besar</li>
+                            </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- File Modes -->
                 <section>
-                    <h2>File Modes</h2>
-                    <table style="font-size: 0.7em;">
-                        <thead>
-                            <tr>
-                                <th>Mode</th>
-                                <th>Keterangan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>ios::in</code></td>
-                                <td>Membuka untuk membaca</td>
-                            </tr>
-                            <tr>
-                                <td><code>ios::out</code></td>
-                                <td>Membuka untuk menulis (hapus isi lama)</td>
-                            </tr>
-                            <tr>
-                                <td><code>ios::app</code></td>
-                                <td>Append - tambah di akhir (jaga isi lama)</td>
-                            </tr>
-                            <tr>
-                                <td><code>ios::ate</code></td>
-                                <td>Set posisi di akhir file</td>
-                            </tr>
-                            <tr>
-                                <td><code>ios::trunc</code></td>
-                                <td>Truncate - hapus isi file</td>
-                            </tr>
-                            <tr>
-                                <td><code>ios::binary</code></td>
-                                <td>Mode binary</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+                    <h2>Struktur Program Arduino</h2>
+                    <div class="warning-box" style="margin-bottom: 20px;">
+                        <p>⚠️ Arduino <strong>tidak menggunakan</strong> fungsi <code>main()</code>!</p>
+                    </div>
+                    <pre><code class="cpp">// Struktur program Arduino
+void setup() {
+    // Dijalankan SEKALI saat board menyala
+    // Untuk inisialisasi
+    Serial.begin(9600);
+    pinMode(13, OUTPUT);
+}
 
-                <!-- Perbedaan Mode -->
-                <section>
-                    <h2>ios::out vs ios::app</h2>
-                    <img src="images/file-modes.svg" alt="File Modes Comparison">
-                </section>
-
-                <!-- Menulis File -->
-                <section>
-                    <h2>Menulis ke File Teks</h2>
-                    <div class="code-label">Sama seperti cout, tapi ke file!</div>
-                    <pre><code class="cpp">#include &lt;fstream&gt;
-using namespace std;
-
-int main() {
-    ofstream file("mahasiswa.txt");
-    
-    if (!file) {
-        cout << "Error: Tidak dapat membuka file!" << endl;
-        return 1;
-    }
-    
-    file << "Nama: Budi Santoso" << endl;
-    file << "NIM: 123456789" << endl;
-    file << "Jurusan: Teknik Informatika" << endl;
-    file << "IPK: 3.75" << endl;
-    
-    file.close();
-    cout << "Data berhasil ditulis!" << endl;
-    
-    return 0;
+void loop() {
+    // Dijalankan BERULANG selamanya
+    // Logika utama program
+    digitalWrite(13, HIGH);
+    delay(1000);
+    digitalWrite(13, LOW);
+    delay(1000);
 }</code></pre>
                 </section>
 
-                <!-- Membaca File -->
                 <section>
-                    <h2>Membaca dari File Teks</h2>
-                    <div class="two-column">
-                        <div>
-                            <div class="code-label">Membaca kata per kata</div>
-                            <pre><code class="cpp">ifstream file("data.txt");
+                    <h2>Program Blink LED</h2>
+                    <p>"Hello World" untuk Embedded Systems</p>
+                    <pre><code class="cpp">const int LED_PIN = 13;  // LED built-in
 
-string kata;
-while (file >> kata) {
-    cout << kata << endl;
+void setup() {
+    pinMode(LED_PIN, OUTPUT);  // Set sebagai output
 }
 
-file.close();</code></pre>
-                        </div>
-                        <div>
-                            <div class="code-label">Membaca baris per baris</div>
-                            <pre><code class="cpp">ifstream file("data.txt");
+void loop() {
+    digitalWrite(LED_PIN, HIGH);  // LED ON (5V)
+    delay(1000);                   // Tunggu 1 detik
+    digitalWrite(LED_PIN, LOW);   // LED OFF (0V)
+    delay(1000);                   // Tunggu 1 detik
+}</code></pre>
+                    <div class="success-box">
+                        <p>💡 Pin 13 terhubung ke LED built-in pada Arduino Uno</p>
+                    </div>
+                </section>
 
-string baris;
-while (getline(file, baris)) {
-    cout << baris << endl;
+                <section>
+                    <h2>Membaca Input & Serial</h2>
+                    <pre><code class="cpp">const int BUTTON_PIN = 2;
+const int LED_PIN = 13;
+
+void setup() {
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
+    pinMode(LED_PIN, OUTPUT);
+    Serial.begin(9600);  // Komunikasi serial
+    Serial.println("Sistem siap!");
 }
 
-file.close();</code></pre>
-                        </div>
-                    </div>
+void loop() {
+    int state = digitalRead(BUTTON_PIN);
+    
+    if (state == LOW) {  // Tombol ditekan
+        digitalWrite(LED_PIN, HIGH);
+        Serial.println("Tombol ditekan!");
+    } else {
+        digitalWrite(LED_PIN, LOW);
+    }
+    delay(100);
+}</code></pre>
                 </section>
 
-                <!-- File Status -->
                 <section>
-                    <h2>Memeriksa Status File</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Method</th>
-                                <th>Return true jika...</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>eof()</code></td>
-                                <td>Sudah mencapai end of file</td>
-                            </tr>
-                            <tr>
-                                <td><code>fail()</code></td>
-                                <td>Operasi terakhir gagal</td>
-                            </tr>
-                            <tr>
-                                <td><code>bad()</code></td>
-                                <td>Terjadi error serius</td>
-                            </tr>
-                            <tr>
-                                <td><code>good()</code></td>
-                                <td>Tidak ada error</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+                    <h2>Sensor Analog (LM35)</h2>
+                    <pre><code class="cpp">const int TEMP_PIN = A0;
 
-                <!-- File Position Pointers -->
-                <section>
-                    <h2>File Position Pointers</h2>
-                    <img src="images/file-pointers.svg" alt="File Position Pointers">
-                </section>
+void setup() {
+    Serial.begin(9600);
+    Serial.println("Monitoring Suhu");
+}
 
-                <!-- Binary Files -->
-                <section>
-                    <h2>File Binary</h2>
-                    <div class="two-column">
-                        <div>
-                            <h3>Menulis Binary</h3>
-                            <pre><code class="cpp">struct Data {
-    char nama[50];
-    int umur;
-    float nilai;
-};
-
-ofstream file("data.bin", 
-              ios::binary);
-
-Data d;
-strcpy(d.nama, "Andi");
-d.umur = 20;
-d.nilai = 85.5;
-
-file.write(
-    reinterpret_cast&lt;char*&gt;(&d),
-    sizeof(Data)
-);
-
-file.close();</code></pre>
-                        </div>
-                        <div>
-                            <h3>Membaca Binary</h3>
-                            <pre><code class="cpp">struct Data {
-    char nama[50];
-    int umur;
-    float nilai;
-};
-
-ifstream file("data.bin", 
-              ios::binary);
-
-Data d;
-
-file.read(
-    reinterpret_cast&lt;char*&gt;(&d),
-    sizeof(Data)
-);
-
-cout << d.nama << endl;
-cout << d.umur << endl;
-cout << d.nilai << endl;
-
-file.close();</code></pre>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Kapan Gunakan Binary -->
-                <section>
-                    <h2>File Teks vs File Binary</h2>
-                    <div class="two-column">
-                        <div class="success-box">
-                            <h3>File Teks</h3>
-                            <ul>
-                                <li>Human-readable</li>
-                                <li>Mudah di-debug</li>
-                                <li>Platform-independent</li>
-                                <li>Ukuran lebih besar</li>
-                            </ul>
-                            <p><strong>Gunakan untuk:</strong> Config files, logs, CSV, HTML</p>
-                        </div>
-                        <div class="warning-box">
-                            <h3>File Binary</h3>
-                            <ul>
-                                <li>Machine-readable</li>
-                                <li>Lebih cepat</li>
-                                <li>Ukuran lebih kecil</li>
-                                <li>Efisien untuk struct</li>
-                            </ul>
-                            <p><strong>Gunakan untuk:</strong> Database, images, executables</p>
-                        </div>
-                    </div>
+void loop() {
+    int nilai = analogRead(TEMP_PIN);  // 0-1023
+    
+    // Konversi ke tegangan (0-5V)
+    float tegangan = nilai * (5.0 / 1023.0);
+    
+    // LM35: 10mV per derajat Celcius
+    float suhu = tegangan * 100.0;
+    
+    Serial.print("Suhu: ");
+    Serial.print(suhu);
+    Serial.println(" C");
+    
+    delay(1000);
+}</code></pre>
                 </section>
             </section>
 
-            <!-- BAGIAN 2: EXCEPTION HANDLING -->
+            <!-- BAGIAN: COMPETITIVE PROGRAMMING -->
             <section>
                 <section>
-                    <h1>Bagian 2</h1>
-                    <h2>Exception Handling</h2>
+                    <h1>🏆 C++ untuk Competitive Programming</h1>
+                    <p>Algoritma & Kecepatan</p>
                 </section>
 
-                <!-- Apa itu Exception -->
                 <section>
-                    <h2>Apa itu Exception?</h2>
+                    <h2>Apa itu Competitive Programming?</h2>
                     <div class="highlight-box">
-                        <p><strong>Exception</strong> adalah kejadian tidak normal atau error yang terjadi saat program berjalan.</p>
+                        <p><strong>Olahraga pemikiran</strong> - menyelesaikan masalah algoritmik dalam waktu terbatas</p>
                     </div>
-                    <div class="two-column">
+                    <div class="two-columns" style="margin-top: 30px;">
                         <div>
-                            <h3>Contoh Exception:</h3>
+                            <h3>Platform:</h3>
                             <ul>
-                                <li>Pembagian dengan nol</li>
-                                <li>File tidak ditemukan</li>
-                                <li>Array out of bounds</li>
-                                <li>Memory allocation failed</li>
-                                <li>Network timeout</li>
+                                <li>Codeforces</li>
+                                <li>LeetCode</li>
+                                <li>HackerRank</li>
+                                <li>Kattis</li>
                             </ul>
                         </div>
                         <div>
-                            <h3>Tanpa Exception Handling:</h3>
+                            <h3>Kompetisi:</h3>
                             <ul>
-                                <li class="important">Program crash ❌</li>
-                                <li class="important">Data hilang ❌</li>
-                                <li class="important">User bingung ❌</li>
-                                <li class="important">Sulit di-debug ❌</li>
+                                <li>ACM ICPC</li>
+                                <li>IOI</li>
+                                <li>Google Code Jam</li>
+                                <li>Facebook Hacker Cup</li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- Exception Flow -->
                 <section>
-                    <h2>Alur Exception Handling</h2>
-                    <img src="images/exception-flow.svg" alt="Exception Flow">
+                    <h2>Mengapa C++?</h2>
+                    <table>
+                        <tr>
+                            <th>Faktor</th>
+                            <th>C++</th>
+                            <th>Python</th>
+                            <th>Java</th>
+                        </tr>
+                        <tr>
+                            <td>Kecepatan</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>⭐⭐</td>
+                            <td>⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>STL</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>Memory Control</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>⭐⭐</td>
+                            <td>⭐⭐⭐</td>
+                        </tr>
+                    </table>
+                    <div class="success-box" style="margin-top: 20px;">
+                        <p>💡 C++ bisa ~10x lebih cepat dari Python!</p>
+                    </div>
                 </section>
 
-                <!-- Try-Catch Syntax -->
                 <section>
-                    <h2>Try-Catch Block</h2>
-                    <div class="code-label">Struktur dasar exception handling</div>
-                    <pre><code class="cpp">try {
-    // Kode yang mungkin menghasilkan exception
-    if (error_condition) {
-        throw "Error message";
-    }
-    // Kode normal lainnya
-}
-catch (TipeException e) {
-    // Kode untuk menangani exception
-    cout << "Error: " << e << endl;
-}
-// Program tetap berjalan di sini</code></pre>
-                </section>
-
-                <!-- Contoh Sederhana -->
-                <section>
-                    <h2>Contoh: Pembagian dengan Nol</h2>
-                    <pre><code class="cpp">#include &lt;iostream&gt;
+                    <h2>Template Fast I/O</h2>
+                    <pre><code class="cpp">#include &lt;bits/stdc++.h&gt;  // All-in-one header
 using namespace std;
 
 int main() {
-    int a, b;
-    cout << "Masukkan a: "; cin >> a;
-    cout << "Masukkan b: "; cin >> b;
+    // WAJIB untuk Fast I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     
-    try {
-        if (b == 0) {
-            throw "Error: Pembagian dengan nol!";
-        }
-        
-        double hasil = static_cast&lt;double&gt;(a) / b;
-        cout << "Hasil: " << hasil << endl;
-    }
-    catch (const char* pesan) {
-        cout << pesan << endl;
+    int n;
+    cin >> n;
+    
+    vector&lt;int&gt; arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
     }
     
-    cout << "Program selesai." << endl;
+    // Proses...
+    
+    cout << "Hasil" << '\n';  // Gunakan '\n' bukan endl
+    
     return 0;
 }</code></pre>
                 </section>
 
-                <!-- Multiple Catch -->
                 <section>
-                    <h2>Multiple Catch Blocks</h2>
-                    <div class="code-label">Menangani berbagai tipe exception</div>
-                    <pre><code class="cpp">try {
-    // Kode yang mungkin throw berbagai tipe exception
-    if (condition1) throw 42;           // int
-    if (condition2) throw 3.14;         // double
-    if (condition3) throw "Error!";     // string
-}
-catch (int e) {
-    cout << "Caught integer: " << e << endl;
-}
-catch (double e) {
-    cout << "Caught double: " << e << endl;
-}
-catch (const char* e) {
-    cout << "Caught string: " << e << endl;
-}
-catch (...) {
-    // Catch-all: menangani exception apapun
-    cout << "Caught unknown exception!" << endl;
-}</code></pre>
+                    <h2>STL Essentials</h2>
+                    <pre><code class="cpp">// VECTOR - Array dinamis
+vector&lt;int&gt; v = {5, 2, 8, 1, 9};
+sort(v.begin(), v.end());  // O(n log n)
+
+// BINARY SEARCH - Harus sorted
+bool found = binary_search(v.begin(), v.end(), 5);
+
+// SET - Elemen unik terurut
+set&lt;int&gt; s;
+s.insert(5);
+s.insert(2);
+
+// MAP - Key-value pairs
+map&lt;string, int&gt; freq;
+freq["apple"]++;
+
+// PRIORITY QUEUE - Max heap
+priority_queue&lt;int&gt; pq;
+pq.push(3);
+int top = pq.top();  // Nilai terbesar</code></pre>
                 </section>
 
-                <!-- Standard Exception Classes -->
                 <section>
-                    <h2>Standard Exception Classes</h2>
-                    <div style="font-size: 0.8em;">
-                        <pre><code class="text">exception (base class)
-├── bad_alloc          - alokasi memori gagal
-├── bad_cast           - dynamic_cast gagal
-├── logic_error        - error logika program
-│   ├── invalid_argument   - argumen tidak valid
-│   ├── domain_error       - domain matematika tidak valid
-│   ├── length_error       - panjang terlalu besar
-│   └── out_of_range       - di luar jangkauan
-└── runtime_error      - error saat runtime
-    ├── range_error        - hasil di luar range
-    ├── overflow_error     - arithmetic overflow
-    └── underflow_error    - arithmetic underflow</code></pre>
+                    <h2>Kompleksitas Waktu</h2>
+                    <div class="warning-box">
+                        <p>⏱️ Rule of thumb: <strong>10⁸ operasi ≈ 1 detik</strong></p>
+                    </div>
+                    <table style="margin-top: 20px;">
+                        <tr>
+                            <th>n</th>
+                            <th>Algoritma yang cocok</th>
+                        </tr>
+                        <tr>
+                            <td>n ≤ 10</td>
+                            <td>O(n!), O(2ⁿ)</td>
+                        </tr>
+                        <tr>
+                            <td>n ≤ 10³</td>
+                            <td>O(n²)</td>
+                        </tr>
+                        <tr>
+                            <td>n ≤ 10⁵</td>
+                            <td>O(n log n)</td>
+                        </tr>
+                        <tr>
+                            <td>n ≤ 10⁷</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td>n > 10⁷</td>
+                            <td>O(log n), O(1)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Binary Search</h2>
+                    <pre><code class="cpp">int binarySearch(vector&lt;int&gt;& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;  // Hindari overflow
+        
+        if (arr[mid] == target) {
+            return mid;  // Ditemukan!
+        } else if (arr[mid] < target) {
+            left = mid + 1;   // Cari di kanan
+        } else {
+            right = mid - 1;  // Cari di kiri
+        }
+    }
+    
+    return -1;  // Tidak ditemukan
+}
+// Kompleksitas: O(log n)</code></pre>
+                </section>
+            </section>
+
+            <!-- BAGIAN: GAME DEVELOPMENT -->
+            <section>
+                <section>
+                    <h1>🎮 C++ untuk Game Development</h1>
+                    <p>Game Loop & Graphics</p>
+                </section>
+
+                <section>
+                    <h2>C++ di Industri Game</h2>
+                    <div class="two-columns">
+                        <div>
+                            <h3>Game Engines:</h3>
+                            <ul>
+                                <li><strong>Unreal Engine</strong> (Fortnite, PUBG)</li>
+                                <li><strong>Unity Core</strong> (internal)</li>
+                                <li><strong>CryEngine</strong></li>
+                                <li><strong>id Tech</strong></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Libraries 2D:</h3>
+                            <ul>
+                                <li><strong>SFML</strong> - Simple & Modern</li>
+                                <li><strong>SDL</strong> - Cross-platform</li>
+                                <li><strong>Raylib</strong> - Beginner-friendly</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="success-box" style="margin-top: 20px;">
+                        <p>💡 Semua game AAA modern menggunakan C++ untuk core engine</p>
                     </div>
                 </section>
 
-                <!-- Using Standard Exceptions -->
                 <section>
-                    <h2>Menggunakan Standard Exceptions</h2>
-                    <pre><code class="cpp">#include &lt;stdexcept&gt;
-using namespace std;
+                    <h2>Game Loop Concept</h2>
+                    <div class="highlight-box">
+                        <p><strong>Game Loop</strong> = Jantung dari setiap game</p>
+                    </div>
+                    <pre><code class="cpp">while (gameRunning) {
+    // 1. PROCESS INPUT
+    processInput();      // Keyboard, mouse, controller
+    
+    // 2. UPDATE GAME LOGIC
+    updateGame(deltaTime);  // Posisi, fisika, AI
+    
+    // 3. RENDER
+    render();            // Gambar ke layar
+}
+// Loop ini berjalan 60x per detik (60 FPS)</code></pre>
+                </section>
 
-double bagi(double a, double b) {
-    if (b == 0) {
-        throw invalid_argument("Pembagi tidak boleh nol!");
+                <section>
+                    <h2>SFML Example</h2>
+                    <pre><code class="cpp">// Game sederhana dengan SFML
+#include &lt;SFML/Graphics.hpp&gt;
+
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
+    sf::CircleShape player(25.f);
+    player.setFillColor(sf::Color::Green);
+    player.setPosition(400.f, 300.f);
+    
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        
+        // Movement
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            player.move(0, -5);
+            
+        window.clear();
+        window.draw(player);
+        window.display();
     }
-    return a / b;
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>AABB Collision Detection</h2>
+                    <pre><code class="cpp">struct Rectangle {
+    float x, y, width, height;
+};
+
+bool checkCollision(const Rectangle& a, const Rectangle& b) {
+    return (a.x < b.x + b.width &&
+            a.x + a.width > b.x &&
+            a.y < b.y + b.height &&
+            a.y + a.height > b.y);
 }
 
-int akses(int arr[], int size, int index) {
-    if (index < 0 || index >= size) {
-        throw out_of_range("Indeks di luar jangkauan!");
+// Penggunaan
+Rectangle player = {100, 100, 50, 50};
+Rectangle enemy = {120, 110, 40, 40};
+
+if (checkCollision(player, enemy)) {
+    cout << "TABRAKAN!" << endl;
+}</code></pre>
+                </section>
+            </section>
+
+            <!-- BAGIAN: DEVELOPMENT TOOLS -->
+            <section>
+                <section>
+                    <h1>🛠️ Development Tools</h1>
+                    <p>IDE, Build Systems, Version Control</p>
+                </section>
+
+                <section>
+                    <h2>Debugging dengan Code::Blocks</h2>
+                    <div class="two-columns">
+                        <div>
+                            <h3>Fitur Debugger:</h3>
+                            <ul>
+                                <li><strong>Breakpoints</strong> - Titik henti</li>
+                                <li><strong>Step Over</strong> - Baris per baris</li>
+                                <li><strong>Step Into</strong> - Masuk fungsi</li>
+                                <li><strong>Watches</strong> - Pantau variabel</li>
+                                <li><strong>Call Stack</strong> - Urutan pemanggilan</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Cara Menggunakan:</h3>
+                            <ol>
+                                <li>Build dengan mode Debug</li>
+                                <li>Klik margin kiri → Breakpoint</li>
+                                <li>F8 → Debug</li>
+                                <li>F7 → Step</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>CMake - Build System</h2>
+                    <pre><code class="cmake"># CMakeLists.txt
+cmake_minimum_required(VERSION 3.10)
+project(ProyekKu VERSION 1.0)
+
+# Standar C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Executable
+add_executable(program 
+    main.cpp 
+    utils.cpp
+)
+
+# Library eksternal (contoh: SFML)
+# find_package(SFML 2.5 REQUIRED)
+# target_link_libraries(program sfml-graphics)</code></pre>
+                </section>
+
+                <section>
+                    <h2>Git Version Control</h2>
+                    <pre><code class="bash"># Inisialisasi
+git init
+
+# Staging
+git add main.cpp
+git add .
+
+# Commit
+git commit -m "Implementasi fitur login"
+
+# Remote
+git remote add origin https://github.com/user/repo.git
+git push -u origin main
+
+# Update
+git pull origin main
+
+# Status
+git status
+git log --oneline</code></pre>
+                </section>
+            </section>
+
+            <!-- BAGIAN: REVIEW UAS -->
+            <section>
+                <section>
+                    <h1>📚 REVIEW UAS</h1>
+                    <p>Materi Pertemuan 9-14</p>
+                </section>
+
+                <section>
+                    <h2>Cakupan UAS</h2>
+                    <table>
+                        <tr>
+                            <th>Pertemuan</th>
+                            <th>Topik</th>
+                            <th>Fokus</th>
+                        </tr>
+                        <tr>
+                            <td>9-10</td>
+                            <td>Array</td>
+                            <td>1D, 2D, traversal, sorting</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>Pointer</td>
+                            <td>Alamat, dereference, new/delete</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>Struct</td>
+                            <td>Definisi, array of struct, nested</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>OOP</td>
+                            <td>Class, constructor, encapsulation</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>File & Exception</td>
+                            <td>ifstream, ofstream, try-catch</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Review: Array</h2>
+                    <pre><code class="cpp">// Array 1D
+int nilai[5] = {85, 90, 78, 92, 88};
+for (int i = 0; i < 5; i++) {
+    cout << nilai[i] << " ";
+}
+
+// Array 2D (Matriks)
+int matriks[3][3] = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+// Traversal matriks
+for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+        cout << matriks[i][j] << " ";
     }
-    return arr[index];
+    cout << endl;
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Review: Pointer</h2>
+                    <pre><code class="cpp">// Pointer dasar
+int angka = 42;
+int* ptr = &angka;  // & = alamat
+
+cout << *ptr;   // * = dereference → 42
+*ptr = 100;     // Ubah nilai via pointer
+cout << angka;  // 100
+
+// Memori dinamis
+int* arr = new int[5];  // Alokasi
+for (int i = 0; i < 5; i++) {
+    arr[i] = i * 10;
+}
+delete[] arr;  // WAJIB dealokasi!
+
+// Pointer ke NULL setelah delete
+arr = nullptr;</code></pre>
+                </section>
+
+                <section>
+                    <h2>Review: Struct</h2>
+                    <pre><code class="cpp">struct Mahasiswa {
+    string nama;
+    string nim;
+    float ipk;
+};
+
+// Deklarasi dan inisialisasi
+Mahasiswa mhs1 = {"Budi", "2024001", 3.75};
+
+// Akses member
+cout << mhs1.nama << endl;
+cout << mhs1.ipk << endl;
+
+// Array of struct
+Mahasiswa kelas[3];
+kelas[0] = {"Ani", "001", 3.9};
+
+// Pointer ke struct
+Mahasiswa* ptr = &mhs1;
+cout << ptr->nama;  // Gunakan -> untuk pointer</code></pre>
+                </section>
+
+                <section>
+                    <h2>Review: OOP</h2>
+                    <pre><code class="cpp">class BankAccount {
+private:
+    double saldo;
+    
+public:
+    // Constructor
+    BankAccount(double s) : saldo(s) {}
+    
+    // Destructor
+    ~BankAccount() {}
+    
+    // Getter
+    double getSaldo() { return saldo; }
+    
+    // Method
+    void setor(double jumlah) {
+        if (jumlah > 0) saldo += jumlah;
+    }
+};
+
+BankAccount akun(1000000);
+akun.setor(500000);
+cout << akun.getSaldo();  // 1500000</code></pre>
+                </section>
+
+                <section>
+                    <h2>Review: File Handling</h2>
+                    <pre><code class="cpp">#include &lt;fstream&gt;
+
+// MENULIS ke file
+ofstream fileOut("data.txt");
+if (fileOut.is_open()) {
+    fileOut << "Hello World!" << endl;
+    fileOut << 42 << endl;
+    fileOut.close();
+}
+
+// MEMBACA dari file
+ifstream fileIn("data.txt");
+if (fileIn.is_open()) {
+    string line;
+    while (getline(fileIn, line)) {
+        cout << line << endl;
+    }
+    fileIn.close();
+}</code></pre>
+                </section>
+
+                <section>
+                    <h2>Review: Exception Handling</h2>
+                    <pre><code class="cpp">#include &lt;stdexcept&gt;
+
+double bagi(int a, int b) {
+    if (b == 0) {
+        throw runtime_error("Pembagian dengan nol!");
+    }
+    return (double)a / b;
 }
 
 int main() {
     try {
         double hasil = bagi(10, 0);
+        cout << hasil << endl;
     }
-    catch (invalid_argument& e) {
-        cout << "Error: " << e.what() << endl;
+    catch (const runtime_error& e) {
+        cerr << "Error: " << e.what() << endl;
+    }
+    catch (...) {
+        cerr << "Unknown error" << endl;
     }
     return 0;
 }</code></pre>
                 </section>
+            </section>
 
-                <!-- Exception dalam File Operations -->
+            <!-- TIPS UAS -->
+            <section>
                 <section>
-                    <h2>Exception dalam File Operations</h2>
-                    <pre><code class="cpp">#include &lt;fstream&gt;
-#include &lt;stdexcept&gt;
-
-void bacaFile(string namaFile) {
-    ifstream file(namaFile);
-    
-    if (!file.is_open()) {
-        throw runtime_error("Tidak dapat membuka: " + namaFile);
-    }
-    
-    string baris;
-    while (getline(file, baris)) {
-        cout << baris << endl;
-    }
-    
-    if (file.bad()) {
-        throw runtime_error("Error saat membaca file!");
-    }
-    
-    file.close();
-}
-
-int main() {
-    try {
-        bacaFile("data.txt");
-    }
-    catch (runtime_error& e) {
-        cout << "Error: " << e.what() << endl;
-    }
-}</code></pre>
+                    <h1>💡 Tips UAS</h1>
                 </section>
 
-                <!-- Custom Exception -->
                 <section>
-                    <h2>Custom Exception Classes</h2>
-                    <pre><code class="cpp">class SaldoTidakCukupException : public exception {
-private:
-    string pesan;
-public:
-    SaldoTidakCukupException(double saldo, double penarikan) {
-        pesan = "Saldo tidak cukup! Saldo: " + 
-                to_string(saldo) + 
-                ", Penarikan: " + to_string(penarikan);
-    }
-    
-    const char* what() const noexcept override {
-        return pesan.c_str();
-    }
-};
-
-// Penggunaan:
-try {
-    if (penarikan > saldo) {
-        throw SaldoTidakCukupException(saldo, penarikan);
-    }
-}
-catch (SaldoTidakCukupException& e) {
-    cout << e.what() << endl;
-}</code></pre>
-                </section>
-
-                <!-- Best Practices -->
-                <section>
-                    <h2>Best Practices Exception Handling</h2>
-                    <div class="two-column">
+                    <h2>Checklist Persiapan</h2>
+                    <div class="two-columns">
                         <div class="success-box">
-                            <h3>✅ DO</h3>
-                            <ul style="font-size: 0.85em;">
-                                <li>Catch by reference</li>
-                                <li>Catch specific first</li>
-                                <li>Use standard exceptions</li>
-                                <li>Throw by value</li>
-                                <li>Use RAII pattern</li>
-                                <li>Provide clear messages</li>
+                            <h3>✅ Yang Harus Dikuasai</h3>
+                            <ul>
+                                <li>Traversal array 1D & 2D</li>
+                                <li>Pointer & dereferencing</li>
+                                <li>new/delete memory</li>
+                                <li>Membuat & menggunakan struct</li>
+                                <li>Class dengan constructor</li>
+                                <li>Baca/tulis file</li>
+                                <li>Try-catch blocks</li>
                             </ul>
                         </div>
                         <div class="warning-box">
-                            <h3>❌ DON'T</h3>
-                            <ul style="font-size: 0.85em;">
-                                <li>Catch by value</li>
-                                <li>Throw in destructor</li>
-                                <li>Catch and ignore</li>
-                                <li>Use exceptions for control flow</li>
-                                <li>Throw pointer</li>
-                                <li>Empty catch blocks</li>
+                            <h3>⚠️ Kesalahan Umum</h3>
+                            <ul>
+                                <li>Lupa delete memory</li>
+                                <li>Array out of bounds</li>
+                                <li>Tidak cek file.is_open()</li>
+                                <li>Private member tanpa getter</li>
+                                <li>Lupa close() file</li>
+                                <li>Catch tanpa type</li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- RAII Pattern -->
                 <section>
-                    <h2>RAII Pattern</h2>
-                    <div class="highlight-box">
-                        <p><strong>RAII</strong> = Resource Acquisition Is Initialization</p>
-                        <p>Resource diperoleh di constructor, dibebaskan di destructor</p>
-                    </div>
-                    <div class="two-column">
-                        <div>
-                            <div class="code-label important">❌ Buruk: Manual cleanup</div>
-                            <pre><code class="cpp">void proses() {
-    ifstream* file = 
-        new ifstream("data.txt");
-    
-    // Jika exception terjadi,
-    // file tidak tertutup!
-    
-    delete file;
-}</code></pre>
-                        </div>
-                        <div>
-                            <div class="code-label success">✅ Baik: RAII</div>
-                            <pre><code class="cpp">void proses() {
-    ifstream file("data.txt");
-    
-    // Jika exception terjadi,
-    // destructor otomatis
-    // menutup file!
-    
-} // Otomatis cleanup</code></pre>
-                        </div>
-                    </div>
+                    <h2>Strategi Mengerjakan Soal</h2>
+                    <ol>
+                        <li><strong>Baca soal dengan teliti</strong> - Pahami requirement</li>
+                        <li><strong>Identifikasi konsep</strong> - Array? Struct? OOP?</li>
+                        <li><strong>Sketsa solusi</strong> - Pseudocode dulu</li>
+                        <li><strong>Implementasi</strong> - Tulis kode</li>
+                        <li><strong>Test dengan contoh</strong> - Trace manual</li>
+                        <li><strong>Review</strong> - Cek edge cases</li>
+                    </ol>
                 </section>
             </section>
 
-            <!-- STUDI KASUS -->
+            <!-- Closing -->
             <section>
-                <section>
-                    <h2>📚 Studi Kasus</h2>
-                    <h3>Sistem Perpustakaan Sederhana</h3>
-                    <p>Menggabungkan File Handling dan Exception Handling</p>
-                </section>
-
-                <section>
-                    <h2>Fitur Sistem Perpustakaan</h2>
-                    <ul>
-                        <li>✅ Tambah buku ke database (binary file)</li>
-                        <li>✅ Tampilkan semua buku</li>
-                        <li>✅ Pinjam buku</li>
-                        <li>✅ Kembalikan buku</li>
-                        <li>✅ Cari buku</li>
-                        <li>✅ Custom exceptions untuk error handling</li>
-                        <li>✅ Auto-save menggunakan destructor</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>Custom Exceptions</h2>
-                    <pre><code class="cpp">class BukuTidakDitemukanException : public exception {
-private:
-    string isbn;
-public:
-    BukuTidakDitemukanException(string i) : isbn(i) {}
-    const char* what() const noexcept override {
-        return "Buku tidak ditemukan!";
-    }
-    string getISBN() const { return isbn; }
-};
-
-class BukuSudahDipinjamException : public exception {
-public:
-    const char* what() const noexcept override {
-        return "Buku sudah dipinjam!";
-    }
-};</code></pre>
-                </section>
-
-                <section>
-                    <h2>Struct Buku</h2>
-                    <pre><code class="cpp">struct Buku {
-    string isbn;
-    string judul;
-    string pengarang;
-    int tahun;
-    bool dipinjam;
-};</code></pre>
-                </section>
-
-                <section>
-                    <h2>Method: Muat dari File</h2>
-                    <pre><code class="cpp">void muatDariFile() {
-    ifstream file(namaFile, ios::binary);
-    
-    if (!file.is_open()) {
-        return; // File belum ada
-    }
-    
-    Buku buku;
-    while (file.read(reinterpret_cast&lt;char*&gt;(&buku), 
-                     sizeof(Buku))) {
-        daftarBuku.push_back(buku);
-    }
-    
-    if (file.bad()) {
-        throw runtime_error("Error saat membaca database!");
-    }
-    
-    file.close();
-}</code></pre>
-                </section>
-
-                <section>
-                    <h2>Method: Simpan ke File</h2>
-                    <pre><code class="cpp">void simpanKeFile() {
-    ofstream file(namaFile, ios::binary | ios::trunc);
-    
-    if (!file.is_open()) {
-        throw runtime_error("Tidak dapat menyimpan database!");
-    }
-    
-    for (const auto& buku : daftarBuku) {
-        file.write(reinterpret_cast&lt;const char*&gt;(&buku), 
-                   sizeof(Buku));
-        
-        if (file.fail()) {
-            throw runtime_error("Error saat menulis!");
-        }
-    }
-    
-    file.close();
-}</code></pre>
-                </section>
-
-                <section>
-                    <h2>Method: Pinjam Buku</h2>
-                    <pre><code class="cpp">void pinjamBuku(string isbn) {
-    for (auto& buku : daftarBuku) {
-        if (buku.isbn == isbn) {
-            if (buku.dipinjam) {
-                throw BukuSudahDipinjamException();
-            }
-            buku.dipinjam = true;
-            cout << "Buku '" << buku.judul 
-                 << "' berhasil dipinjam!" << endl;
-            return;
-        }
-    }
-    throw BukuTidakDitemukanException(isbn);
-}</code></pre>
-                </section>
-
-                <section>
-                    <h2>Main Program dengan Exception Handling</h2>
-                    <pre><code class="cpp">int main() {
-    try {
-        Perpustakaan perpus("perpustakaan.dat");
-        
-        // Menu loop...
-        try {
-            perpus.pinjamBuku("ISBN-001");
-        }
-        catch (BukuTidakDitemukanException& e) {
-            cout << "Error: " << e.what() << endl;
-            cout << "ISBN: " << e.getISBN() << endl;
-        }
-        catch (BukuSudahDipinjamException& e) {
-            cout << "Error: " << e.what() << endl;
-        }
-    }
-    catch (exception& e) {
-        cout << "Fatal Error: " << e.what() << endl;
-        return 1;
-    }
-    
-    return 0;
-}</code></pre>
-                </section>
+                <h1>🎓 Selamat!</h1>
+                <p>Anda telah menyelesaikan mata kuliah</p>
+                <h2 style="color: #3498db;">Dasar-Dasar Pemrograman</h2>
+                <div class="success-box" style="margin-top: 40px;">
+                    <p>🚀 C++ adalah fondasi untuk banyak hal!</p>
+                    <p>Embedded • Games • Competitive • Systems</p>
+                </div>
+                <p style="margin-top: 40px;">Good luck untuk UAS! 🍀</p>
             </section>
 
-            <!-- RANGKUMAN -->
+            <!-- Q&A -->
             <section>
-                <h2>📝 Rangkuman</h2>
-                <div class="two-column">
-                    <div>
-                        <h3>File Handling</h3>
-                        <ul style="font-size: 0.85em;">
-                            <li>ifstream, ofstream, fstream</li>
-                            <li>File modes (in, out, app, binary)</li>
-                            <li>Menulis: operator &lt;&lt;</li>
-                            <li>Membaca: &gt;&gt;, getline(), get()</li>
-                            <li>Status: eof(), fail(), bad(), good()</li>
-                            <li>Pointers: seekg(), tellg()</li>
-                            <li>Binary: write(), read()</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>Exception Handling</h3>
-                        <ul style="font-size: 0.85em;">
-                            <li>try-catch block</li>
-                            <li>throw statement</li>
-                            <li>Multiple catch blocks</li>
-                            <li>Standard exceptions</li>
-                            <li>Custom exceptions</li>
-                            <li>Best practices</li>
-                            <li>RAII pattern</li>
-                        </ul>
-                    </div>
+                <h1>❓ Q&A Session</h1>
+                <p>Ada pertanyaan tentang materi atau UAS?</p>
+                <div class="info-box" style="margin-top: 50px;">
+                    <p>📧 Hubungi dosen jika ada kendala</p>
+                    <p>📚 Review materi pertemuan 9-14</p>
+                    <p>💻 Latihan coding secara rutin</p>
                 </div>
             </section>
-
-            <!-- TIPS -->
-            <section>
-                <h2>💡 Tips Penting</h2>
-                <div class="warning-box">
-                    <ul>
-                        <li>Selalu tutup file setelah selesai!</li>
-                        <li>Cek apakah file berhasil dibuka</li>
-                        <li>Gunakan exception handling untuk file operations</li>
-                        <li>Catch by reference, throw by value</li>
-                        <li>Gunakan RAII untuk resource management</li>
-                        <li>Provide informative error messages</li>
-                        <li>Don't throw in destructor!</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- QA -->
-            <section>
-                <h2>❓ Pertanyaan?</h2>
-                <div class="highlight-box">
-                    <p>Terima kasih telah mengikuti pertemuan ini!</p>
-                    <p>Selamat belajar dan berlatih! 🚀</p>
-                </div>
-            </section>
-
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
-            slideNumber: true,
+            slideNumber: 'c/t',
+            plugins: [ RevealHighlight ],
             transition: 'slide',
-            plugins: [ RevealHighlight, RevealNotes ]
+            backgroundTransition: 'fade'
         });
     </script>
 </body>
 </html>
+
