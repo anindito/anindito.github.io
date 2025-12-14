@@ -3,73 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pertemuan 14: Pengenalan OOP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/monokai.min.css">
+    <title>Pertemuan 14: File Handling dan Exception Handling</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/monokai.css">
     <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #38ef7d;
+            --warning-color: #ffd54f;
+            --danger-color: #f5576c;
+        }
+        
+        .reveal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         .reveal h1, .reveal h2, .reveal h3 {
+            color: var(--primary-color);
             text-transform: none;
         }
-        .reveal section img {
-            border: none;
-            box-shadow: none;
+        
+        .reveal h1 {
+            font-size: 2.2em;
         }
+        
+        .reveal h2 {
+            font-size: 1.6em;
+        }
+        
+        .reveal h3 {
+            font-size: 1.3em;
+        }
+        
         .reveal pre {
             width: 100%;
-            font-size: 0.50em;
+            font-size: 0.5em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
         }
+        
         .reveal code {
-            font-family: 'Courier New', monospace;
-            background: #f0f0f0;
             padding: 2px 6px;
-            border-radius: 3px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 0.9em;
         }
+        
         .reveal pre code {
-            background: #2d2d2d;
-            padding: 20px;
-            max-height: 500px;
+            padding: 15px;
+            background: #272822;
         }
+        
+        .title-slide {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .title-slide h1, .title-slide h2, .title-slide p {
+            color: white !important;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-color);
+            text-align: left;
+            margin: 15px 0;
+        }
+        
+        .code-caption {
+            font-size: 0.5em;
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
         }
-        .pillar-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .highlight-box {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 20px;
+            padding: 15px 25px;
             border-radius: 10px;
-            margin: 10px 0;
+            font-weight: bold;
         }
-        .concept-highlight {
+        
+        .success-box {
+            background: linear-gradient(135deg, #11998e, var(--success-color));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #f9a825, var(--warning-color));
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, #ee0979, var(--danger-color));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+        
+        .info-box {
             background: #e3f2fd;
-            padding: 20px;
-            border-left: 5px solid #1976d2;
-            margin: 15px 0;
-        }
-        .example-box {
-            background: #f5f5f5;
+            border-left: 4px solid #1976d2;
             padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+            border-radius: 0 10px 10px 0;
+            text-align: left;
         }
+        
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .icon-large {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            font-size: 0.7em;
         }
+        
         .comparison-table th {
-            background: #1976d2;
+            background: var(--primary-color);
             color: white;
             padding: 12px;
         }
+        
         .comparison-table td {
             padding: 10px;
-            border: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
         }
-        .fragment.highlight-current-blue.visible.current-fragment {
-            background: #e3f2fd;
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .keyword {
+            background: #e8eaf6;
+            color: #3f51b5;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .reveal ul, .reveal ol {
+            text-align: left;
+        }
+        
+        .reveal li {
+            margin-bottom: 10px;
+        }
+        
+        .small-text {
+            font-size: 0.7em;
+        }
+        
+        .tiny-text {
+            font-size: 0.5em;
+            color: #888;
+        }
+        
+        .fragment.highlight-current-blue.visible {
+            color: var(--primary-color);
+        }
+        
+        .mode-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+        
+        .mode-card h4 {
+            color: white;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -78,704 +233,744 @@
         <div class="slides">
             
             <!-- Slide 1: Title -->
-            <section>
-                <h1>Pertemuan 14</h1>
-                <h2>Pengenalan Pemrograman Berorientasi Objek (OOP)</h2>
+            <section class="title-slide" data-background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1>📁 File Handling &<br>Exception Handling</h1>
+                <h2>Pertemuan 14</h2>
                 <p>Dasar-Dasar Pemrograman</p>
+                <p class="small-text">Tekan SPACE untuk melanjutkan</p>
             </section>
-
+            
             <!-- Slide 2: Tujuan Pembelajaran -->
             <section>
-                <h2>Tujuan Pembelajaran</h2>
-                <div style="text-align: left; margin: 20px 40px;">
-                    <p>Setelah pertemuan ini, mahasiswa diharapkan dapat:</p>
-                    <ul style="font-size: 0.85em;">
-                        <li>Memahami paradigma pemrograman berorientasi objek</li>
-                        <li>Memahami konsep class dan object serta perbedaannya</li>
-                        <li>Membuat dan menggunakan class dengan constructor dan destructor</li>
-                        <li>Menerapkan enkapsulasi dengan access specifier</li>
-                        <li>Memahami dan mengimplementasikan inheritance</li>
-                        <li>Memahami konsep dasar polymorphism dengan virtual functions</li>
-                        <li>Mengembangkan aplikasi sederhana menggunakan prinsip OOP</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Slide 3: Paradigma Pemrograman -->
-            <section>
-                <h2>Paradigma Pemrograman</h2>
-                <div class="two-column">
-                    <div>
-                        <h3 style="color: #1976d2;">Prosedural</h3>
-                        <div class="example-box">
-                            <ul style="font-size: 0.75em; text-align: left;">
-                                <li>Data terpisah dari fungsi</li>
-                                <li>Fokus pada algoritma</li>
-                                <li>Program = urutan instruksi</li>
-                                <li>Contoh: C, Pascal</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 style="color: #7b1fa2;">Berorientasi Objek</h3>
-                        <div class="example-box">
-                            <ul style="font-size: 0.75em; text-align: left;">
-                                <li>Data + fungsi dalam objek</li>
-                                <li>Fokus pada objek & interaksi</li>
-                                <li>Program = kumpulan objek</li>
-                                <li>Contoh: C++, Java, Python</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 4: Empat Pilar OOP -->
-            <section>
-                <h2>Empat Pilar OOP</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.7em;">
-                    <div class="pillar-box">
-                        <h3>1. Encapsulation</h3>
-                        <p>Penggabungan data dan method + menyembunyikan detail internal</p>
-                    </div>
-                    <div class="pillar-box">
-                        <h3>2. Inheritance</h3>
-                        <p>Pewarisan atribut dan method dari class lain</p>
-                    </div>
-                    <div class="pillar-box">
-                        <h3>3. Polymorphism</h3>
-                        <p>Satu interface untuk berbagai tipe objek</p>
-                    </div>
-                    <div class="pillar-box">
-                        <h3>4. Abstraction</h3>
-                        <p>Menyembunyikan kompleksitas, menampilkan yang penting</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 5: Class dan Object -->
-            <section>
-                <h2>Class dan Object</h2>
-                <div class="concept-highlight">
-                    <p><strong>Class</strong> = Blueprint atau template</p>
-                    <p><strong>Object</strong> = Instance dari class</p>
-                </div>
-                <div class="example-box" style="margin-top: 20px;">
-                    <p><strong>Analogi:</strong></p>
-                    <p>Class = Cetakan kue 🍪</p>
-                    <p>Object = Kue-kue yang dihasilkan 🍪🍪🍪</p>
-                </div>
-            </section>
-
-            <!-- Slide 6: Sintaks Class -->
-            <section>
-                <h2>Sintaks Definisi Class</h2>
-                <pre><code class="cpp" data-trim>
-class NamaClass {
-private:
-    // Data members private
-    // Hanya dapat diakses dari dalam class
-    
-public:
-    // Data members public
-    // Dapat diakses dari luar class
-    
-    // Member functions
-    // Method-method yang bekerja pada data
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 7: Contoh Class Sederhana -->
-            <section>
-                <h2>Contoh Class Mahasiswa</h2>
-                <pre><code class="cpp" data-trim>
-class Mahasiswa {
-private:
-    string nama;
-    string nim;
-    float ipk;
-
-public:
-    void setData(string n, string ni, float i) {
-        nama = n;
-        nim = ni;
-        ipk = i;
-    }
-    
-    void tampilkan() {
-        cout << "Nama: " << nama << endl;
-        cout << "NIM: " << nim << endl;
-        cout << "IPK: " << ipk << endl;
-    }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 8: Membuat Object -->
-            <section>
-                <h2>Membuat dan Menggunakan Object</h2>
-                <pre><code class="cpp" data-trim>
-int main() {
-    // Membuat object
-    Mahasiswa mhs1;
-    Mahasiswa mhs2;
-    
-    // Mengatur data
-    mhs1.setData("Budi Santoso", "2101001", 3.75);
-    mhs2.setData("Ani Lestari", "2101002", 3.25);
-    
-    // Menampilkan data
-    mhs1.tampilkan();
-    cout << endl;
-    mhs2.tampilkan();
-    
-    return 0;
-}
-                </code></pre>
-            </section>
-
-            <!-- Slide 9: Access Specifier -->
-            <section>
-                <h2>Access Specifier</h2>
-                <table class="comparison-table" style="font-size: 0.75em;">
-                    <tr>
-                        <th>Access Specifier</th>
-                        <th>Akses dari Dalam Class</th>
-                        <th>Akses dari Luar Class</th>
-                        <th>Akses dari Derived Class</th>
-                    </tr>
-                    <tr>
-                        <td><strong>private</strong></td>
-                        <td>✓ Ya</td>
-                        <td>✗ Tidak</td>
-                        <td>✗ Tidak</td>
-                    </tr>
-                    <tr>
-                        <td><strong>protected</strong></td>
-                        <td>✓ Ya</td>
-                        <td>✗ Tidak</td>
-                        <td>✓ Ya</td>
-                    </tr>
-                    <tr>
-                        <td><strong>public</strong></td>
-                        <td>✓ Ya</td>
-                        <td>✓ Ya</td>
-                        <td>✓ Ya</td>
-                    </tr>
-                </table>
-            </section>
-
-            <!-- Slide 10: Constructor -->
-            <section>
-                <h2>Constructor</h2>
-                <div class="concept-highlight">
-                    <p><strong>Constructor</strong> adalah method khusus yang dipanggil otomatis saat object dibuat</p>
-                    <ul style="text-align: left; font-size: 0.85em;">
-                        <li>Nama sama dengan nama class</li>
-                        <li>Tidak memiliki return type</li>
-                        <li>Digunakan untuk inisialisasi</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Slide 11: Jenis Constructor -->
-            <section>
-                <h2>Jenis Constructor</h2>
-                <pre><code class="cpp" data-trim>
-class Mahasiswa {
-private:
-    string nama;
-    float ipk;
-
-public:
-    // Default constructor
-    Mahasiswa() {
-        nama = "Belum diisi";
-        ipk = 0.0;
-    }
-    
-    // Parameterized constructor
-    Mahasiswa(string n, float i) {
-        nama = n;
-        ipk = i;
-    }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 12: Constructor Initializer List -->
-            <section>
-                <h2>Constructor Initializer List</h2>
-                <pre><code class="cpp" data-trim>
-class Mahasiswa {
-private:
-    string nama;
-    string nim;
-    float ipk;
-
-public:
-    // Constructor dengan initializer list
-    Mahasiswa(string n, string ni, float i) 
-        : nama(n), nim(ni), ipk(i) {
-        cout << "Mahasiswa " << nama << " dibuat" << endl;
-    }
-    
-    // Lebih efisien!
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 13: Destructor -->
-            <section>
-                <h2>Destructor</h2>
-                <div class="concept-highlight">
-                    <p><strong>Destructor</strong> adalah method khusus yang dipanggil otomatis saat object dihancurkan</p>
-                    <ul style="text-align: left; font-size: 0.85em;">
-                        <li>Nama sama dengan class, diawali tilde (~)</li>
-                        <li>Tidak memiliki return type dan parameter</li>
-                        <li>Digunakan untuk cleanup</li>
-                    </ul>
-                </div>
-                <pre><code class="cpp" data-trim>
-~Mahasiswa() {
-    cout << "Object " << nama << " dihancurkan" << endl;
-}
-                </code></pre>
-            </section>
-
-            <!-- Slide 14: Encapsulation -->
-            <section>
-                <h2>Encapsulation (Enkapsulasi)</h2>
-                <div class="concept-highlight">
-                    <p><strong>Data Hiding:</strong> Membuat data private dan mengaksesnya melalui public methods</p>
-                </div>
-                <div class="example-box" style="margin-top: 20px;">
-                    <p><strong>Keuntungan:</strong></p>
-                    <ul style="font-size: 0.8em; text-align: left;">
-                        <li>Melindungi integritas data</li>
-                        <li>Validasi saat mengubah data</li>
-                        <li>Mudah dimodifikasi tanpa mengubah interface</li>
-                        <li>Meningkatkan maintainability</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Slide 15: Getter dan Setter -->
-            <section>
-                <h2>Getter dan Setter Methods</h2>
-                <pre><code class="cpp" data-trim>
-class Mahasiswa {
-private:
-    float ipk;
-
-public:
-    // Getter
-    float getIPK() {
-        return ipk;
-    }
-    
-    // Setter dengan validasi
-    void setIPK(float i) {
-        if (i >= 0.0 && i <= 4.0) {
-            ipk = i;
-        } else {
-            cout << "Error: IPK harus 0.0 - 4.0!" << endl;
-        }
-    }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 16: Inheritance -->
-            <section>
-                <h2>Inheritance (Pewarisan)</h2>
-                <div class="concept-highlight">
-                    <p><strong>Inheritance:</strong> Mekanisme dimana class dapat mewarisi atribut dan method dari class lain</p>
-                </div>
-                <div style="margin-top: 20px;">
-                    <p><strong>Base Class (Parent)</strong> → Class yang diwarisi</p>
-                    <p><strong>Derived Class (Child)</strong> → Class yang mewarisi</p>
-                </div>
-            </section>
-
-            <!-- Slide 17: Sintaks Inheritance -->
-            <section>
-                <h2>Sintaks Inheritance</h2>
-                <pre><code class="cpp" data-trim>
-// Base class
-class Person {
-protected:
-    string nama;
-    int umur;
-
-public:
-    Person(string n, int u) : nama(n), umur(u) {}
-    
-    void tampilkanInfo() {
-        cout << "Nama: " << nama << endl;
-        cout << "Umur: " << umur << endl;
-    }
-};
-
-// Derived class
-class Mahasiswa : public Person {
-private:
-    string nim;
-    
-public:
-    Mahasiswa(string n, int u, string ni) 
-        : Person(n, u), nim(ni) {}
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 18: Keuntungan Inheritance -->
-            <section>
-                <h2>Keuntungan Inheritance</h2>
-                <div style="text-align: left; margin: 20px 60px;">
-                    <div class="example-box">
-                        <h3 style="color: #1976d2;">✓ Code Reusability</h3>
-                        <p>Tidak perlu menulis ulang kode yang sama</p>
-                    </div>
-                    <div class="example-box">
-                        <h3 style="color: #1976d2;">✓ Extensibility</h3>
-                        <p>Mudah menambahkan class baru</p>
-                    </div>
-                    <div class="example-box">
-                        <h3 style="color: #1976d2;">✓ Hierarchical Organization</h3>
-                        <p>Class terorganisir dalam hierarki yang logis</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 19: Constructor dalam Inheritance -->
-            <section>
-                <h2>Urutan Constructor dan Destructor</h2>
-                <div class="concept-highlight">
-                    <p><strong>Constructor:</strong> Base → Derived</p>
-                    <p><strong>Destructor:</strong> Derived → Base</p>
-                </div>
-                <pre><code class="cpp" data-trim>
-class Person {
-public:
-    Person() { cout << "1. Constructor Person" << endl; }
-    ~Person() { cout << "3. Destructor Person" << endl; }
-};
-
-class Mahasiswa : public Person {
-public:
-    Mahasiswa() { cout << "2. Constructor Mahasiswa" << endl; }
-    ~Mahasiswa() { cout << "2. Destructor Mahasiswa" << endl; }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 20: Polymorphism -->
-            <section>
-                <h2>Polymorphism (Polimorfisme)</h2>
-                <div class="concept-highlight">
-                    <p><strong>Polymorphism:</strong> "Banyak bentuk" - kemampuan menggunakan satu interface untuk berbagai tipe objek</p>
-                </div>
-                <div class="two-column" style="margin-top: 20px; font-size: 0.8em;">
-                    <div>
-                        <h3>Compile-time</h3>
-                        <p>Function overloading</p>
-                        <p>Operator overloading</p>
-                    </div>
-                    <div>
-                        <h3>Runtime</h3>
-                        <p>Virtual functions</p>
-                        <p>Function overriding</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 21: Function Overriding -->
-            <section>
-                <h2>Function Overriding</h2>
-                <pre><code class="cpp" data-trim>
-class BangunDatar {
-public:
-    void hitungLuas() {
-        cout << "Luas belum didefinisikan" << endl;
-    }
-};
-
-class Persegi : public BangunDatar {
-private:
-    double sisi;
-public:
-    Persegi(double s) : sisi(s) {}
-    
-    // Override method dari base class
-    void hitungLuas() {
-        cout << "Luas persegi: " << sisi * sisi << endl;
-    }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 22: Virtual Functions -->
-            <section>
-                <h2>Virtual Functions</h2>
-                <div class="concept-highlight">
-                    <p><strong>Virtual function</strong> memungkinkan runtime polymorphism</p>
-                    <p>Method yang dipanggil ditentukan pada saat runtime berdasarkan tipe objek sebenarnya</p>
-                </div>
-                <pre><code class="cpp" data-trim>
-class BangunDatar {
-public:
-    virtual double hitungLuas() {
-        return 0.0;
-    }
-};
-
-class Persegi : public BangunDatar {
-private:
-    double sisi;
-public:
-    double hitungLuas() override {
-        return sisi * sisi;
-    }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 23: Runtime Polymorphism -->
-            <section>
-                <h2>Runtime Polymorphism</h2>
-                <pre><code class="cpp" data-trim>
-int main() {
-    BangunDatar* bentuk[3];
-    
-    bentuk[0] = new Persegi(5.0);
-    bentuk[1] = new Lingkaran(7.0);
-    bentuk[2] = new Segitiga(4.0, 6.0);
-    
-    // Polymorphism!
-    for (int i = 0; i < 3; i++) {
-        cout << "Luas: " << bentuk[i]->hitungLuas() << endl;
-    }
-    
-    // Cleanup
-    for (int i = 0; i < 3; i++) {
-        delete bentuk[i];
-    }
-    
-    return 0;
-}
-                </code></pre>
-            </section>
-
-            <!-- Slide 24: Virtual Destructor -->
-            <section>
-                <h2>Virtual Destructor</h2>
-                <div class="concept-highlight">
-                    <p><strong>Penting!</strong> Jika class memiliki virtual functions, destructor juga harus virtual</p>
-                </div>
-                <pre><code class="cpp" data-trim>
-class Base {
-public:
-    virtual void someMethod() { }
-    
-    // Virtual destructor
-    virtual ~Base() {
-        cout << "Destructor Base" << endl;
-    }
-};
-
-class Derived : public Base {
-public:
-    ~Derived() {
-        cout << "Destructor Derived" << endl;
-    }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 25: Keyword override -->
-            <section>
-                <h2>Keyword override (C++11)</h2>
-                <div class="concept-highlight">
-                    <p><strong>override</strong> memastikan method benar-benar meng-override method base class</p>
-                    <p>Compiler akan error jika signature tidak cocok</p>
-                </div>
-                <pre><code class="cpp" data-trim>
-class Base {
-public:
-    virtual void print(int x) { }
-};
-
-class Derived : public Base {
-public:
-    // Benar - akan meng-override
-    void print(int x) override { }
-    
-    // Error - signature berbeda
-    // void print(double x) override { }
-};
-                </code></pre>
-            </section>
-
-            <!-- Slide 26: Contoh Aplikasi: Sistem Perpustakaan -->
-            <section>
-                <h2>Contoh Aplikasi OOP</h2>
-                <h3>Sistem Perpustakaan Sederhana</h3>
-                <div style="text-align: left; font-size: 0.75em; margin: 20px 40px;">
-                    <p><strong>Class yang dibutuhkan:</strong></p>
-                    <ul>
-                        <li><code>ItemPerpustakaan</code> (base class) - dengan virtual methods</li>
-                        <li><code>Buku</code> (derived class) - dengan atribut pengarang, tahun</li>
-                        <li><code>Majalah</code> (derived class) - dengan atribut penerbit, edisi</li>
-                        <li><code>Perpustakaan</code> - mengelola koleksi items</li>
-                    </ul>
-                    <p><strong>Fitur:</strong> Tambah item, pinjam, kembalikan, tampilkan koleksi</p>
-                </div>
-            </section>
-
-            <!-- Slide 27: Best Practices OOP -->
-            <section>
-                <h2>Best Practices OOP</h2>
-                <div style="text-align: left; margin: 20px 60px; font-size: 0.8em;">
-                    <div class="example-box">
-                        <p>✓ Gunakan enkapsulasi - data private, interface public</p>
-                    </div>
-                    <div class="example-box">
-                        <p>✓ Gunakan initializer list di constructor</p>
-                    </div>
-                    <div class="example-box">
-                        <p>✓ Buat virtual destructor untuk class dengan virtual functions</p>
-                    </div>
-                    <div class="example-box">
-                        <p>✓ Gunakan keyword override untuk clarity</p>
-                    </div>
-                    <div class="example-box">
-                        <p>✓ Prefer composition over inheritance (dalam beberapa kasus)</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 28: Common Mistakes -->
-            <section>
-                <h2>Kesalahan Umum</h2>
-                <div style="text-align: left; margin: 20px 60px; font-size: 0.75em;">
-                    <div class="example-box" style="background: #ffebee;">
-                        <p>✗ Mengakses private members langsung dari luar class</p>
-                    </div>
-                    <div class="example-box" style="background: #ffebee;">
-                        <p>✗ Lupa memanggil base class constructor</p>
-                    </div>
-                    <div class="example-box" style="background: #ffebee;">
-                        <p>✗ Tidak membuat destructor virtual untuk inheritance</p>
-                    </div>
-                    <div class="example-box" style="background: #ffebee;">
-                        <p>✗ Memory leak karena tidak delete pointer</p>
-                    </div>
-                    <div class="example-box" style="background: #ffebee;">
-                        <p>✗ Menggunakan inheritance hanya untuk code reuse (gunakan composition)</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 29: OOP vs Procedural - Kapan Menggunakan -->
-            <section>
-                <h2>Kapan Menggunakan OOP?</h2>
-                <div class="two-column" style="font-size: 0.75em;">
-                    <div>
-                        <h3 style="color: #2e7d32;">Gunakan OOP ketika:</h3>
-                        <ul style="text-align: left;">
-                            <li>Program kompleks dan besar</li>
-                            <li>Banyak entitas dengan atribut</li>
-                            <li>Perlu maintainability tinggi</li>
-                            <li>Tim development besar</li>
-                            <li>Perlu extensibility</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 style="color: #c62828;">Prosedural cukup ketika:</h3>
-                        <ul style="text-align: left;">
-                            <li>Program kecil dan sederhana</li>
-                            <li>Algoritma linear</li>
-                            <li>Performance critical</li>
-                            <li>Script utility sederhana</li>
-                            <li>Embedded systems</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 30: Topik Lanjutan -->
-            <section>
-                <h2>Topik Lanjutan (Mata Kuliah PBO)</h2>
-                <div style="text-align: left; margin: 20px 60px; font-size: 0.8em;">
-                    <p>Di mata kuliah Pemrograman Berorientasi Objek, Anda akan mempelajari:</p>
-                    <ul>
-                        <li>Operator overloading</li>
-                        <li>Friend functions dan friend classes</li>
-                        <li>Multiple inheritance</li>
-                        <li>Abstract classes dan pure virtual functions</li>
-                        <li>Templates dan generic programming</li>
-                        <li>STL (Standard Template Library)</li>
-                        <li>Design patterns (Singleton, Factory, Observer, dll)</li>
-                        <li>SOLID principles</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Slide 31: Ringkasan -->
-            <section>
-                <h2>Ringkasan</h2>
-                <div style="text-align: left; margin: 20px 60px; font-size: 0.75em;">
-                    <ul>
-                        <li><strong>OOP</strong> mengorganisir kode dalam objek (data + method)</li>
-                        <li><strong>Class</strong> adalah blueprint, <strong>object</strong> adalah instance</li>
-                        <li><strong>Constructor</strong> menginisialisasi object, <strong>destructor</strong> membersihkan</li>
-                        <li><strong>Enkapsulasi</strong> menyembunyikan data, akses via getter/setter</li>
-                        <li><strong>Inheritance</strong> memungkinkan code reuse</li>
-                        <li><strong>Polymorphism</strong> dengan virtual functions untuk flexibility</li>
-                        <li><strong>Empat pilar OOP:</strong> Encapsulation, Inheritance, Polymorphism, Abstraction</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Slide 32: Referensi -->
-            <section>
-                <h2>Referensi</h2>
-                <div style="text-align: left; margin: 20px 60px; font-size: 0.65em;">
+                <h2>🎯 Tujuan Pembelajaran</h2>
+                <div class="concept-box">
+                    <p>Setelah mengikuti pertemuan ini, mahasiswa mampu:</p>
                     <ol>
-                        <li>Stroustrup, B. (2013). <em>The C++ Programming Language</em> (4th ed.). Chapter 2-3.</li>
-                        <li>Savitch, W. (2017). <em>Problem Solving with C++</em> (10th ed.). Chapter 10-11.</li>
-                        <li>Lippman, S. B., Lajoie, J., & Moo, B. E. (2012). <em>C++ Primer</em> (5th ed.). Chapter 7, 13, 15.</li>
-                        <li>Deitel, P., & Deitel, H. (2016). <em>C++ How to Program</em> (10th ed.). Chapter 9, 12.</li>
-                        <li>Gamma, E., et al. (1994). <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>.</li>
+                        <li class="fragment">Memahami konsep file dan stream dalam C++</li>
+                        <li class="fragment">Membuka, membaca, menulis, dan menutup file</li>
+                        <li class="fragment">Menggunakan berbagai mode pembukaan file</li>
+                        <li class="fragment">Memahami konsep exception handling</li>
+                        <li class="fragment">Menerapkan try-catch-throw untuk menangani error</li>
+                        <li class="fragment">Membuat program yang robust dengan error handling</li>
                     </ol>
                 </div>
             </section>
-
-            <!-- Slide 33: Terima Kasih -->
+            
+            <!-- Slide 3: Motivasi -->
             <section>
-                <h1>Terima Kasih</h1>
-                <h3>Pertanyaan?</h3>
-                <p style="margin-top: 50px; font-size: 0.8em;">
-                    Pertemuan berikutnya: File Handling dan Exception Handling
-                </p>
+                <h2>💡 Mengapa File Handling Penting?</h2>
+                <div class="two-column">
+                    <div class="card fragment">
+                        <div class="icon-large">💾</div>
+                        <h4>Tanpa File</h4>
+                        <p class="small-text">Data hilang saat program ditutup</p>
+                        <p class="danger-box small-text">Tidak persistent!</p>
+                    </div>
+                    <div class="card fragment">
+                        <div class="icon-large">📂</div>
+                        <h4>Dengan File</h4>
+                        <p class="small-text">Data tersimpan permanen</p>
+                        <p class="success-box small-text">Data aman!</p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 20px;">
+                    <p><strong>Contoh aplikasi:</strong> Game save, Dokumen, Database, Log sistem</p>
+                </div>
+            </section>
+            
+            <!-- Slide 4: Konsep Stream -->
+            <section>
+                <h2>🌊 Konsep Stream</h2>
+                <div class="concept-box">
+                    <p><strong>Stream</strong> = Aliran data antara program dan sumber/tujuan</p>
+                </div>
+                <div class="three-column" style="margin-top: 20px;">
+                    <div class="card fragment">
+                        <h4>cin / cout</h4>
+                        <p class="small-text">Keyboard → Program</p>
+                        <p class="small-text">Program → Monitor</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4>ifstream</h4>
+                        <p class="small-text">File → Program</p>
+                        <p class="success-box small-text">Input File Stream</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4>ofstream</h4>
+                        <p class="small-text">Program → File</p>
+                        <p class="danger-box small-text">Output File Stream</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 5: Stream Diagram -->
+            <section>
+                <h2>📊 Diagram Stream</h2>
+                <img src="images/stream_concept.svg" alt="Stream Concept" style="max-width: 85%; height: auto;">
+                <p class="small-text">Stream menghubungkan program dengan berbagai sumber input/output</p>
+            </section>
+            
+            <!-- Slide 6: Library fstream -->
+            <section>
+                <h2>📚 Library &lt;fstream&gt;</h2>
+                <div class="info-box">
+                    <p>Untuk bekerja dengan file, kita butuh: <code>#include &lt;fstream&gt;</code></p>
+                </div>
+                <table class="comparison-table" style="margin-top: 20px;">
+                    <tr>
+                        <th>Class</th>
+                        <th>Fungsi</th>
+                        <th>Analogi</th>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>ifstream</code></td>
+                        <td>Membaca dari file</td>
+                        <td>Seperti <code>cin</code></td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>ofstream</code></td>
+                        <td>Menulis ke file</td>
+                        <td>Seperti <code>cout</code></td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>fstream</code></td>
+                        <td>Baca & tulis</td>
+                        <td>Kombinasi keduanya</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Slide 7: Membuka File -->
+            <section>
+                <h2>📂 Membuka File</h2>
+                <p><strong>Cara 1:</strong> Menggunakan Constructor</p>
+                <pre><code class="cpp">
+#include &lt;fstream&gt;
+using namespace std;
+
+int main() {
+    // Buka file untuk dibaca
+    ifstream fileIn("data.txt");
+    
+    // Buka file untuk ditulis
+    ofstream fileOut("hasil.txt");
+    
+    return 0;
+}
+                </code></pre>
+                <p class="code-caption">File otomatis dibuka saat objek dibuat</p>
+            </section>
+            
+            <!-- Slide 8: Membuka File dengan open() -->
+            <section>
+                <h2>📂 Membuka File dengan open()</h2>
+                <p><strong>Cara 2:</strong> Menggunakan fungsi open()</p>
+                <pre><code class="cpp">
+ifstream file;              // Deklarasi dulu
+file.open("data.txt");      // Buka nanti
+
+// Cek apakah berhasil dibuka
+if (!file.is_open()) {
+    cout << "Gagal membuka file!" << endl;
+    return 1;
+}
+
+// ... gunakan file ...
+
+file.close();  // Tutup setelah selesai
+                </code></pre>
+                <div class="warning-box small-text fragment">
+                    ⚠️ Selalu cek apakah file berhasil dibuka!
+                </div>
+            </section>
+            
+            <!-- Slide 9: Mode Pembukaan File -->
+            <section>
+                <h2>⚙️ Mode Pembukaan File</h2>
+                <img src="images/file_modes.svg" alt="File Modes" style="max-width: 85%; height: auto;">
+            </section>
+            
+            <!-- Slide 10: Contoh Mode -->
+            <section>
+                <h2>📝 Contoh Penggunaan Mode</h2>
+                <pre><code class="cpp">
+// Mode default: hapus isi file yang ada
+ofstream file1("test.txt");
+
+// Mode append: tambahkan di akhir
+ofstream file2("log.txt", ios::app);
+
+// Mode binary: untuk file non-teks
+ofstream file3("image.bin", ios::binary);
+
+// Kombinasi: baca dan tulis
+fstream file4("data.txt", ios::in | ios::out);
+                </code></pre>
+                <p class="code-caption">Gunakan operator | untuk kombinasi mode</p>
+            </section>
+            
+            <!-- Slide 11: Menulis ke File -->
+            <section>
+                <h2>✏️ Menulis ke File</h2>
+                <pre><code class="cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+using namespace std;
+
+int main() {
+    ofstream file("biodata.txt");
+    
+    string nama = "Ahmad";
+    int umur = 20;
+    float ipk = 3.75;
+    
+    // Menulis seperti cout!
+    file << "Nama: " << nama << endl;
+    file << "Umur: " << umur << endl;
+    file << "IPK: " << ipk << endl;
+    
+    file.close();
+    cout << "Data tersimpan!" << endl;
+    
+    return 0;
+}
+                </code></pre>
+                <p class="code-caption">Operator &lt;&lt; bekerja sama seperti pada cout</p>
+            </section>
+            
+            <!-- Slide 12: Membaca dari File dengan >> -->
+            <section>
+                <h2>📖 Membaca dengan Operator &gt;&gt;</h2>
+                <pre><code class="cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+using namespace std;
+
+int main() {
+    ifstream file("angka.txt");
+    
+    int angka;
+    int total = 0;
+    
+    // Baca semua angka sampai EOF
+    while (file >> angka) {
+        cout << "Baca: " << angka << endl;
+        total += angka;
+    }
+    
+    cout << "Total: " << total << endl;
+    file.close();
+    
+    return 0;
+}
+                </code></pre>
+                <p class="code-caption">Operator &gt;&gt; membaca hingga whitespace</p>
+            </section>
+            
+            <!-- Slide 13: Membaca dengan getline() -->
+            <section>
+                <h2>📖 Membaca dengan getline()</h2>
+                <pre><code class="cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    ifstream file("puisi.txt");
+    string baris;
+    int nomor = 1;
+    
+    // Baca baris per baris
+    while (getline(file, baris)) {
+        cout << nomor << ": " << baris << endl;
+        nomor++;
+    }
+    
+    file.close();
+    return 0;
+}
+                </code></pre>
+                <p class="code-caption">getline() membaca seluruh baris termasuk spasi</p>
+            </section>
+            
+            <!-- Slide 14: Menyimpan Data Terstruktur -->
+            <section>
+                <h2>💾 Menyimpan ke CSV</h2>
+                <pre><code class="cpp">
+struct Mahasiswa {
+    string nim, nama;
+    float ipk;
+};
+
+// Simpan ke CSV
+ofstream file("mahasiswa.csv");
+file << "NIM,Nama,IPK" << endl;  // Header
+
+for (int i = 0; i < jumlah; i++) {
+    file << mhs[i].nim << ","
+         << mhs[i].nama << ","
+         << mhs[i].ipk << endl;
+}
+file.close();
+                </code></pre>
+                <div class="info-box small-text">
+                    💡 CSV (Comma Separated Values) adalah format standar untuk data tabular
+                </div>
+            </section>
+            
+            <!-- Slide 15: Status File -->
+            <section>
+                <h2>🔍 Memeriksa Status File</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Fungsi</th>
+                        <th>Kegunaan</th>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>is_open()</code></td>
+                        <td>Cek apakah file terbuka</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>eof()</code></td>
+                        <td>Cek apakah sudah di akhir file</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>fail()</code></td>
+                        <td>Cek apakah operasi gagal</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>good()</code></td>
+                        <td>Cek apakah stream OK</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>bad()</code></td>
+                        <td>Cek error serius</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Slide 16: Menutup File -->
+            <section>
+                <h2>🔒 Menutup File</h2>
+                <div class="warning-box">
+                    ⚠️ Selalu tutup file setelah selesai digunakan!
+                </div>
+                <div class="two-column" style="margin-top: 20px;">
+                    <div class="fragment">
+                        <h4>Mengapa Penting?</h4>
+                        <ul class="small-text">
+                            <li>Flush buffer ke file</li>
+                            <li>Lepas resource sistem</li>
+                            <li>Bisa buka file lagi</li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <h4>Cara Menutup</h4>
+                        <pre><code class="cpp">file.close();</code></pre>
+                        <p class="small-text">Atau otomatis saat objek keluar scope</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 17: Transisi ke Exception -->
+            <section data-background="linear-gradient(135deg, #f5576c 0%, #ee0979 100%)">
+                <h1 style="color: white;">⚠️ Exception Handling</h1>
+                <p style="color: white;">Bagaimana menangani error dengan elegan?</p>
+            </section>
+            
+            <!-- Slide 18: Apa itu Exception? -->
+            <section>
+                <h2>❓ Apa itu Exception?</h2>
+                <div class="concept-box">
+                    <p><strong>Exception</strong> = Situasi abnormal/tidak terduga saat program berjalan</p>
+                </div>
+                <div class="three-column" style="margin-top: 20px;">
+                    <div class="card fragment">
+                        <div class="icon-large">➗</div>
+                        <p class="small-text">Pembagian dengan nol</p>
+                    </div>
+                    <div class="card fragment">
+                        <div class="icon-large">📂</div>
+                        <p class="small-text">File tidak ditemukan</p>
+                    </div>
+                    <div class="card fragment">
+                        <div class="icon-large">🧠</div>
+                        <p class="small-text">Kehabisan memori</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 19: Tanpa Exception Handling -->
+            <section>
+                <h2>💥 Tanpa Exception Handling</h2>
+                <pre><code class="cpp">
+int main() {
+    int a = 10, b = 0;
+    
+    // Program CRASH!
+    int hasil = a / b;  // Division by zero
+    
+    cout << "Hasil: " << hasil << endl;
+    // Kode ini tidak pernah dieksekusi
+    
+    return 0;
+}
+                </code></pre>
+                <div class="danger-box fragment">
+                    💀 Program crash dan berhenti total!
+                </div>
+            </section>
+            
+            <!-- Slide 20: Alur Exception -->
+            <section>
+                <h2>🔄 Alur Exception Handling</h2>
+                <img src="images/exception_flow.svg" alt="Exception Flow" style="max-width: 75%; height: auto;">
+            </section>
+            
+            <!-- Slide 21: Try-Catch-Throw -->
+            <section>
+                <h2>🎯 Try - Catch - Throw</h2>
+                <div class="three-column">
+                    <div class="card fragment">
+                        <h4 class="keyword">try</h4>
+                        <p class="small-text">Blok kode yang mungkin error</p>
+                        <pre><code class="cpp">try {
+  // kode berisiko
+}</code></pre>
+                    </div>
+                    <div class="card fragment">
+                        <h4 class="keyword">throw</h4>
+                        <p class="small-text">Lempar exception</p>
+                        <pre><code class="cpp">throw "Error!";
+throw 404;</code></pre>
+                    </div>
+                    <div class="card fragment">
+                        <h4 class="keyword">catch</h4>
+                        <p class="small-text">Tangkap & tangani</p>
+                        <pre><code class="cpp">catch (tipe e) {
+  // handle
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 22: Contoh Try-Catch -->
+            <section>
+                <h2>💻 Contoh Exception Handling</h2>
+                <pre><code class="cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a = 10, b = 0;
+    
+    try {
+        if (b == 0) {
+            throw "Tidak bisa bagi dengan nol!";
+        }
+        int hasil = a / b;
+        cout << "Hasil: " << hasil << endl;
+    }
+    catch (const char* pesan) {
+        cout << "Error: " << pesan << endl;
+    }
+    
+    cout << "Program tetap jalan!" << endl;
+    return 0;
+}
+                </code></pre>
+                <div class="success-box small-text fragment">
+                    ✅ Program tidak crash, error tertangani dengan baik!
+                </div>
+            </section>
+            
+            <!-- Slide 23: Multiple Catch -->
+            <section>
+                <h2>🎣 Multiple Catch Blocks</h2>
+                <pre><code class="cpp">
+try {
+    // kode yang bisa throw berbagai tipe exception
+}
+catch (const runtime_error& e) {
+    cout << "Runtime Error: " << e.what() << endl;
+}
+catch (const invalid_argument& e) {
+    cout << "Invalid Argument: " << e.what() << endl;
+}
+catch (int kode) {
+    cout << "Error code: " << kode << endl;
+}
+catch (...) {
+    cout << "Unknown error!" << endl;
+}
+                </code></pre>
+                <p class="code-caption">catch(...) menangkap semua exception</p>
+            </section>
+            
+            <!-- Slide 24: Standard Exceptions -->
+            <section>
+                <h2>📚 Standard Exception Classes</h2>
+                <div class="info-box">
+                    <code>#include &lt;stdexcept&gt;</code>
+                </div>
+                <table class="comparison-table" style="margin-top: 15px;">
+                    <tr>
+                        <th>Class</th>
+                        <th>Kegunaan</th>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>runtime_error</code></td>
+                        <td>Error saat runtime</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>invalid_argument</code></td>
+                        <td>Argument tidak valid</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>out_of_range</code></td>
+                        <td>Index di luar range</td>
+                    </tr>
+                    <tr class="fragment">
+                        <td><code>overflow_error</code></td>
+                        <td>Overflow aritmatika</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Slide 25: Exception + File -->
+            <section>
+                <h2>🔗 Exception + File Handling</h2>
+                <pre><code class="cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;stdexcept&gt;
+using namespace std;
+
+void bacaFile(const string& nama) {
+    ifstream file(nama);
+    
+    if (!file.is_open()) {
+        throw runtime_error("Gagal buka: " + nama);
+    }
+    
+    string baris;
+    while (getline(file, baris)) {
+        cout << baris << endl;
+    }
+    file.close();
+}
+
+int main() {
+    try {
+        bacaFile("tidak_ada.txt");
+    }
+    catch (const runtime_error& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+    return 0;
+}
+                </code></pre>
+            </section>
+            
+            <!-- Slide 26: Best Practice 1 -->
+            <section>
+                <h2>✅ Best Practice #1</h2>
+                <h3>Defensive Programming</h3>
+                <div class="concept-box">
+                    <p><strong>"Never trust input"</strong> - Selalu validasi data!</p>
+                </div>
+                <pre><code class="cpp">
+// Fungsi baca integer dengan validasi
+int bacaInteger(int min, int max) {
+    int nilai;
+    while (true) {
+        if (cin >> nilai && nilai >= min && nilai <= max) {
+            return nilai;
+        }
+        cout << "Input tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+}
+                </code></pre>
+            </section>
+            
+            <!-- Slide 27: Best Practice 2 -->
+            <section>
+                <h2>✅ Best Practice #2</h2>
+                <h3>RAII Pattern</h3>
+                <div class="concept-box">
+                    <p><strong>RAII</strong> = Resource Acquisition Is Initialization</p>
+                    <p class="small-text">Resource otomatis dibersihkan saat objek dihancurkan</p>
+                </div>
+                <pre><code class="cpp">
+void prosesFile() {
+    ofstream file("data.txt");  // Resource acquired
+    
+    file << "Data 1" << endl;
+    file << "Data 2" << endl;
+    
+    // Meskipun ada exception, file tetap ditutup
+    // karena destructor dipanggil otomatis
+}  // Resource released (file.close() otomatis)
+                </code></pre>
+            </section>
+            
+            <!-- Slide 28: Tips Praktis -->
+            <section>
+                <h2>💡 Tips Praktis</h2>
+                <div class="two-column">
+                    <div class="card">
+                        <h4>File Handling</h4>
+                        <ul class="small-text" style="text-align: left;">
+                            <li>Selalu cek is_open()</li>
+                            <li>Tutup file setelah selesai</li>
+                            <li>Gunakan mode yang tepat</li>
+                            <li>Backup file penting</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Exception</h4>
+                        <ul class="small-text" style="text-align: left;">
+                            <li>Catch spesifik dulu</li>
+                            <li>Jangan abaikan exception</li>
+                            <li>Beri pesan informatif</li>
+                            <li>Log untuk debugging</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 29: Program Lengkap -->
+            <section>
+                <h2>📱 Contoh: Buku Alamat</h2>
+                <pre><code class="cpp" style="font-size: 0.4em;">
+class BukuAlamat {
+public:
+    void tambah(const Kontak& k) {
+        if (k.nama.empty()) {
+            throw invalid_argument("Nama kosong!");
+        }
+        daftar.push_back(k);
+    }
+    
+    void simpan(const string& file) {
+        ofstream f(file);
+        if (!f.is_open()) {
+            throw runtime_error("Gagal simpan!");
+        }
+        for (auto& k : daftar) {
+            f << k.nama << "|" << k.telp << endl;
+        }
+    }
+};
+
+int main() {
+    try {
+        BukuAlamat buku;
+        buku.tambah({"Ahmad", "08123456789"});
+        buku.simpan("kontak.txt");
+    } catch (const exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}
+                </code></pre>
+            </section>
+            
+            <!-- Slide 30: Ringkasan File -->
+            <section>
+                <h2>📝 Ringkasan: File Handling</h2>
+                <div class="three-column small-text">
+                    <div class="card">
+                        <h4>Stream Classes</h4>
+                        <ul style="text-align: left;">
+                            <li>ifstream - input</li>
+                            <li>ofstream - output</li>
+                            <li>fstream - both</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Operasi</h4>
+                        <ul style="text-align: left;">
+                            <li>&lt;&lt; menulis</li>
+                            <li>&gt;&gt; membaca</li>
+                            <li>getline() baris</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Mode</h4>
+                        <ul style="text-align: left;">
+                            <li>ios::in</li>
+                            <li>ios::out</li>
+                            <li>ios::app</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide 31: Ringkasan Exception -->
+            <section>
+                <h2>📝 Ringkasan: Exception</h2>
+                <div class="concept-box">
+                    <p><span class="step-number">1</span><strong>try</strong> - Blok kode berisiko</p>
+                    <p><span class="step-number">2</span><strong>throw</strong> - Lempar exception</p>
+                    <p><span class="step-number">3</span><strong>catch</strong> - Tangkap & tangani</p>
+                </div>
+                <div class="success-box fragment" style="margin-top: 20px;">
+                    Exception handling membuat program lebih robust dan tidak crash!
+                </div>
+            </section>
+            
+            <!-- Slide 32: Latihan -->
+            <section>
+                <h2>📚 Latihan</h2>
+                <div class="concept-box">
+                    <ol class="small-text">
+                        <li>Buat program penghitung kata, baris, karakter dari file</li>
+                        <li>Buat program CRUD sederhana dengan file CSV</li>
+                        <li>Buat kalkulator dengan exception handling untuk pembagian nol</li>
+                        <li>Buat program validasi data dengan multiple catch blocks</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- Slide 33: Penutup -->
+            <section data-background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <h1 style="color: white;">🎉 Terima Kasih!</h1>
+                <p style="color: white;">Pertemuan 14: File Handling & Exception Handling</p>
+                <p style="color: white;" class="small-text">Dasar-Dasar Pemrograman</p>
+                <br>
+                <p style="color: rgba(255,255,255,0.8);" class="small-text">Tekan <kbd>ESC</kbd> untuk melihat overview semua slide</p>
             </section>
 
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/markdown/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/math/math.min.js"></script>
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/zoom/zoom.js"></script>
+
     <script>
         Reveal.initialize({
             hash: true,
-            slideNumber: true,
+            slideNumber: 'c/t',
             transition: 'slide',
-            plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+            backgroundTransition: 'fade',
+            
+            plugins: [ RevealHighlight, RevealNotes, RevealZoom ],
+            
+            controls: true,
+            progress: true,
+            center: true,
+            
+            autoSlide: 0,
+            
+            width: 1280,
+            height: 720,
+            margin: 0.1,
         });
     </script>
 </body>
