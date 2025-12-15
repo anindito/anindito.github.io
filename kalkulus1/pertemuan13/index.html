@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 13 - Turunan Eksponen, Tingkat Tinggi, dan Implisit</title>
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    
+    <!-- MathJax for equations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #7CB342;
+            --dark-green: #558B2F;
+            --light-green: #AED581;
+            --accent-lime: #C6FF00;
+            --bg-dark: #0a1612;
+            --bg-card: rgba(124, 179, 66, 0.08);
+            --text-light: #E8F5E9;
+            --text-muted: #A5D6A7;
+        }
+        
+        .reveal {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 300;
+            background: var(--bg-dark);
+        }
+        
+        .reveal::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(124, 179, 66, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(85, 139, 47, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, var(--bg-dark) 0%, #0d2818 100%);
+            z-index: -1;
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-green);
+            text-transform: none;
+            letter-spacing: 0.02em;
+        }
+        
+        .reveal h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            text-shadow: 0 0 40px rgba(124, 179, 66, 0.4);
+        }
+        
+        .reveal h2 {
+            font-size: 2em;
+            font-weight: 600;
+            margin-bottom: 0.8em;
+            border-bottom: 2px solid var(--dark-green);
+            padding-bottom: 0.3em;
+            display: inline-block;
+        }
+        
+        .reveal h3 {
+            font-size: 1.4em;
+            color: var(--light-green);
+        }
+        
+        .reveal p, .reveal li {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        .reveal .slides section {
+            padding: 20px 60px;
+        }
+        
+        /* Title Slide Styling */
+        .title-slide {
+            text-align: center;
+        }
+        
+        .title-slide h1 {
+            font-size: 2.4em;
+            margin-bottom: 0.3em;
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-lime));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .title-slide .subtitle {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-bottom: 2em;
+        }
+        
+        .title-slide .author {
+            font-size: 1em;
+            color: var(--light-green);
+            font-style: italic;
+        }
+        
+        .title-slide .meeting {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-top: 0.5em;
+            padding: 0.5em 1.5em;
+            border: 1px solid var(--dark-green);
+            border-radius: 30px;
+            display: inline-block;
+        }
+        
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, var(--bg-card), rgba(85, 139, 47, 0.15));
+            border: 1px solid var(--dark-green);
+            border-left: 4px solid var(--primary-green);
+            border-radius: 12px;
+            padding: 25px 35px;
+            margin: 25px 0;
+            box-shadow: 0 8px 32px rgba(124, 179, 66, 0.1);
+            backdrop-filter: blur(4px);
+        }
+        
+        .formula-box.highlight {
+            border-left-color: var(--accent-lime);
+            background: linear-gradient(135deg, rgba(198, 255, 0, 0.08), rgba(124, 179, 66, 0.12));
+        }
+        
+        .formula-box .formula-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-lime);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 15px;
+        }
+        
+        /* Example Box */
+        .example-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(124, 179, 66, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .example-box::before {
+            content: 'CONTOH';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--dark-green);
+            color: var(--text-light);
+            padding: 5px 20px;
+            font-size: 0.7em;
+            letter-spacing: 0.1em;
+            border-radius: 0 16px 0 12px;
+        }
+        
+        .example-box .problem {
+            color: var(--light-green);
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+        
+        .example-box .solution {
+            border-top: 1px dashed rgba(124, 179, 66, 0.3);
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        /* Step Indicator */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--dark-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--accent-lime);
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+            padding-top: 3px;
+        }
+        
+        /* Table Styling */
+        .reveal table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin: 25px 0;
+            font-size: 0.85em;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .reveal table th {
+            background: var(--dark-green);
+            color: var(--text-light);
+            padding: 15px 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .reveal table td {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(124, 179, 66, 0.15);
+            text-align: center;
+        }
+        
+        .reveal table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .reveal table tr:hover td {
+            background: rgba(124, 179, 66, 0.08);
+        }
+        
+        /* List Styling */
+        .reveal ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .reveal ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        .reveal ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary-green);
+            font-size: 1.2em;
+        }
+        
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .column {
+            padding: 20px;
+        }
+        
+        /* Highlight Text */
+        .highlight-text {
+            color: var(--accent-lime);
+            font-weight: 600;
+        }
+        
+        .note {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-left: 2px solid var(--text-muted);
+        }
+        
+        /* Math Styling */
+        .reveal .MathJax {
+            font-size: 1.1em !important;
+        }
+        
+        /* Animation Classes */
+        .reveal .fragment.grow-in {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        .reveal .fragment.grow-in.visible {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Section Divider */
+        .section-divider {
+            text-align: center;
+            padding: 60px 40px;
+        }
+        
+        .section-divider h2 {
+            font-size: 2.5em;
+            border: none;
+            margin-bottom: 0.3em;
+        }
+        
+        .section-divider .section-number {
+            font-size: 5em;
+            font-weight: 700;
+            color: rgba(124, 179, 66, 0.2);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        
+        /* Code/Notation Box */
+        .notation-box {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: var(--light-green);
+        }
+        
+        /* Progress Bar */
+        .reveal .progress {
+            background: rgba(124, 179, 66, 0.2);
+            height: 4px;
+        }
+        
+        .reveal .progress span {
+            background: linear-gradient(90deg, var(--primary-green), var(--accent-lime));
+        }
+        
+        /* Slide Number */
+        .reveal .slide-number {
+            background: var(--dark-green);
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.7em;
+        }
+        
+        /* Comparison Cards */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .comparison-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(124, 179, 66, 0.2);
+        }
+        
+        .comparison-card.explicit {
+            border-top: 3px solid var(--primary-green);
+        }
+        
+        .comparison-card.implicit {
+            border-top: 3px solid var(--accent-lime);
+        }
+        
+        .comparison-card h4 {
+            color: var(--light-green);
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+        
+        /* Exercise Section */
+        .exercise-list {
+            counter-reset: exercise;
+        }
+        
+        .exercise-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-left: 3px solid var(--dark-green);
+            counter-increment: exercise;
+        }
+        
+        .exercise-item::before {
+            content: "Soal " counter(exercise);
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.8em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        /* Key Point Badge */
+        .key-point {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px 0;
+        }
+        
+        .key-point::before {
+            content: '✦';
+            color: var(--accent-lime);
+        }
+        
+        /* Decorative Elements */
+        .deco-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-green), transparent);
+            margin: 20px 0;
+        }
+        
+        /* Final slide */
+        .final-slide {
+            text-align: center;
+        }
+        
+        .final-slide h2 {
+            border: none;
+            font-size: 2.2em;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .summary-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px 20px;
+            border: 1px solid rgba(124, 179, 66, 0.2);
+        }
+        
+        .summary-item h4 {
+            color: var(--primary-green);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title -->
+            <section class="title-slide">
+                <h1>Turunan Eksponen,<br>Turunan Tingkat Tinggi,<br>Turunan Implisit</h1>
+                <p class="subtitle">Kalkulus Diferensial Lanjutan</p>
+                <div class="deco-line" style="margin: 30px auto;"></div>
+                <p class="author">Anindito, S.Kom., S.S., S.H., M.TI., CHFI.</p>
+                <p class="meeting">Pertemuan 13</p>
+            </section>
+            
+            <!-- Slide 2: Agenda -->
+            <section>
+                <h2>Agenda Pembelajaran</h2>
+                <div class="steps">
+                    <div class="step fragment">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <strong style="color: var(--light-green);">Turunan Eksponen</strong>
+                            <p style="font-size: 0.9em;">Fungsi eksponensial basis \(e\) dan basis umum \(a\)</p>
+                        </div>
+                    </div>
+                    <div class="step fragment">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <strong style="color: var(--light-green);">Turunan Tingkat Tinggi</strong>
+                            <p style="font-size: 0.9em;">Turunan kedua, ketiga, dan orde ke-n</p>
+                        </div>
+                    </div>
+                    <div class="step fragment">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <strong style="color: var(--light-green);">Turunan Implisit</strong>
+                            <p style="font-size: 0.9em;">Diferensiasi fungsi yang tidak eksplisit</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 1: Exponential Derivatives -->
+            <section class="section-divider">
+                <span class="section-number">01</span>
+                <h2>Turunan Eksponen</h2>
+                <p style="color: var(--text-muted);">Derivatif Fungsi Eksponensial</p>
+            </section>
+            
+            <!-- Slide: Exponential Base e -->
+            <section>
+                <h2>Turunan Eksponen Berbasis \(e\)</h2>
+                
+                <div class="formula-box highlight">
+                    <div class="formula-title">Rumus Utama</div>
+                    <p style="text-align: center; font-size: 1.3em;">
+                        Jika \( y = e^u \), maka
+                    </p>
+                    <p style="text-align: center; font-size: 1.5em; margin-top: 15px;">
+                        \[ y' = e^u \cdot u' \]
+                    </p>
+                </div>
+                
+                <div class="fragment">
+                    <p class="note">
+                        <strong>Catatan:</strong> \(u\) adalah fungsi dari \(x\), dan \(u' = \frac{du}{dx}\)
+                    </p>
+                </div>
+                
+                <div class="fragment">
+                    <p style="margin-top: 20px;">
+                        <span class="key-point">Sifat Istimewa</span>
+                        <span style="margin-left: 10px;">Jika \(u = x\), maka \(\frac{d}{dx}(e^x) = e^x\)</span>
+                    </p>
+                </div>
+            </section>
+            
+            <!-- Slide: Example Base e -->
+            <section>
+                <h2>Contoh: Turunan \(e^u\)</h2>
+                
+                <div class="example-box">
+                    <p class="problem">Tentukan turunan dari \( y = e^{\sin x} \)</p>
+                    <div class="solution fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Identifikasi: \( u = \sin x \), maka \( u' = \cos x \)</p>
+                        <p style="margin-top: 15px;">Menggunakan rumus:</p>
+                        <p style="text-align: center; font-size: 1.2em; margin: 15px 0;">
+                            \[ y' = e^{\sin x} \cdot \cos x \]
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide: General Exponential -->
+            <section>
+                <h2>Turunan Eksponen Umum</h2>
+                
+                <div class="formula-box highlight">
+                    <div class="formula-title">Rumus untuk Basis \(a\)</div>
+                    <p style="text-align: center; font-size: 1.3em;">
+                        Jika \( y = a^u \) dengan \( a > 0, a \neq 1 \), maka
+                    </p>
+                    <p style="text-align: center; font-size: 1.5em; margin-top: 15px;">
+                        \[ y' = a^u \cdot u' \cdot \ln a \]
+                    </p>
+                </div>
+                
+                <div class="fragment" style="margin-top: 30px;">
+                    <p style="color: var(--text-muted); font-size: 0.9em;">
+                        <em>Mengapa ada faktor \(\ln a\)?</em>
+                    </p>
+                    <p style="font-size: 0.95em; margin-top: 10px;">
+                        Karena \( a^u = e^{u \ln a} \), sehingga turunannya mengandung \(\ln a\)
+                    </p>
+                </div>
+            </section>
+            
+            <!-- Slide: Example General Exponential -->
+            <section>
+                <h2>Contoh: Turunan \(a^u\)</h2>
+                
+                <div class="example-box">
+                    <p class="problem">Tentukan turunan dari \( y = 2^{\sin x} \)</p>
+                    <div class="solution fragment">
+                        <p><strong>Penyelesaian:</strong></p>
+                        <p>Basis: \( a = 2 \), \( u = \sin x \), \( u' = \cos x \)</p>
+                        <p style="margin-top: 15px;">Menggunakan rumus:</p>
+                        <p style="text-align: center; font-size: 1.2em; margin: 15px 0;">
+                            \[ y' = 2^{\sin x} \cdot \cos x \cdot \ln 2 \]
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: Higher Order Derivatives -->
+            <section class="section-divider">
+                <span class="section-number">02</span>
+                <h2>Turunan Tingkat Tinggi</h2>
+                <p style="color: var(--text-muted);">Orde Kedua dan Seterusnya</p>
+            </section>
+            
+            <!-- Slide: Concept -->
+            <section>
+                <h2>Konsep Turunan Tingkat Tinggi</h2>
+                
+                <div class="formula-box">
+                    <p style="line-height: 2;">
+                        Turunan suatu fungsi, yang juga merupakan fungsi, <br>
+                        <span class="highlight-text">masih dapat diturunkan lagi</span> <br>
+                        asalkan memenuhi syarat-syarat turunan.
+                    </p>
+                </div>
+                
+                <div class="fragment" style="margin-top: 30px;">
+                    <ul>
+                        <li><strong>Turunan kedua</strong> = turunan dari turunan pertama</li>
+                        <li><strong>Turunan ketiga</strong> = turunan dari turunan kedua</li>
+                        <li><strong>Turunan ke-n</strong> = turunan dari turunan ke-(n-1)</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Slide: Notation -->
+            <section>
+                <h2>Notasi Turunan Tingkat Tinggi</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Orde</th>
+                            <th>Lagrange</th>
+                            <th>Leibniz</th>
+                            <th>Operator</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment">
+                            <td>Pertama</td>
+                            <td>\( f'(x) \) atau \( y' \)</td>
+                            <td>\( \frac{dy}{dx} \)</td>
+                            <td>\( D_x y \)</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Kedua</td>
+                            <td>\( f''(x) \) atau \( y'' \)</td>
+                            <td>\( \frac{d^2y}{dx^2} \)</td>
+                            <td>\( D^2_x y \)</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Ketiga</td>
+                            <td>\( f'''(x) \)</td>
+                            <td>\( \frac{d^3y}{dx^3} \)</td>
+                            <td>\( D^3_x y \)</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>ke-n</td>
+                            <td>\( f^{(n)}(x) \)</td>
+                            <td>\( \frac{d^ny}{dx^n} \)</td>
+                            <td>\( D^n_x y \)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Slide: Example Higher Order -->
+            <section>
+                <h2>Contoh Perhitungan</h2>
+                
+                <div class="example-box">
+                    <p class="problem">Untuk \( f(x) = 2x^4 \), tentukan turunan hingga orde 4</p>
+                    <div class="solution">
+                        <div class="two-columns" style="gap: 20px;">
+                            <div class="fragment">
+                                <p>\( f(x) = 2x^4 \)</p>
+                                <p style="margin-top: 10px;">\( f'(x) = 8x^3 \)</p>
+                            </div>
+                            <div class="fragment">
+                                <p>\( f''(x) = 24x^2 \)</p>
+                                <p style="margin-top: 10px;">\( f'''(x) = 48x \)</p>
+                            </div>
+                        </div>
+                        <p class="fragment" style="text-align: center; margin-top: 20px; font-size: 1.2em;">
+                            \( f^{(4)}(x) = 48 \)
+                        </p>
+                        <p class="fragment note">
+                            Turunan ke-5 dan seterusnya = 0
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Implicit Differentiation -->
+            <section class="section-divider">
+                <span class="section-number">03</span>
+                <h2>Turunan Implisit</h2>
+                <p style="color: var(--text-muted);">Diferensiasi Fungsi Implisit</p>
+            </section>
+            
+            <!-- Slide: Explicit vs Implicit -->
+            <section>
+                <h2>Fungsi Eksplisit vs Implisit</h2>
+                
+                <div class="comparison">
+                    <div class="comparison-card explicit fragment">
+                        <h4>Fungsi Eksplisit</h4>
+                        <p style="text-align: center; font-size: 1.2em; margin: 20px 0;">
+                            \( y = f(x) \)
+                        </p>
+                        <p style="font-size: 0.9em; color: var(--text-muted);">
+                            Contoh:<br>
+                            \( y = x^2 + 3x - 5 \)<br>
+                            \( y = \sin x + \cos x \)
+                        </p>
+                    </div>
+                    
+                    <div class="comparison-card implicit fragment">
+                        <h4>Fungsi Implisit</h4>
+                        <p style="text-align: center; font-size: 1.2em; margin: 20px 0;">
+                            \( F(x, y) = 0 \)
+                        </p>
+                        <p style="font-size: 0.9em; color: var(--text-muted);">
+                            Contoh:<br>
+                            \( x^3y^2 + x^2 + y = 10 \)<br>
+                            \( \sin(xy) + x^2 + y^2 = 0 \)
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide: Implicit Differentiation Method -->
+            <section>
+                <h2>Metode Diferensiasi Implisit</h2>
+                
+                <div class="steps">
+                    <div class="step fragment">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <strong>Turunkan</strong> setiap suku terhadap \(x\)
+                        </div>
+                    </div>
+                    <div class="step fragment">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            Setiap turunan suku \(y\) harus <span class="highlight-text">dikalikan \(y'\)</span>
+                        </div>
+                    </div>
+                    <div class="step fragment">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <strong>Kumpulkan</strong> semua suku yang mengandung \(y'\) di satu ruas
+                        </div>
+                    </div>
+                    <div class="step fragment">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <strong>Faktorkan</strong> dan <strong>selesaikan</strong> untuk \(y'\)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fragment note">
+                    Aturan rantai: \( \frac{d}{dx}[f(y)] = f'(y) \cdot y' \)
+                </div>
+            </section>
+            
+            <!-- Slide: Implicit Example 1 -->
+            <section>
+                <h2>Contoh Turunan Implisit</h2>
+                
+                <div class="example-box">
+                    <p class="problem">Tentukan \(\frac{dy}{dx}\) dari: \( xy + x^3 + y^2x^2 = 0 \)</p>
+                    <div class="solution fragment">
+                        <p><strong>Turunkan setiap suku:</strong></p>
+                        <table style="font-size: 0.85em; margin: 15px 0;">
+                            <tr>
+                                <th>Suku</th>
+                                <th>Turunan thd x</th>
+                                <th>Turunan thd y</th>
+                            </tr>
+                            <tr>
+                                <td>\(xy\)</td>
+                                <td>\(y\)</td>
+                                <td>\(x \cdot y'\)</td>
+                            </tr>
+                            <tr>
+                                <td>\(x^3\)</td>
+                                <td>\(3x^2\)</td>
+                                <td>\(0\)</td>
+                            </tr>
+                            <tr>
+                                <td>\(y^2x^2\)</td>
+                                <td>\(2y^2x\)</td>
+                                <td>\(2yx^2 \cdot y'\)</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide: Implicit Example 1 (continued) -->
+            <section>
+                <h2>Contoh (Lanjutan)</h2>
+                
+                <div class="formula-box">
+                    <p><strong>Gabungkan:</strong></p>
+                    <p style="text-align: center; margin: 15px 0;">
+                        \( (y + 3x^2 + 2y^2x) + (x + 2yx^2) \cdot y' = 0 \)
+                    </p>
+                </div>
+                
+                <div class="fragment" style="margin-top: 30px;">
+                    <p><strong>Selesaikan untuk \(y'\):</strong></p>
+                    <p style="text-align: center; font-size: 1.3em; margin-top: 20px;">
+                        \[ y' = -\frac{y + 3x^2 + 2y^2x}{x + 2yx^2} \]
+                    </p>
+                </div>
+            </section>
+            
+            <!-- Slide: Exercises -->
+            <section>
+                <h2>Latihan Soal</h2>
+                
+                <div class="exercise-list">
+                    <div class="exercise-item fragment">
+                        Tentukan turunan implisit dari: \( (x + 2y - 3)(2x - 3y + 4) = 10 \)
+                    </div>
+                    <div class="exercise-item fragment">
+                        Tentukan turunan pada titik \((2, 3)\): \( 25x^2 + 9y^2 - 70x - 30y = -49 \)
+                    </div>
+                    <div class="exercise-item fragment">
+                        Tentukan turunan implisit dari: \( x \cos y + y \cos x = 1 \)
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide: More Exercises -->
+            <section>
+                <h2>Latihan Soal (Lanjutan)</h2>
+                
+                <div class="exercise-list" style="counter-reset: exercise 3;">
+                    <div class="exercise-item fragment">
+                        Tentukan turunan kedua dari: \( y = x^2 \cos 2x \)
+                    </div>
+                    <div class="exercise-item fragment">
+                        Tentukan turunan kelima dari: \( y = \sin 2x \)
+                    </div>
+                    <div class="exercise-item fragment">
+                        Tentukan turunan dari: \( y = x^2 \cdot 3^x \)
+                    </div>
+                    <div class="exercise-item fragment">
+                        Tentukan turunan dari: \( y = e^{x \cos \theta} \cdot \cos(x \sin \theta) \)
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Slide: Summary -->
+            <section class="final-slide">
+                <h2>Rangkuman</h2>
+                
+                <div class="summary-grid">
+                    <div class="summary-item fragment">
+                        <h4>Eksponen \(e^u\)</h4>
+                        <p style="font-size: 1.1em;">\( y' = e^u \cdot u' \)</p>
+                    </div>
+                    <div class="summary-item fragment">
+                        <h4>Eksponen \(a^u\)</h4>
+                        <p style="font-size: 1.1em;">\( y' = a^u \cdot u' \cdot \ln a \)</p>
+                    </div>
+                    <div class="summary-item fragment">
+                        <h4>Implisit</h4>
+                        <p style="font-size: 0.9em;">Turunan \(y\) → kalikan \(y'\)</p>
+                    </div>
+                </div>
+                
+                <div class="fragment" style="margin-top: 50px;">
+                    <p style="color: var(--text-muted);">
+                        Terima kasih atas perhatiannya!
+                    </p>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+    
+    <!-- Reveal.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/math/math.min.js"></script>
+    
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            
+            // Math plugin configuration
+            math: {
+                mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js',
+                config: 'TeX-AMS_HTML-full',
+                TeX: {
+                    Macros: {
+                        RR: "{\\bf R}",
+                        bold: ["{\\bf #1}", 1]
+                    }
+                }
+            },
+            
+            plugins: [ RevealMath.MathJax3 ]
+        });
+    </script>
+</body>
+</html>
