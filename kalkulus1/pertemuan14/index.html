@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penggunaan Turunan - Anindito, S.Kom., S.S., S.H., M.TI., CHFI.</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Math -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    
+    <style>
+        :root {
+            --r-background-color: #0a0f1a;
+            --r-main-font: 'Source Sans Pro', sans-serif;
+            --r-main-font-size: 38px;
+            --r-main-color: #e8e8e8;
+            --r-heading-font: 'Playfair Display', serif;
+            --r-heading-color: #ffffff;
+            --r-heading-text-transform: none;
+            --r-link-color: #64b5f6;
+            --r-link-color-hover: #90caf9;
+            --r-selection-background-color: #4fc3f7;
+            --r-selection-color: #000;
+            
+            /* Custom Colors */
+            --accent-primary: #00d4aa;
+            --accent-secondary: #ff6b9d;
+            --accent-tertiary: #ffd93d;
+            --accent-blue: #4fc3f7;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00d4aa 0%, #00a896 100%);
+            --gradient-3: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        .reveal {
+            font-family: var(--r-main-font);
+            background: var(--r-background-color);
+            background-image: 
+                radial-gradient(ellipse at top left, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+        }
+        
+        .reveal::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: var(--r-heading-font);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .reveal h1 {
+            font-size: 2.8em;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .reveal h2 {
+            font-size: 2.2em;
+            color: var(--accent-primary);
+        }
+        
+        .reveal h3 {
+            font-size: 1.5em;
+            color: var(--accent-blue);
+        }
+        
+        /* Title Slide Styling */
+        .title-slide {
+            text-align: center;
+        }
+        
+        .title-slide h1 {
+            font-size: 3.2em;
+            margin-bottom: 0.3em;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px rgba(0, 212, 170, 0.3); }
+            to { text-shadow: 0 0 40px rgba(0, 212, 170, 0.5); }
+        }
+        
+        .author-info {
+            margin-top: 2em;
+            padding: 1.5em 2em;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .author-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 0.3em;
+        }
+        
+        .author-title {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+        
+        /* Section Divider Slides */
+        .section-slide {
+            background: var(--gradient-1) !important;
+        }
+        
+        .section-slide h2 {
+            color: #fff !important;
+            font-size: 3em;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-number {
+            font-size: 8em;
+            font-weight: 700;
+            opacity: 0.15;
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Content Cards */
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5em 2em;
+            margin: 0.5em 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 30px rgba(0, 212, 170, 0.1);
+        }
+        
+        /* Definition Box */
+        .definition-box {
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.1) 0%, rgba(0, 168, 150, 0.05) 100%);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 0 12px 12px 0;
+            padding: 1.2em 1.5em;
+            margin: 1em 0;
+        }
+        
+        .definition-box h4 {
+            color: var(--accent-primary);
+            margin-bottom: 0.5em;
+            font-size: 1.1em;
+        }
+        
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, rgba(79, 195, 247, 0.15) 0%, rgba(79, 195, 247, 0.05) 100%);
+            border: 2px solid var(--accent-blue);
+            border-radius: 16px;
+            padding: 1.5em 2em;
+            margin: 1em auto;
+            display: inline-block;
+            box-shadow: 0 0 40px rgba(79, 195, 247, 0.1);
+        }
+        
+        .formula-box .katex {
+            font-size: 1.4em;
+        }
+        
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(196, 69, 105, 0.05) 100%);
+            border-left: 4px solid var(--accent-secondary);
+            border-radius: 0 12px 12px 0;
+            padding: 1.2em 1.5em;
+            margin: 1em 0;
+            text-align: left;
+        }
+        
+        .example-box h4 {
+            color: var(--accent-secondary);
+            margin-bottom: 0.5em;
+        }
+        
+        /* Solution Steps */
+        .solution-steps {
+            text-align: left;
+            padding-left: 1em;
+        }
+        
+        .solution-steps li {
+            margin: 0.6em 0;
+            padding-left: 0.5em;
+            position: relative;
+        }
+        
+        .solution-steps li::marker {
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+        
+        /* Table Styling */
+        .reveal table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1em 0;
+            font-size: 0.85em;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .reveal table th {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+            color: #fff;
+            padding: 0.8em 1em;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .reveal table td {
+            padding: 0.7em 1em;
+            border-bottom: 1px solid var(--card-border);
+            text-align: center;
+        }
+        
+        .reveal table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .reveal table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        /* Highlight Colors */
+        .highlight-green { color: var(--accent-primary); font-weight: 600; }
+        .highlight-pink { color: var(--accent-secondary); font-weight: 600; }
+        .highlight-yellow { color: var(--accent-tertiary); font-weight: 600; }
+        .highlight-blue { color: var(--accent-blue); font-weight: 600; }
+        
+        /* Two Column Layout */
+        .columns {
+            display: flex;
+            gap: 2em;
+            align-items: flex-start;
+        }
+        
+        .column {
+            flex: 1;
+        }
+        
+        .column-60 { flex: 1.5; }
+        .column-40 { flex: 1; }
+        
+        /* Icon Badges */
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            margin-right: 0.5em;
+            font-size: 1.5em;
+        }
+        
+        /* Progress Indicator */
+        .slide-progress {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.7em;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* List Styling */
+        .reveal ul, .reveal ol {
+            text-align: left;
+        }
+        
+        .reveal ul li, .reveal ol li {
+            margin: 0.5em 0;
+            line-height: 1.4;
+        }
+        
+        /* Fragment Animations */
+        .reveal .fragment.highlight-current-green.current-fragment {
+            color: var(--accent-primary);
+        }
+        
+        /* KaTeX Overrides */
+        .katex { font-size: 1.1em; }
+        .katex-display { margin: 0.8em 0; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .columns { flex-direction: column; }
+            .reveal h1 { font-size: 2em; }
+            .reveal h2 { font-size: 1.6em; }
+        }
+        
+        /* Slide Transitions */
+        .reveal .slides section {
+            padding: 20px;
+        }
+        
+        /* Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 15px;
+            left: 30px;
+            font-size: 0.6em;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Theorem Box */
+        .theorem-box {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+            border: 2px solid var(--accent-tertiary);
+            border-radius: 16px;
+            padding: 1.5em;
+            margin: 1em 0;
+        }
+        
+        .theorem-box h4 {
+            color: var(--accent-tertiary);
+            margin-bottom: 0.8em;
+            font-size: 1.2em;
+        }
+        
+        /* Graph Container */
+        .graph-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Bullet Points Custom */
+        .custom-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .custom-list li {
+            position: relative;
+            padding-left: 2em;
+            margin: 0.8em 0;
+        }
+        
+        .custom-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-size: 1.2em;
+        }
+        
+        /* Answer Box */
+        .answer-box {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: #000;
+            padding: 0.5em 1.5em;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 0.5em;
+            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+        }
+        
+        /* Navigation Arrows Styling */
+        .reveal .controls {
+            color: var(--accent-primary);
+        }
+        
+        .reveal .progress {
+            background: rgba(255, 255, 255, 0.1);
+            height: 4px;
+        }
+        
+        .reveal .progress span {
+            background: var(--gradient-2);
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- ==================== SLIDE 1: TITLE ==================== -->
+            <section class="title-slide">
+                <h1>Penggunaan Turunan</h1>
+                <p style="font-size: 1.2em; color: rgba(255,255,255,0.7); margin-top: 0.5em;">Applications of Derivatives</p>
+                <div class="author-info">
+                    <div class="author-name">Anindito, S.Kom., S.S., S.H., M.TI., CHFI.</div>
+                    <div class="author-title">Pertemuan 14 • Kalkulus</div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE 2: OVERVIEW ==================== -->
+            <section>
+                <h2>📋 Topik Pembahasan</h2>
+                <div class="columns">
+                    <div class="column">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-primary);">Bagian I</h4>
+                            <ul class="custom-list">
+                                <li>Dalil L'Hôpital</li>
+                                <li>Bentuk-Bentuk Tak Tentu</li>
+                                <li>Contoh Penerapan</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-secondary);">Bagian II</h4>
+                            <ul class="custom-list">
+                                <li>Garis Singgung & Normal</li>
+                                <li>Kemonotonan Fungsi</li>
+                                <li>Kecekungan Kurva</li>
+                                <li>Titik Stasioner</li>
+                                <li>Nilai Maksimum & Minimum</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SECTION: DALIL L'HOPITAL ==================== -->
+            <section class="section-slide">
+                <span class="section-number">01</span>
+                <h2>Dalil L'Hôpital</h2>
+            </section>
+            
+            <!-- ==================== SLIDE: PENGERTIAN L'HOPITAL ==================== -->
+            <section>
+                <h2>Pengertian Dalil L'Hôpital</h2>
+                <div class="definition-box">
+                    <h4>📖 Definisi</h4>
+                    <p>Dalil L'Hôpital digunakan untuk menghitung limit yang menghasilkan <span class="highlight-pink">bentuk tak tentu</span> (<em>indeterminate form</em>) dengan cara <span class="highlight-green">membagi turunan pembilang dengan turunan penyebut</span>.</p>
+                </div>
+                <div class="formula-box fragment">
+                    <span class="katex">\displaystyle\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}</span>
+                </div>
+                <p class="fragment" style="font-size: 0.9em; color: rgba(255,255,255,0.7);">
+                    Berlaku jika limit menghasilkan bentuk <span class="katex">\frac{0}{0}</span> atau <span class="katex">\frac{\infty}{\infty}</span>
+                </p>
+            </section>
+            
+            <!-- ==================== SLIDE: BENTUK TAK TENTU ==================== -->
+            <section>
+                <h2>Bentuk-Bentuk Tak Tentu</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bentuk</th>
+                            <th>Transformasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment">
+                            <td><span class="katex">\frac{0}{0}</span></td>
+                            <td>Langsung L'Hôpital</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><span class="katex">\frac{\infty}{\infty}</span></td>
+                            <td>Langsung L'Hôpital</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><span class="katex">0 \cdot \infty</span></td>
+                            <td>Ubah ke <span class="katex">\frac{0}{1/\infty}</span></td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><span class="katex">\infty - \infty</span></td>
+                            <td>Ubah ke pecahan tunggal</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><span class="katex">0^0, 1^\infty, \infty^0</span></td>
+                            <td>Gunakan logaritma natural</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- ==================== SLIDE: CONTOH L'HOPITAL ==================== -->
+            <section>
+                <h2>Contoh: Bentuk <span class="katex">\frac{0}{0}</span></h2>
+                <div class="example-box">
+                    <h4>📝 Soal</h4>
+                    <p>Hitung <span class="katex">\displaystyle\lim_{x \to 9} \frac{\sqrt{x+7} - 4}{x - 9}</span></p>
+                </div>
+                <div class="solution-steps fragment">
+                    <p><span class="highlight-blue">Penyelesaian:</span></p>
+                    <ol>
+                        <li class="fragment">Substitusi langsung: <span class="katex">\frac{\sqrt{16} - 4}{0} = \frac{0}{0}</span> ✓</li>
+                        <li class="fragment">Turunan pembilang: <span class="katex">f'(x) = \frac{1}{2\sqrt{x+7}}</span></li>
+                        <li class="fragment">Turunan penyebut: <span class="katex">g'(x) = 1</span></li>
+                        <li class="fragment">L'Hôpital: <span class="katex">\lim_{x \to 9} \frac{1}{2\sqrt{x+7}} = \frac{1}{2\sqrt{16}} = \frac{1}{8}</span></li>
+                    </ol>
+                </div>
+                <div class="answer-box fragment">
+                    Jawaban: <span class="katex">\frac{1}{8}</span>
+                </div>
+            </section>
+            
+            <!-- ==================== SECTION: APLIKASI TURUNAN ==================== -->
+            <section class="section-slide" data-background="linear-gradient(135deg, #00d4aa 0%, #00a896 100%)">
+                <span class="section-number">02</span>
+                <h2>Aplikasi Turunan</h2>
+            </section>
+            
+            <!-- ==================== SLIDE: GARIS SINGGUNG ==================== -->
+            <section>
+                <h2>Garis Singgung</h2>
+                <div class="columns">
+                    <div class="column-60">
+                        <div class="definition-box">
+                            <h4>📖 Definisi</h4>
+                            <p>Garis singgung adalah suatu garis yang hanya memiliki <span class="highlight-green">satu titik singgung</span> dengan kurva.</p>
+                        </div>
+                        <div class="formula-box fragment">
+                            <span class="katex">m = f'(x_0)</span>
+                        </div>
+                        <p class="fragment" style="font-size: 0.85em; margin-top: 1em;">
+                            <span class="highlight-blue">Persamaan:</span><br>
+                            <span class="katex">y - y_0 = f'(x_0)(x - x_0)</span>
+                        </p>
+                    </div>
+                    <div class="column-40 fragment">
+                        <div class="graph-container">
+                            <svg width="250" height="200" viewBox="0 0 250 200">
+                                <!-- Curve -->
+                                <path d="M 20 150 Q 80 20 125 100 Q 170 180 230 80" 
+                                      stroke="#4fc3f7" stroke-width="3" fill="none"/>
+                                <!-- Tangent Line -->
+                                <line x1="40" y1="180" x2="210" y2="20" 
+                                      stroke="#00d4aa" stroke-width="2"/>
+                                <!-- Point -->
+                                <circle cx="125" cy="100" r="6" fill="#ff6b9d"/>
+                                <!-- Labels -->
+                                <text x="135" y="95" fill="#fff" font-size="12">P(x₀, y₀)</text>
+                                <text x="200" y="50" fill="#00d4aa" font-size="11">garis singgung</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: GARIS NORMAL ==================== -->
+            <section>
+                <h2>Garis Normal</h2>
+                <div class="definition-box">
+                    <h4>📖 Definisi</h4>
+                    <p>Garis normal adalah garis yang <span class="highlight-pink">tegak lurus</span> dengan garis singgung di titik singgung.</p>
+                </div>
+                <div class="theorem-box fragment">
+                    <h4>⚡ Hubungan Gradien</h4>
+                    <p style="text-align: center;">
+                        <span class="katex">m_1 \cdot m_2 = -1</span>
+                    </p>
+                    <p style="text-align: center; margin-top: 0.5em;">
+                        Gradien normal: <span class="katex">m_2 = -\frac{1}{f'(x_0)}</span>
+                    </p>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: CONTOH GARIS SINGGUNG ==================== -->
+            <section>
+                <h2>Contoh: Gradien Garis Singgung</h2>
+                <div class="example-box">
+                    <h4>📝 Soal</h4>
+                    <p>Tentukan gradien garis singgung <span class="katex">y = x^2 - 8x + 12</span> di titik <span class="katex">(1, 5)</span></p>
+                </div>
+                <div class="solution-steps fragment">
+                    <p><span class="highlight-blue">Penyelesaian:</span></p>
+                    <ol>
+                        <li class="fragment">Turunan: <span class="katex">f'(x) = 2x - 8</span></li>
+                        <li class="fragment">Substitusi <span class="katex">x = 1</span>:</li>
+                    </ol>
+                </div>
+                <div class="formula-box fragment">
+                    <span class="katex">m = f'(1) = 2(1) - 8 = -6</span>
+                </div>
+                <div class="answer-box fragment">
+                    Gradien = <span class="katex">-6</span>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: KEMONOTONAN ==================== -->
+            <section>
+                <h2>Kemonotonan Fungsi</h2>
+                <div class="theorem-box">
+                    <h4>📐 Teorema Kemonotonan</h4>
+                    <p>Misalkan <span class="katex">f(x)</span> memiliki turunan pada interval <span class="katex">[a,b]</span></p>
+                </div>
+                <div class="columns" style="margin-top: 1em;">
+                    <div class="column fragment">
+                        <div class="content-card" style="border-color: var(--accent-primary);">
+                            <h4 style="color: var(--accent-primary);">📈 Fungsi Naik</h4>
+                            <p style="text-align: center;">
+                                <span class="katex">f'(x) > 0</span>
+                            </p>
+                            <p style="font-size: 0.8em; color: rgba(255,255,255,0.7);">∀x ∈ [a,b]</p>
+                        </div>
+                    </div>
+                    <div class="column fragment">
+                        <div class="content-card" style="border-color: var(--accent-secondary);">
+                            <h4 style="color: var(--accent-secondary);">📉 Fungsi Turun</h4>
+                            <p style="text-align: center;">
+                                <span class="katex">f'(x) < 0</span>
+                            </p>
+                            <p style="font-size: 0.8em; color: rgba(255,255,255,0.7);">∀x ∈ [a,b]</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: CONTOH KEMONOTONAN ==================== -->
+            <section>
+                <h2>Contoh: Interval Kemonotonan</h2>
+                <div class="example-box">
+                    <h4>📝 Soal</h4>
+                    <p><span class="katex">f(x) = 2x^3 - 3x^2 - 12x + 7</span>, cari interval naik dan turun</p>
+                </div>
+                <div class="fragment">
+                    <p><span class="highlight-blue">Langkah 1:</span> Turunan</p>
+                    <p><span class="katex">f'(x) = 6x^2 - 6x - 12 = 6(x+1)(x-2)</span></p>
+                </div>
+                <div class="fragment">
+                    <p><span class="highlight-blue">Langkah 2:</span> Titik kritis → <span class="katex">x = -1</span> atau <span class="katex">x = 2</span></p>
+                </div>
+                <table class="fragment" style="font-size: 0.8em;">
+                    <thead>
+                        <tr><th>Interval</th><th>Tanda f'(x)</th><th>Kesimpulan</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="katex">x < -1</span></td><td><span class="highlight-green">+</span></td><td>Naik ↗</td></tr>
+                        <tr><td><span class="katex">-1 < x < 2</span></td><td><span class="highlight-pink">−</span></td><td>Turun ↘</td></tr>
+                        <tr><td><span class="katex">x > 2</span></td><td><span class="highlight-green">+</span></td><td>Naik ↗</td></tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- ==================== SLIDE: KECEKUNGAN ==================== -->
+            <section>
+                <h2>Kecekungan Kurva</h2>
+                <div class="theorem-box">
+                    <h4>📐 Teorema Kecekungan</h4>
+                    <p>Misalkan <span class="katex">f(x)</span> memiliki turunan kedua pada interval terbuka <span class="katex">I</span></p>
+                </div>
+                <div class="columns" style="margin-top: 1em;">
+                    <div class="column fragment">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-primary);">⌣ Cekung ke Atas</h4>
+                            <p style="text-align: center;">
+                                <span class="katex">f''(x) > 0</span>
+                            </p>
+                            <div class="graph-container" style="padding: 0.5em;">
+                                <svg width="100" height="60" viewBox="0 0 100 60">
+                                    <path d="M 10 50 Q 50 10 90 50" stroke="#00d4aa" stroke-width="3" fill="none"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column fragment">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-secondary);">⌢ Cekung ke Bawah</h4>
+                            <p style="text-align: center;">
+                                <span class="katex">f''(x) < 0</span>
+                            </p>
+                            <div class="graph-container" style="padding: 0.5em;">
+                                <svg width="100" height="60" viewBox="0 0 100 60">
+                                    <path d="M 10 10 Q 50 50 90 10" stroke="#ff6b9d" stroke-width="3" fill="none"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: CONTOH KECEKUNGAN ==================== -->
+            <section>
+                <h2>Contoh: Interval Kecekungan</h2>
+                <div class="example-box">
+                    <h4>📝 Soal</h4>
+                    <p>Tentukan kecekungan <span class="katex">f(x) = \frac{1}{3}x^3 - x^2 - 3x + 4</span></p>
+                </div>
+                <div class="solution-steps fragment">
+                    <ol>
+                        <li>Turunan pertama: <span class="katex">f'(x) = x^2 - 2x - 3</span></li>
+                        <li class="fragment">Turunan kedua: <span class="katex">f''(x) = 2x - 2</span></li>
+                        <li class="fragment">Titik belok: <span class="katex">f''(x) = 0 \Rightarrow x = 1</span></li>
+                    </ol>
+                </div>
+                <div class="columns fragment" style="margin-top: 1em;">
+                    <div class="column">
+                        <div class="content-card" style="border-color: var(--accent-secondary);">
+                            <p><span class="katex">x < 1</span>: <span class="katex">f''(x) < 0</span></p>
+                            <p style="color: var(--accent-secondary);">Cekung ke bawah</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="content-card" style="border-color: var(--accent-primary);">
+                            <p><span class="katex">x > 1</span>: <span class="katex">f''(x) > 0</span></p>
+                            <p style="color: var(--accent-primary);">Cekung ke atas</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: TITIK STASIONER ==================== -->
+            <section>
+                <h2>Titik Stasioner</h2>
+                <div class="definition-box">
+                    <h4>📖 Definisi</h4>
+                    <p>Titik stasioner (titik kritis/titik ekstrim/titik balik) adalah titik pada kurva dengan <span class="highlight-green">gradien garis singgung = 0</span></p>
+                </div>
+                <div class="formula-box fragment">
+                    <span class="katex">f'(a) = 0</span>
+                </div>
+                <div class="columns fragment" style="margin-top: 1em;">
+                    <div class="column">
+                        <div class="graph-container">
+                            <svg width="280" height="150" viewBox="0 0 280 150">
+                                <!-- Curve -->
+                                <path d="M 20 100 Q 60 30 100 70 Q 140 110 180 50 Q 220 -10 260 60" 
+                                      stroke="#4fc3f7" stroke-width="3" fill="none"/>
+                                <!-- Points -->
+                                <circle cx="100" cy="70" r="6" fill="#00d4aa"/>
+                                <circle cx="180" cy="50" r="6" fill="#ff6b9d"/>
+                                <!-- Labels -->
+                                <text x="85" y="95" fill="#00d4aa" font-size="11">Min</text>
+                                <text x="165" y="35" fill="#ff6b9d" font-size="11">Maks</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: UJI TITIK STASIONER ==================== -->
+            <section>
+                <h2>Uji Titik Stasioner</h2>
+                <div class="columns">
+                    <div class="column fragment">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-tertiary);">Uji Turunan Pertama</h4>
+                            <table style="font-size: 0.75em;">
+                                <tr><td><span class="katex">f'</span>: + → −</td><td><span class="highlight-pink">Maks</span></td></tr>
+                                <tr><td><span class="katex">f'</span>: − → +</td><td><span class="highlight-green">Min</span></td></tr>
+                                <tr><td>Tidak berubah</td><td>Titik Belok</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="column fragment">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-blue);">Uji Turunan Kedua</h4>
+                            <table style="font-size: 0.75em;">
+                                <tr><td><span class="katex">f''(c) < 0</span></td><td><span class="highlight-pink">Maks</span></td></tr>
+                                <tr><td><span class="katex">f''(c) > 0</span></td><td><span class="highlight-green">Min</span></td></tr>
+                                <tr><td><span class="katex">f''(c) = 0</span></td><td>Uji lebih lanjut</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: CONTOH TITIK STASIONER ==================== -->
+            <section>
+                <h2>Contoh: Titik Stasioner</h2>
+                <div class="example-box">
+                    <h4>📝 Soal</h4>
+                    <p>Tentukan titik stasioner dari <span class="katex">f(x) = 2x^2 - 12x + 20</span></p>
+                </div>
+                <div class="solution-steps">
+                    <ol>
+                        <li class="fragment"><span class="katex">f'(x) = 4x - 12</span></li>
+                        <li class="fragment"><span class="katex">f'(x) = 0 \Rightarrow 4x - 12 = 0 \Rightarrow x = 3</span></li>
+                        <li class="fragment"><span class="katex">f(3) = 2(3)^2 - 12(3) + 20 = 18 - 36 + 20 = 2</span></li>
+                        <li class="fragment">Uji: <span class="katex">f''(x) = 4 > 0</span> → <span class="highlight-green">Minimum</span></li>
+                    </ol>
+                </div>
+                <div class="answer-box fragment">
+                    Titik stasioner: <span class="katex">(3, 2)</span> — Minimum lokal
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: NILAI MAKS MIN ==================== -->
+            <section>
+                <h2>Nilai Maksimum & Minimum</h2>
+                <div class="definition-box">
+                    <h4>📖 Definisi</h4>
+                    <p>Misalkan <span class="katex">S</span> himpunan tak kosong, dan <span class="katex">f</span> mengandung titik <span class="katex">c</span></p>
+                </div>
+                <div class="columns" style="margin-top: 1em;">
+                    <div class="column fragment">
+                        <div class="content-card" style="border-color: var(--accent-secondary);">
+                            <h4 style="color: var(--accent-secondary);">Nilai Maksimum</h4>
+                            <p><span class="katex">f(c)</span> maksimum jika:</p>
+                            <p style="text-align: center;"><span class="katex">f(c) \geq f(x)</span></p>
+                            <p style="font-size: 0.8em;">untuk semua <span class="katex">x \in S</span></p>
+                        </div>
+                    </div>
+                    <div class="column fragment">
+                        <div class="content-card" style="border-color: var(--accent-primary);">
+                            <h4 style="color: var(--accent-primary);">Nilai Minimum</h4>
+                            <p><span class="katex">f(c)</span> minimum jika:</p>
+                            <p style="text-align: center;"><span class="katex">f(c) \leq f(x)</span></p>
+                            <p style="font-size: 0.8em;">untuk semua <span class="katex">x \in S</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: LANGKAH MAKS MIN ==================== -->
+            <section>
+                <h2>Langkah Mencari Maks/Min</h2>
+                <p style="font-size: 0.9em; color: rgba(255,255,255,0.7);">Pada interval tertutup <span class="katex">[a, b]</span></p>
+                <div class="content-card">
+                    <ol class="custom-list" style="list-style: none;">
+                        <li class="fragment">
+                            <span class="icon-badge">1</span>
+                            Tentukan turunan <span class="katex">f'(x)</span>
+                        </li>
+                        <li class="fragment">
+                            <span class="icon-badge">2</span>
+                            Cari titik kritis: <span class="katex">f'(x) = 0</span>
+                        </li>
+                        <li class="fragment">
+                            <span class="icon-badge">3</span>
+                            Evaluasi <span class="katex">f</span> di titik kritis & ujung interval
+                        </li>
+                        <li class="fragment">
+                            <span class="icon-badge">4</span>
+                            Bandingkan: terbesar = maks, terkecil = min
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: CONTOH MAKS MIN ==================== -->
+            <section>
+                <h2>Contoh: Nilai Maks & Min</h2>
+                <div class="example-box">
+                    <h4>📝 Soal</h4>
+                    <p>Tentukan nilai maks & min dari <span class="katex">f(x) = x^2 - 6x + 5</span> pada <span class="katex">0 \leq x \leq 5</span></p>
+                </div>
+                <div class="solution-steps">
+                    <ol>
+                        <li class="fragment"><span class="katex">f'(x) = 2x - 6 = 0 \Rightarrow x = 3</span></li>
+                        <li class="fragment">Evaluasi:
+                            <table style="font-size: 0.8em; margin-top: 0.5em;">
+                                <tr><td><span class="katex">f(0) = 5</span></td></tr>
+                                <tr><td><span class="katex">f(3) = 9 - 18 + 5 = -4</span></td></tr>
+                                <tr><td><span class="katex">f(5) = 25 - 30 + 5 = 0</span></td></tr>
+                            </table>
+                        </li>
+                    </ol>
+                </div>
+                <div class="columns fragment" style="margin-top: 1em;">
+                    <div class="column">
+                        <div class="answer-box" style="background: var(--gradient-3);">Maks = 5 di x = 0</div>
+                    </div>
+                    <div class="column">
+                        <div class="answer-box">Min = −4 di x = 3</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: LATIHAN ==================== -->
+            <section>
+                <h2>📝 Latihan Soal</h2>
+                <div class="content-card">
+                    <p><span class="highlight-yellow">1.</span> Sketsakan grafik <span class="katex">f(x) = \frac{x^2 - 2x + 4}{x - 2}</span></p>
+                </div>
+                <div class="content-card fragment">
+                    <p><span class="highlight-yellow">2.</span> Tentukan nilai limit:</p>
+                    <ul style="font-size: 0.9em;">
+                        <li>a. <span class="katex">\displaystyle\lim_{x \to 1} \frac{x^3 - 1}{x^3 - 2x^2 + 2x - 1}</span></li>
+                        <li>b. <span class="katex">\displaystyle\lim_{x \to 0} \frac{\ln(\tan x)}{\ln(\tan 2x)}</span></li>
+                        <li>c. <span class="katex">\displaystyle\lim_{x \to 0} x \cdot \cot 2x</span></li>
+                        <li>d. <span class="katex">\displaystyle\lim_{x \to 0} x^x</span></li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: RANGKUMAN ==================== -->
+            <section>
+                <h2>📌 Rangkuman</h2>
+                <div class="columns">
+                    <div class="column">
+                        <div class="content-card">
+                            <h4 style="color: var(--accent-primary);">Dalil L'Hôpital</h4>
+                            <p style="font-size: 0.85em;">Untuk bentuk tak tentu <span class="katex">\frac{0}{0}</span> atau <span class="katex">\frac{\infty}{\infty}</span>, gunakan rasio turunan</p>
+                        </div>
+                        <div class="content-card fragment">
+                            <h4 style="color: var(--accent-secondary);">Garis Singgung</h4>
+                            <p style="font-size: 0.85em;"><span class="katex">m = f'(x_0)</span></p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="content-card fragment">
+                            <h4 style="color: var(--accent-tertiary);">Kemonotonan</h4>
+                            <p style="font-size: 0.85em;"><span class="katex">f' > 0</span> naik, <span class="katex">f' < 0</span> turun</p>
+                        </div>
+                        <div class="content-card fragment">
+                            <h4 style="color: var(--accent-blue);">Ekstrem</h4>
+                            <p style="font-size: 0.85em;">Cari <span class="katex">f'(x) = 0</span>, evaluasi titik kritis & ujung</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== SLIDE: TERIMA KASIH ==================== -->
+            <section class="title-slide">
+                <h1 style="font-size: 2.5em;">Terima Kasih</h1>
+                <p style="font-size: 1.3em; color: var(--accent-primary); margin: 1em 0;">Ada Pertanyaan?</p>
+                <div class="author-info">
+                    <div class="author-name">Anindito, S.Kom., S.S., S.H., M.TI., CHFI.</div>
+                    <div class="author-title">Kalkulus • Pertemuan 14</div>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/math/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    
+    <!-- KaTeX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    
+    <script>
+        // Initialize Reveal.js
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            controls: true,
+            progress: true,
+            center: true,
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+            plugins: [ RevealHighlight ]
+        });
+        
+        // Render KaTeX
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false,
+                trust: true
+            });
+        });
+        
+        // Re-render KaTeX on slide change
+        Reveal.on('slidechanged', event => {
+            renderMathInElement(event.currentSlide, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false,
+                trust: true
+            });
+        });
+    </script>
+</body>
+</html>
