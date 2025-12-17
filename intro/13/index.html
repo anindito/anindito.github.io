@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 13: Keamanan Jaringan Nirkabel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    <style>
+        :root {
+            --r-background-color: #1a1a2e;
+            --r-main-font: 'Segoe UI', Arial, sans-serif;
+            --r-heading-font: 'Segoe UI', Arial, sans-serif;
+            --r-main-color: #eaeaea;
+            --r-heading-color: #00d4ff;
+            --r-link-color: #ffd700;
+        }
+        .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+        .reveal h1 { font-size: 2.2em; color: #00d4ff; }
+        .reveal h2 { font-size: 1.6em; color: #00d4ff; }
+        .reveal h3 { font-size: 1.3em; color: #ffd700; }
+        .reveal p, .reveal li { font-size: 0.85em; line-height: 1.5; }
+        .reveal ul { list-style-type: none; }
+        .reveal ul li::before { content: "▸ "; color: #00d4ff; }
+        
+        .title-slide h1 { font-size: 2.5em; margin-bottom: 0.3em; }
+        .title-slide h2 { font-size: 1.4em; color: #ffd700; }
+        .title-slide p { font-size: 0.9em; color: #aaa; }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+            border-left: 4px solid #00d4ff;
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #3d1a1a 0%, #2a1a1a 100%);
+            border-left: 4px solid #ff4757;
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .success-box {
+            background: linear-gradient(135deg, #1a3d1a 0%, #1a2a1a 100%);
+            border-left: 4px solid #2ed573;
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .info-box {
+            background: linear-gradient(135deg, #1a2a3d 0%, #1a1a2e 100%);
+            border-left: 4px solid #ffd700;
+            padding: 20px 25px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .two-column { display: flex; gap: 40px; }
+        .two-column > div { flex: 1; }
+        
+        .emoji-icon { font-size: 3em; margin-bottom: 15px; }
+        .big-emoji { font-size: 4em; }
+        
+        .protocol-compare {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .protocol-card {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .protocol-card.danger { background: rgba(255, 71, 87, 0.2); border: 2px solid #ff4757; }
+        .protocol-card.warning { background: rgba(255, 165, 2, 0.2); border: 2px solid #ffa502; }
+        .protocol-card.success { background: rgba(46, 213, 115, 0.2); border: 2px solid #2ed573; }
+        .protocol-card.best { background: rgba(0, 212, 255, 0.2); border: 2px solid #00d4ff; }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #ff4757, #ffa502, #2ed573, #00d4ff);
+        }
+        .timeline-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00d4ff;
+        }
+        
+        .attack-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .attack-step {
+            background: rgba(255, 71, 87, 0.2);
+            border: 2px solid #ff4757;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .attack-arrow { font-size: 1.5em; color: #ff4757; }
+        
+        .defense-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .defense-item {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid #2ed573;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .analogy-box {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a1a2e 100%);
+            border: 2px solid #9b59b6;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        .analogy-box .emoji { font-size: 2.5em; margin-bottom: 10px; }
+        
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #444;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quiz-option:hover {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .fragment.grow-emoji { font-size: 1em; }
+        .fragment.grow-emoji.visible { font-size: 2em; }
+
+        .small-text { font-size: 0.7em !important; }
+        .medium-text { font-size: 0.8em !important; }
+        
+        .step-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            background: #00d4ff;
+            color: #1a1a2e;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .vs-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+        .vs-box {
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .vs-box.left { background: rgba(46, 213, 115, 0.2); border: 2px solid #2ed573; }
+        .vs-box.right { background: rgba(255, 71, 87, 0.2); border: 2px solid #ff4757; }
+        .vs-text { font-size: 2em; font-weight: bold; color: #ffd700; }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- SLIDE 1: Title -->
+            <section class="title-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">
+                <h1>🛜 Keamanan Jaringan Nirkabel</h1>
+                <h2>Wireless Network Security</h2>
+                <p style="margin-top: 40px;">Pertemuan 13 - Pengantar Keamanan Siber</p>
+                <p>Universitas Pertahanan RI</p>
+            </section>
+
+            <!-- SLIDE 2: Learning Objectives -->
+            <section>
+                <h2>🎯 Apa yang Akan Kita Pelajari?</h2>
+                <div class="highlight-box">
+                    <p><strong>Setelah pertemuan ini, kamu akan mampu:</strong></p>
+                </div>
+                <ul style="margin-top: 30px;">
+                    <li class="fragment">Memahami cara kerja jaringan WiFi</li>
+                    <li class="fragment">Mengenal protokol keamanan (WEP, WPA, WPA2, WPA3)</li>
+                    <li class="fragment">Mengidentifikasi ancaman pada jaringan wireless</li>
+                    <li class="fragment">Menerapkan strategi pengamanan yang efektif</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 3: What is WiFi - Analogy -->
+            <section>
+                <h2>📡 Apa Itu Jaringan Nirkabel?</h2>
+                <div class="analogy-box">
+                    <div class="emoji">📻</div>
+                    <h3>Bayangkan Radio...</h3>
+                    <p>WiFi bekerja seperti <strong>siaran radio</strong>. Access Point adalah <strong>stasiun pemancar</strong>, dan perangkat kita adalah <strong>radio penerima</strong>.</p>
+                </div>
+                <p class="fragment" style="margin-top: 20px;">
+                    Bedanya: WiFi bisa <strong>dua arah</strong> — kita bisa mengirim DAN menerima data!
+                </p>
+            </section>
+
+            <!-- SLIDE 4: Wired vs Wireless -->
+            <section>
+                <h2>🔌 Kabel vs 📡 Nirkabel</h2>
+                <div class="vs-container">
+                    <div class="vs-box left">
+                        <div style="font-size: 3em;">🔌</div>
+                        <h3>Jaringan Kabel</h3>
+                        <p class="small-text">Perlu akses fisik ke kabel untuk menyadap</p>
+                        <p style="color: #2ed573;">✓ Lebih aman</p>
+                    </div>
+                    <div class="vs-text">VS</div>
+                    <div class="vs-box right">
+                        <div style="font-size: 3em;">📡</div>
+                        <h3>Jaringan Wireless</h3>
+                        <p class="small-text">Sinyal menyebar ke segala arah</p>
+                        <p style="color: #ff4757;">⚠ Lebih rentan</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Why WiFi Security Matters -->
+            <section>
+                <h2>⚠️ Mengapa Keamanan WiFi Penting?</h2>
+                <div class="analogy-box">
+                    <div class="emoji">📢</div>
+                    <h3>Analogi: Berbicara di Tempat Umum</h3>
+                    <p>Menggunakan WiFi tanpa enkripsi seperti <strong>berbicara keras di kafe</strong> — semua orang di sekitar bisa mendengar!</p>
+                </div>
+                <div class="warning-box fragment">
+                    <p>🔓 Tanpa perlindungan, data sensitifmu bisa dicuri:</p>
+                    <p>Password • Nomor Kartu Kredit • Pesan Pribadi • Dokumen Rahasia</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: WiFi Components -->
+            <section>
+                <h2>🧩 Komponen Jaringan WiFi</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="highlight-box">
+                            <h3>📶 Access Point (AP)</h3>
+                            <p class="small-text">Pemancar sinyal WiFi yang menghubungkan perangkat ke jaringan</p>
+                        </div>
+                        <div class="highlight-box">
+                            <h3>🌐 Wireless Router</h3>
+                            <p class="small-text">AP + Router dalam satu perangkat (yang ada di rumah)</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="highlight-box">
+                            <h3>📱 Station (Klien)</h3>
+                            <p class="small-text">Laptop, HP, tablet yang terhubung ke WiFi</p>
+                        </div>
+                        <div class="highlight-box">
+                            <h3>🏷️ SSID</h3>
+                            <p class="small-text">Nama jaringan WiFi (contoh: "WiFi_Rumah")</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: WiFi Evolution -->
+            <section>
+                <h2>📈 Evolusi WiFi</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>1997 - 802.11</strong><br>
+                        <span class="small-text">Kecepatan: 2 Mbps (sangat lambat!)</span>
+                    </div>
+                    <div class="timeline-item fragment">
+                        <strong>1999 - 802.11b</strong><br>
+                        <span class="small-text">Kecepatan: 11 Mbps</span>
+                    </div>
+                    <div class="timeline-item fragment">
+                        <strong>2009 - 802.11n (WiFi 4)</strong><br>
+                        <span class="small-text">Kecepatan: 600 Mbps + teknologi MIMO</span>
+                    </div>
+                    <div class="timeline-item fragment">
+                        <strong>2019 - 802.11ax (WiFi 6)</strong><br>
+                        <span class="small-text">Kecepatan: 9.6 Gbps! 🚀</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Frequency Bands -->
+            <section>
+                <h2>📊 Frekuensi WiFi</h2>
+                <div class="two-column">
+                    <div class="highlight-box" style="border-color: #2ed573;">
+                        <h3 style="color: #2ed573;">2.4 GHz</h3>
+                        <p>✓ Jangkauan <strong>lebih luas</strong></p>
+                        <p>✓ Menembus dinding lebih baik</p>
+                        <p style="color: #ff4757;">✗ Sering interferensi</p>
+                        <p style="color: #ff4757;">✗ Hanya 3 channel bagus</p>
+                    </div>
+                    <div class="highlight-box" style="border-color: #00d4ff;">
+                        <h3 style="color: #00d4ff;">5 GHz</h3>
+                        <p>✓ Kecepatan <strong>lebih tinggi</strong></p>
+                        <p>✓ Banyak channel tersedia</p>
+                        <p style="color: #ff4757;">✗ Jangkauan lebih pendek</p>
+                        <p style="color: #ff4757;">✗ Sulit tembus dinding</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Encryption Intro -->
+            <section data-background-gradient="linear-gradient(135deg, #16213e 0%, #1a1a2e 100%)">
+                <h1>🔐 Protokol Enkripsi WiFi</h1>
+                <p style="font-size: 1.2em;">Bagaimana WiFi melindungi data kita?</p>
+            </section>
+
+            <!-- SLIDE 10: WEP -->
+            <section>
+                <h2>🔓 WEP (1997) — JANGAN DIPAKAI!</h2>
+                <div class="warning-box">
+                    <h3 style="color: #ff4757;">❌ Wired Equivalent Privacy</h3>
+                    <p>Protokol keamanan <strong>pertama</strong> untuk WiFi</p>
+                </div>
+                <div class="two-column" style="margin-top: 20px;">
+                    <div>
+                        <h3>Cara Kerja:</h3>
+                        <ul class="small-text">
+                            <li>Enkripsi RC4</li>
+                            <li>Kunci 40/104 bit</li>
+                            <li>IV (Initialization Vector) 24 bit</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: #ff4757;">Kelemahannya:</h3>
+                        <ul class="small-text">
+                            <li>IV terlalu pendek</li>
+                            <li>Kunci tidak pernah berubah</li>
+                            <li>Bisa dibobol dalam <strong>MENIT!</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: WEP Analogy -->
+            <section>
+                <h2>🔑 Mengapa WEP Lemah?</h2>
+                <div class="analogy-box">
+                    <div class="emoji">🏠</div>
+                    <h3>Analogi: Kunci Rumah</h3>
+                    <p>WEP seperti menggunakan <strong>kunci yang sama</strong> untuk setiap pintu, dan <strong>menggantung kunci cadangan</strong> di depan pintu (IV yang tidak terenkripsi).</p>
+                </div>
+                <div class="fragment warning-box">
+                    <p>🕐 Dengan tools seperti <strong>Aircrack-ng</strong>, WEP bisa dibobol dalam 2-5 menit!</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: WPA -->
+            <section>
+                <h2>🔒 WPA (2003) — Solusi Sementara</h2>
+                <div class="info-box">
+                    <h3 style="color: #ffa502;">⚡ WiFi Protected Access</h3>
+                    <p>Dikembangkan untuk menambal kelemahan WEP</p>
+                </div>
+                <div class="two-column" style="margin-top: 20px;">
+                    <div>
+                        <h3>Perbaikan:</h3>
+                        <ul class="small-text">
+                            <li>TKIP (Temporal Key Integrity Protocol)</li>
+                            <li>Kunci berubah tiap paket data</li>
+                            <li>Message Integrity Check (MIC)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="color: #ffa502;">Masih Ada Masalah:</h3>
+                        <ul class="small-text">
+                            <li>Masih pakai RC4</li>
+                            <li>MIC bisa di-bypass</li>
+                            <li>Sudah tidak direkomendasikan</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 13: WPA2 -->
+            <section>
+                <h2>🔐 WPA2 (2004) — Standar Saat Ini</h2>
+                <div class="success-box">
+                    <h3 style="color: #2ed573;">✓ WiFi Protected Access 2</h3>
+                    <p>Implementasi penuh dari standar IEEE 802.11i</p>
+                </div>
+                <div class="highlight-box" style="margin-top: 20px;">
+                    <h3>Keunggulan Utama:</h3>
+                    <ul>
+                        <li><strong>AES</strong> (Advanced Encryption Standard) — enkripsi sangat kuat</li>
+                        <li><strong>CCMP</strong> — mode operasi yang aman</li>
+                        <li>Kunci 128-bit</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 14: 4-Way Handshake -->
+            <section>
+                <h2>🤝 4-Way Handshake WPA2</h2>
+                <p>Bagaimana perangkat membuktikan bahwa ia tahu password?</p>
+                <div class="attack-flow">
+                    <div class="attack-step" style="background: rgba(0, 212, 255, 0.2); border-color: #00d4ff;">
+                        <strong>1️⃣</strong><br>
+                        <span class="small-text">AP kirim ANonce</span>
+                    </div>
+                    <div class="attack-arrow" style="color: #00d4ff;">→</div>
+                    <div class="attack-step" style="background: rgba(0, 212, 255, 0.2); border-color: #00d4ff;">
+                        <strong>2️⃣</strong><br>
+                        <span class="small-text">Klien kirim SNonce + MIC</span>
+                    </div>
+                    <div class="attack-arrow" style="color: #00d4ff;">→</div>
+                    <div class="attack-step" style="background: rgba(0, 212, 255, 0.2); border-color: #00d4ff;">
+                        <strong>3️⃣</strong><br>
+                        <span class="small-text">AP kirim GTK</span>
+                    </div>
+                    <div class="attack-arrow" style="color: #00d4ff;">→</div>
+                    <div class="attack-step" style="background: rgba(46, 213, 115, 0.2); border-color: #2ed573;">
+                        <strong>4️⃣</strong><br>
+                        <span class="small-text">Klien konfirmasi ✓</span>
+                    </div>
+                </div>
+                <div class="fragment info-box">
+                    <p>💡 <strong>Kunci:</strong> Password TIDAK pernah dikirim! Yang dibuktikan adalah keduanya TAHU password yang sama.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 15: WPA3 -->
+            <section>
+                <h2>🛡️ WPA3 (2018) — Yang Terbaru!</h2>
+                <div class="highlight-box" style="border-color: #00d4ff;">
+                    <h3 style="color: #00d4ff;">🚀 WiFi Protected Access 3</h3>
+                    <p>Standar keamanan terkuat saat ini</p>
+                </div>
+                <div class="two-column" style="margin-top: 20px;">
+                    <div class="success-box">
+                        <h3>✨ Fitur Baru:</h3>
+                        <ul class="small-text">
+                            <li><strong>SAE</strong> — Autentikasi lebih aman</li>
+                            <li><strong>Forward Secrecy</strong></li>
+                            <li>Enkripsi 192/256-bit</li>
+                            <li>Enhanced Open (WiFi publik aman)</li>
+                        </ul>
+                    </div>
+                    <div class="info-box">
+                        <h3>🔒 Forward Secrecy:</h3>
+                        <p class="small-text">Jika password bocor di masa depan, data yang sudah direkam <strong>TIDAK BISA</strong> didekripsi!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 16: Protocol Comparison -->
+            <section>
+                <h2>📊 Perbandingan Protokol</h2>
+                <div class="protocol-compare">
+                    <div class="protocol-card danger">
+                        <h3>WEP</h3>
+                        <p class="small-text">1997</p>
+                        <p>RC4</p>
+                        <p style="font-size: 1.5em;">❌</p>
+                        <p class="small-text">TIDAK AMAN</p>
+                    </div>
+                    <div class="protocol-card warning">
+                        <h3>WPA</h3>
+                        <p class="small-text">2003</p>
+                        <p>RC4+TKIP</p>
+                        <p style="font-size: 1.5em;">⚠️</p>
+                        <p class="small-text">Usang</p>
+                    </div>
+                    <div class="protocol-card success">
+                        <h3>WPA2</h3>
+                        <p class="small-text">2004</p>
+                        <p>AES</p>
+                        <p style="font-size: 1.5em;">✓</p>
+                        <p class="small-text">Aman</p>
+                    </div>
+                    <div class="protocol-card best">
+                        <h3>WPA3</h3>
+                        <p class="small-text">2018</p>
+                        <p>AES+SAE</p>
+                        <p style="font-size: 1.5em;">🛡️</p>
+                        <p class="small-text">Terbaik!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 17: Attacks Section -->
+            <section data-background-gradient="linear-gradient(135deg, #2d1b1b 0%, #1a1a2e 100%)">
+                <h1>⚔️ Serangan pada WiFi</h1>
+                <p style="font-size: 1.2em;">Bagaimana hacker menyerang jaringan wireless?</p>
+            </section>
+
+            <!-- SLIDE 18: Rogue AP -->
+            <section>
+                <h2>📡 Rogue Access Point</h2>
+                <div class="analogy-box">
+                    <div class="emoji">🚪</div>
+                    <h3>Analogi: Pintu Belakang</h3>
+                    <p>Seseorang memasang <strong>pintu rahasia</strong> ke gedung kantor tanpa izin security!</p>
+                </div>
+                <div class="warning-box fragment">
+                    <h3>Bahayanya:</h3>
+                    <ul class="small-text">
+                        <li>Bypass firewall dan keamanan jaringan</li>
+                        <li>Membuka akses ke jaringan internal</li>
+                        <li>Sering dipasang oleh karyawan "iseng"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 19: Evil Twin -->
+            <section>
+                <h2>👯 Evil Twin Attack</h2>
+                <div class="analogy-box">
+                    <div class="emoji">🎭</div>
+                    <h3>Analogi: Kembaran Jahat</h3>
+                    <p>Penyerang membuat WiFi <strong>palsu</strong> dengan nama yang SAMA dengan WiFi asli, tapi dengan sinyal LEBIH KUAT!</p>
+                </div>
+                <div class="attack-flow fragment">
+                    <div class="attack-step">
+                        <span>📡</span><br>WiFi Asli<br><span class="small-text">"Kafe_WiFi"</span>
+                    </div>
+                    <div class="attack-step" style="border-color: #ff4757; background: rgba(255, 71, 87, 0.3);">
+                        <span>👿</span><br>WiFi Palsu<br><span class="small-text">"Kafe_WiFi" (lebih kuat!)</span>
+                    </div>
+                    <div class="attack-step" style="border-color: #ffa502;">
+                        <span>📱</span><br>Korban<br><span class="small-text">Terhubung ke yang palsu!</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 20: Evil Twin Impact -->
+            <section>
+                <h2>😱 Dampak Evil Twin</h2>
+                <p>Setelah korban terhubung ke WiFi palsu:</p>
+                <div class="two-column">
+                    <div class="warning-box">
+                        <h3>🔍 Penyerang Bisa:</h3>
+                        <ul class="small-text">
+                            <li>Melihat semua traffic internet</li>
+                            <li>Mencuri password login</li>
+                            <li>Mencuri data kartu kredit</li>
+                            <li>Menyuntikkan malware</li>
+                        </ul>
+                    </div>
+                    <div class="success-box fragment">
+                        <h3>🛡️ Cara Lindungi Diri:</h3>
+                        <ul class="small-text">
+                            <li>Gunakan VPN</li>
+                            <li>Cek sertifikat HTTPS</li>
+                            <li>Jangan login di WiFi publik</li>
+                            <li>Tanya staff nama WiFi asli</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 21: Deauthentication Attack -->
+            <section>
+                <h2>🔌 Deauthentication Attack</h2>
+                <div class="analogy-box">
+                    <div class="emoji">📵</div>
+                    <h3>Analogi: Memutus Telepon</h3>
+                    <p>Penyerang bisa mengirim perintah <strong>"PUTUSKAN KONEKSI!"</strong> ke semua perangkat yang terhubung ke WiFi.</p>
+                </div>
+                <div class="warning-box fragment">
+                    <p>⚠️ <strong>Masalahnya:</strong> Perintah deauth pada WiFi TIDAK terenkripsi, jadi siapapun bisa mengirimnya!</p>
+                </div>
+                <div class="info-box fragment">
+                    <p>💡 Biasanya digunakan untuk memaksa korban reconnect dan menangkap handshake</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 22: Dictionary Attack -->
+            <section>
+                <h2>📖 Dictionary Attack</h2>
+                <p>Serangan terhadap password WPA/WPA2</p>
+                <div class="attack-flow">
+                    <div class="attack-step">
+                        <span class="step-number">1</span><br>
+                        <span class="small-text">Tangkap Handshake</span>
+                    </div>
+                    <div class="attack-arrow">→</div>
+                    <div class="attack-step">
+                        <span class="step-number">2</span><br>
+                        <span class="small-text">Siapkan Wordlist</span>
+                    </div>
+                    <div class="attack-arrow">→</div>
+                    <div class="attack-step">
+                        <span class="step-number">3</span><br>
+                        <span class="small-text">Coba Satu per Satu</span>
+                    </div>
+                    <div class="attack-arrow">→</div>
+                    <div class="attack-step" style="border-color: #ff4757;">
+                        <span class="step-number">4</span><br>
+                        <span class="small-text">Password Ketemu!</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 23: Password Strength -->
+            <section>
+                <h2>⏱️ Berapa Lama Membobol Password?</h2>
+                <p>Dengan GPU modern (seperti RTX 4090):</p>
+                <div class="protocol-compare" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="protocol-card danger">
+                        <h3>password123</h3>
+                        <p class="small-text">8 karakter, kata umum</p>
+                        <p style="font-size: 2em;">⚡</p>
+                        <p><strong>< 1 detik</strong></p>
+                    </div>
+                    <div class="protocol-card warning">
+                        <h3>MyWiFi2024</h3>
+                        <p class="small-text">10 karakter, campuran</p>
+                        <p style="font-size: 2em;">⏰</p>
+                        <p><strong>~1 minggu</strong></p>
+                    </div>
+                    <div class="protocol-card success">
+                        <h3>K0mp!3ks#2024</h3>
+                        <p class="small-text">13 karakter, kompleks</p>
+                        <p style="font-size: 2em;">📅</p>
+                        <p><strong>~bertahun-tahun</strong></p>
+                    </div>
+                    <div class="protocol-card best">
+                        <h3>correct-horse-battery-staple</h3>
+                        <p class="small-text">Passphrase 28 karakter</p>
+                        <p style="font-size: 2em;">♾️</p>
+                        <p><strong>Tidak mungkin</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 24: KRACK Attack -->
+            <section>
+                <h2>💔 KRACK Attack (2017)</h2>
+                <div class="warning-box">
+                    <h3>Key Reinstallation Attack</h3>
+                    <p>Kerentanan serius yang ditemukan pada WPA2!</p>
+                </div>
+                <div class="highlight-box fragment">
+                    <h3>Cara Kerja (Sederhana):</h3>
+                    <p>Penyerang memanipulasi 4-way handshake sehingga korban <strong>menggunakan ulang kunci</strong> yang seharusnya hanya sekali pakai.</p>
+                </div>
+                <div class="success-box fragment">
+                    <p>✓ Sudah diperbaiki dengan update software</p>
+                    <p>✓ WPA3 kebal terhadap serangan ini</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 25: Defense Section -->
+            <section data-background-gradient="linear-gradient(135deg, #1a3d1a 0%, #1a1a2e 100%)">
+                <h1>🛡️ Strategi Pengamanan</h1>
+                <p style="font-size: 1.2em;">Bagaimana melindungi jaringan WiFi?</p>
+            </section>
+
+            <!-- SLIDE 26: Defense in Depth -->
+            <section>
+                <h2>🏰 Defense in Depth</h2>
+                <div class="analogy-box">
+                    <div class="emoji">🏯</div>
+                    <h3>Analogi: Kastil Berlapis</h3>
+                    <p>Keamanan terbaik menggunakan <strong>banyak lapisan pertahanan</strong>, seperti kastil dengan parit, tembok, dan penjaga!</p>
+                </div>
+                <div class="defense-grid fragment">
+                    <div class="defense-item">
+                        <span style="font-size: 2em;">🔐</span>
+                        <h3>Enkripsi</h3>
+                        <p class="small-text">WPA3/WPA2-AES</p>
+                    </div>
+                    <div class="defense-item">
+                        <span style="font-size: 2em;">🔑</span>
+                        <h3>Password Kuat</h3>
+                        <p class="small-text">Min. 12 karakter</p>
+                    </div>
+                    <div class="defense-item">
+                        <span style="font-size: 2em;">👁️</span>
+                        <h3>Monitoring</h3>
+                        <p class="small-text">WIDS/WIPS</p>
+                    </div>
+                    <div class="defense-item">
+                        <span style="font-size: 2em;">📋</span>
+                        <h3>Kebijakan</h3>
+                        <p class="small-text">Aturan penggunaan</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 27: Strong Password -->
+            <section>
+                <h2>🔑 Tips Password WiFi yang Kuat</h2>
+                <div class="success-box">
+                    <h3>✓ Password yang BAIK:</h3>
+                    <ul>
+                        <li>Minimal <strong>12 karakter</strong> (lebih panjang = lebih baik)</li>
+                        <li>Kombinasi: huruf besar, kecil, angka, simbol</li>
+                        <li>ATAU gunakan <strong>passphrase</strong>: "kucing-makan-ikan-goreng-42"</li>
+                        <li>Ganti secara berkala</li>
+                    </ul>
+                </div>
+                <div class="warning-box fragment">
+                    <h3>✗ Password yang BURUK:</h3>
+                    <p>12345678 • password • wifigratis • namakota • tanggallahir</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 28: Network Segmentation -->
+            <section>
+                <h2>🔀 Pisahkan Jaringan!</h2>
+                <div class="two-column">
+                    <div class="success-box">
+                        <h3 style="color: #2ed573;">Jaringan Internal</h3>
+                        <p>👨‍💼 Karyawan</p>
+                        <p>💻 Komputer Kantor</p>
+                        <p>📂 Server Data</p>
+                        <p class="small-text" style="border-top: 1px solid #2ed573; padding-top: 10px;">WPA2/3-Enterprise<br>Akses penuh</p>
+                    </div>
+                    <div class="info-box" style="border-color: #ffa502;">
+                        <h3 style="color: #ffa502;">Jaringan Tamu</h3>
+                        <p>👥 Pengunjung</p>
+                        <p>📱 Perangkat Pribadi</p>
+                        <p>☕ WiFi Kafe</p>
+                        <p class="small-text" style="border-top: 1px solid #ffa502; padding-top: 10px;">Terisolasi<br>Hanya akses internet</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 29: WIDS/WIPS -->
+            <section>
+                <h2>👁️ WIDS & WIPS</h2>
+                <div class="two-column">
+                    <div class="highlight-box">
+                        <h3>🔍 WIDS</h3>
+                        <p><strong>Wireless Intrusion Detection System</strong></p>
+                        <p class="small-text">Seperti CCTV — memantau dan mendeteksi aktivitas mencurigakan</p>
+                    </div>
+                    <div class="highlight-box">
+                        <h3>🛡️ WIPS</h3>
+                        <p><strong>Wireless Intrusion Prevention System</strong></p>
+                        <p class="small-text">Seperti satpam — mendeteksi DAN mengambil tindakan otomatis</p>
+                    </div>
+                </div>
+                <div class="success-box fragment" style="margin-top: 20px;">
+                    <p>Dapat mendeteksi: Rogue AP • Evil Twin • Deauth Attack • Klien Mencurigakan</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 30: Checklist -->
+            <section>
+                <h2>✅ Checklist Keamanan WiFi</h2>
+                <div class="defense-grid">
+                    <div class="defense-item">
+                        <p>☑️ Gunakan WPA3/WPA2-AES</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Password 12+ karakter</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Pisahkan jaringan tamu</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Nonaktifkan WPS</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Update firmware rutin</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Ganti password default</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Aktifkan WIDS/WIPS</p>
+                    </div>
+                    <div class="defense-item">
+                        <p>☑️ Audit keamanan berkala</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 31: Tools -->
+            <section>
+                <h2>🔧 Tools Pengujian Keamanan</h2>
+                <p class="small-text">Untuk ethical hacking dengan izin!</p>
+                <div class="protocol-compare" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="protocol-card" style="background: rgba(0, 212, 255, 0.1); border: 2px solid #00d4ff;">
+                        <h3>Aircrack-ng</h3>
+                        <p class="small-text">Suite lengkap untuk audit WiFi</p>
+                    </div>
+                    <div class="protocol-card" style="background: rgba(0, 212, 255, 0.1); border: 2px solid #00d4ff;">
+                        <h3>Kismet</h3>
+                        <p class="small-text">Deteksi jaringan pasif</p>
+                    </div>
+                    <div class="protocol-card" style="background: rgba(0, 212, 255, 0.1); border: 2px solid #00d4ff;">
+                        <h3>Wireshark</h3>
+                        <p class="small-text">Analisis paket data</p>
+                    </div>
+                    <div class="protocol-card" style="background: rgba(0, 212, 255, 0.1); border: 2px solid #00d4ff;">
+                        <h3>Hashcat</h3>
+                        <p class="small-text">Password cracking GPU</p>
+                    </div>
+                    <div class="protocol-card" style="background: rgba(0, 212, 255, 0.1); border: 2px solid #00d4ff;">
+                        <h3>Wifiphisher</h3>
+                        <p class="small-text">Evil Twin testing</p>
+                    </div>
+                    <div class="protocol-card" style="background: rgba(0, 212, 255, 0.1); border: 2px solid #00d4ff;">
+                        <h3>Airgeddon</h3>
+                        <p class="small-text">All-in-one suite</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 32: Legal Warning -->
+            <section>
+                <h2>⚖️ Peringatan Legal</h2>
+                <div class="warning-box">
+                    <h3>🚨 SANGAT PENTING!</h3>
+                    <p>Melakukan scanning atau serangan pada jaringan WiFi <strong>TANPA IZIN</strong> adalah <strong>TINDAKAN ILEGAL!</strong></p>
+                </div>
+                <div class="highlight-box fragment">
+                    <h3>Sebelum Pengujian:</h3>
+                    <ul>
+                        <li>Dapatkan <strong>izin tertulis</strong> dari pemilik jaringan</li>
+                        <li>Tentukan <strong>ruang lingkup</strong> yang jelas</li>
+                        <li>Dokumentasikan <strong>semua aktivitas</strong></li>
+                        <li>Patuhi <strong>UU ITE</strong> dan regulasi yang berlaku</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 33: Case Study -->
+            <section>
+                <h2>📚 Studi Kasus: Evil Twin di Kafe</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="warning-box">
+                            <h3>Skenario:</h3>
+                            <p class="small-text">Kafe menyediakan WiFi gratis "KafeKopi_Free" tanpa password. Penyerang membuat WiFi palsu dengan nama sama tapi sinyal lebih kuat.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="highlight-box" style="border-color: #ff4757;">
+                            <h3>Dampak:</h3>
+                            <p class="small-text">Dalam 2 jam, penyerang berhasil mencuri:</p>
+                            <ul class="small-text">
+                                <li>15 password email</li>
+                                <li>3 kredensial banking</li>
+                                <li>Cookie session berbagai situs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="success-box fragment" style="margin-top: 20px;">
+                    <h3>Pelajaran:</h3>
+                    <p>Selalu gunakan VPN di WiFi publik! 🛡️</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 34: Quick Quiz -->
+            <section>
+                <h2>🧠 Quiz Singkat!</h2>
+                <p>Protokol enkripsi mana yang PALING AMAN?</p>
+                <div class="quiz-option">A. WEP</div>
+                <div class="quiz-option">B. WPA dengan TKIP</div>
+                <div class="quiz-option">C. WPA2 dengan AES</div>
+                <div class="quiz-option">D. WPA3 dengan SAE</div>
+                <div class="fragment success-box" style="margin-top: 20px;">
+                    <p>✓ Jawaban: <strong>D. WPA3 dengan SAE</strong></p>
+                    <p class="small-text">WPA3 adalah standar terbaru dengan fitur keamanan terlengkap!</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 35: Summary -->
+            <section>
+                <h2>📝 Ringkasan</h2>
+                <div class="highlight-box">
+                    <ul style="font-size: 0.9em;">
+                        <li class="fragment"><strong>WiFi</strong> rentan karena sinyal menyebar ke segala arah</li>
+                        <li class="fragment"><strong>WEP</strong> sudah tidak aman — JANGAN DIPAKAI!</li>
+                        <li class="fragment"><strong>WPA2-AES</strong> adalah standar minimum yang direkomendasikan</li>
+                        <li class="fragment"><strong>WPA3</strong> adalah yang terbaik dengan forward secrecy</li>
+                        <li class="fragment">Waspadai <strong>Evil Twin</strong> di WiFi publik — gunakan VPN!</li>
+                        <li class="fragment">Gunakan <strong>password kuat</strong> minimal 12 karakter</li>
+                        <li class="fragment">Terapkan <strong>Defense in Depth</strong> — banyak lapisan pertahanan</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 36: Key Takeaway -->
+            <section>
+                <h2>🎯 Pesan Utama</h2>
+                <div class="analogy-box" style="text-align: center;">
+                    <div class="emoji">🔐</div>
+                    <h3 style="font-size: 1.5em; color: #00d4ff;">"Keamanan WiFi adalah kombinasi dari teknologi yang tepat dan kebiasaan yang baik"</h3>
+                </div>
+                <div class="two-column fragment" style="margin-top: 30px;">
+                    <div class="success-box" style="text-align: center;">
+                        <h3>Teknologi</h3>
+                        <p>WPA3/WPA2 • Password Kuat • WIDS</p>
+                    </div>
+                    <div class="info-box" style="text-align: center;">
+                        <h3>Kebiasaan</h3>
+                        <p>VPN di publik • Update rutin • Waspada</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 37: Q&A -->
+            <section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">
+                <h1>❓ Pertanyaan?</h1>
+                <p style="font-size: 1.3em; margin-top: 30px;">Ada yang ingin ditanyakan?</p>
+                <div class="fragment" style="margin-top: 50px;">
+                    <p style="color: #ffd700;">Minggu depan:</p>
+                    <h2>📱 Mobile Platform Security</h2>
+                </div>
+            </section>
+
+            <!-- SLIDE 38: References -->
+            <section>
+                <h2>📚 Referensi</h2>
+                <div class="highlight-box">
+                    <ul class="small-text">
+                        <li>EC-Council CEH v13 Module 16: Hacking Wireless Networks</li>
+                        <li>IEEE 802.11 Standards</li>
+                        <li>WiFi Alliance - WPA3 Specification</li>
+                        <li>NIST SP 800-153: Guide to Securing Wireless Networks</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 40px; text-align: center;">
+                    <p style="color: #00d4ff;">Pengantar Keamanan Siber</p>
+                    <p style="color: #ffd700;">Universitas Pertahanan RI</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            controls: true,
+            progress: true,
+            center: true,
+            autoPlayMedia: true,
+            preloadIframes: true,
+            pdfMaxPagesPerSlide: 1,
+            pdfSeparateFragments: false
+        });
+    </script>
+</body>
+</html>
