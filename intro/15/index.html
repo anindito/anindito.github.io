@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 15: Kriptografi dan Keamanan Cloud</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    <style>
+        :root {
+            --r-background-color: #1a1a2e;
+            --r-main-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --r-heading-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --r-main-color: #eee;
+            --r-heading-color: #fff;
+            --r-link-color: #42affa;
+        }
+        
+        .reveal {
+            font-size: 32px;
+        }
+        
+        .reveal h1 {
+            font-size: 2.2em;
+            color: #42affa;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .reveal h2 {
+            font-size: 1.6em;
+            color: #42affa;
+        }
+        
+        .reveal h3 {
+            font-size: 1.3em;
+            color: #ffd700;
+        }
+        
+        .slide-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+            border-left: 5px solid #42affa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: rgba(66, 175, 250, 0.2);
+            border: 2px solid #42affa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        
+        .success-box {
+            background: rgba(40, 167, 69, 0.2);
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        
+        .danger-box {
+            background: rgba(220, 53, 69, 0.2);
+            border: 2px solid #dc3545;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        
+        .emoji-large {
+            font-size: 3em;
+            margin: 20px;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #2d3436, #1e272e);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .card-blue {
+            border-top: 4px solid #3498db;
+        }
+        
+        .card-green {
+            border-top: 4px solid #2ecc71;
+        }
+        
+        .card-orange {
+            border-top: 4px solid #e67e22;
+        }
+        
+        .card-purple {
+            border-top: 4px solid #9b59b6;
+        }
+        
+        .card-red {
+            border-top: 4px solid #e74c3c;
+        }
+        
+        .process-arrow {
+            font-size: 2em;
+            color: #42affa;
+            margin: 0 10px;
+        }
+        
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .process-step {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .analogy-box {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            color: #1a1a2e;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th {
+            background: #42affa;
+            color: white;
+            padding: 15px;
+        }
+        
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .key-icon {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .key-public {
+            background: linear-gradient(145deg, #27ae60, #2ecc71);
+        }
+        
+        .key-private {
+            background: linear-gradient(145deg, #c0392b, #e74c3c);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #42affa;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #42affa;
+        }
+        
+        .cloud-model {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .cloud-model .layer {
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .layer-customer {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+        
+        .layer-provider {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        
+        .layer-shared {
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
+        }
+        
+        .footer-note {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6em;
+            color: #888;
+        }
+        
+        ul, ol {
+            text-align: left;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .small-text {
+            font-size: 0.8em;
+        }
+        
+        .very-small-text {
+            font-size: 0.65em;
+        }
+        
+        .fragment.highlight-blue.visible {
+            color: #42affa;
+        }
+        
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- ==================== SLIDE PEMBUKA ==================== -->
+            <section>
+                <div class="slide-title">
+                    <h1>🔐 Kriptografi &<br>☁️ Keamanan Cloud</h1>
+                    <h3>Pertemuan 15</h3>
+                    <p>Pengantar Keamanan Siber</p>
+                    <p class="small-text">Universitas Pertahanan Republik Indonesia</p>
+                </div>
+            </section>
+            
+            <!-- Capaian Pembelajaran -->
+            <section>
+                <h2>🎯 Capaian Pembelajaran</h2>
+                <div class="info-box">
+                    <h3>CPMK 6</h3>
+                    <p>Mahasiswa mampu menerapkan konsep dasar kriptografi untuk keamanan informasi</p>
+                </div>
+                <div class="grid-3" style="margin-top: 30px;">
+                    <div class="card card-blue">
+                        <p><strong>Sub-CPMK 6.1</strong></p>
+                        <p class="small-text">Menjelaskan konsep dasar kriptografi</p>
+                    </div>
+                    <div class="card card-green">
+                        <p><strong>Sub-CPMK 6.2</strong></p>
+                        <p class="small-text">Membedakan enkripsi simetris dan asimetris</p>
+                    </div>
+                    <div class="card card-purple">
+                        <p><strong>Sub-CPMK 6.3</strong></p>
+                        <p class="small-text">Menjelaskan keamanan cloud computing</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Agenda -->
+            <section>
+                <h2>📋 Agenda Hari Ini</h2>
+                <div class="grid-2">
+                    <div class="card card-blue">
+                        <h3>🔐 Bagian 1</h3>
+                        <p><strong>KRIPTOGRAFI</strong></p>
+                        <ul class="small-text">
+                            <li>Konsep Dasar</li>
+                            <li>Enkripsi Simetris</li>
+                            <li>Enkripsi Asimetris</li>
+                            <li>Fungsi Hash</li>
+                            <li>Tanda Tangan Digital</li>
+                        </ul>
+                    </div>
+                    <div class="card card-green">
+                        <h3>☁️ Bagian 2</h3>
+                        <p><strong>KEAMANAN CLOUD</strong></p>
+                        <ul class="small-text">
+                            <li>Model Layanan Cloud</li>
+                            <li>Model Deployment</li>
+                            <li>Ancaman Keamanan</li>
+                            <li>Shared Responsibility</li>
+                            <li>Best Practices</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== BAGIAN 1: KRIPTOGRAFI ==================== -->
+            <section>
+                <div class="slide-title">
+                    <h1>🔐 BAGIAN 1</h1>
+                    <h2>Dasar-Dasar Kriptografi</h2>
+                </div>
+            </section>
+            
+            <!-- Apa itu Kriptografi? -->
+            <section>
+                <h2>🤔 Apa itu Kriptografi?</h2>
+                <div class="emoji-large">🔐</div>
+                <div class="analogy-box">
+                    <h3>💡 Analogi Sederhana</h3>
+                    <p>Bayangkan kamu ingin mengirim <strong>surat rahasia</strong> ke temanmu, tapi kamu khawatir ada orang lain yang membacanya di tengah jalan...</p>
+                    <p>Solusinya? Gunakan <strong>kode rahasia</strong> yang hanya kamu dan temanmu yang paham!</p>
+                </div>
+                <p class="fragment">Itulah esensi <strong>KRIPTOGRAFI</strong> - seni menyembunyikan pesan!</p>
+            </section>
+            
+            <!-- Asal Kata -->
+            <section>
+                <h2>📚 Asal Kata Kriptografi</h2>
+                <div class="process-flow">
+                    <div class="highlight-box">KRYPTOS<br><span class="small-text">(Tersembunyi)</span></div>
+                    <span class="process-arrow">+</span>
+                    <div class="highlight-box">GRAPHEIN<br><span class="small-text">(Menulis)</span></div>
+                    <span class="process-arrow">=</span>
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #11998e, #38ef7d);">KRIPTOGRAFI<br><span class="small-text">(Tulisan Tersembunyi)</span></div>
+                </div>
+                <p class="fragment" style="margin-top: 40px;">Berasal dari <strong>Bahasa Yunani</strong></p>
+            </section>
+            
+            <!-- Istilah Penting -->
+            <section>
+                <h2>📖 Istilah Penting</h2>
+                <div class="grid-2">
+                    <div class="card card-blue">
+                        <h3>📝 Plaintext</h3>
+                        <p>Pesan asli yang <strong>dapat dibaca</strong></p>
+                        <p class="small-text" style="color: #42affa;">"RAHASIA"</p>
+                    </div>
+                    <div class="card card-red">
+                        <h3>🔒 Ciphertext</h3>
+                        <p>Pesan yang sudah <strong>dienkripsi</strong></p>
+                        <p class="small-text" style="color: #e74c3c;">"X7#kL9@m"</p>
+                    </div>
+                    <div class="card card-green">
+                        <h3>🔐 Enkripsi</h3>
+                        <p>Proses <strong>mengacak</strong> plaintext → ciphertext</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h3>🔓 Dekripsi</h3>
+                        <p>Proses <strong>mengembalikan</strong> ciphertext → plaintext</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Kunci -->
+            <section>
+                <h2>🔑 Kunci (Key)</h2>
+                <div class="emoji-large">🔑</div>
+                <div class="info-box">
+                    <p><strong>Kunci</strong> adalah parameter rahasia yang digunakan untuk mengenkripsi dan mendekripsi pesan</p>
+                </div>
+                <div class="analogy-box fragment">
+                    <p>💡 <strong>Tanpa kunci yang benar</strong>, pesan terenkripsi tidak dapat dibaca!</p>
+                    <p>Seperti gembok yang butuh kunci spesifik untuk membukanya 🔐</p>
+                </div>
+            </section>
+            
+            <!-- Proses Kriptografi -->
+            <section>
+                <h2>⚙️ Proses Kriptografi</h2>
+                <div class="process-flow">
+                    <div class="process-step">📝 Plaintext<br><span class="very-small-text">"RAHASIA"</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: linear-gradient(145deg, #9b59b6, #8e44ad);">🔐 Enkripsi<br><span class="very-small-text">+ Kunci</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: linear-gradient(145deg, #e74c3c, #c0392b);">🔒 Ciphertext<br><span class="very-small-text">"X7#kL9@m"</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: linear-gradient(145deg, #9b59b6, #8e44ad);">🔓 Dekripsi<br><span class="very-small-text">+ Kunci</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step">📝 Plaintext<br><span class="very-small-text">"RAHASIA"</span></div>
+                </div>
+            </section>
+            
+            <!-- Tujuan Kriptografi - CIAN -->
+            <section>
+                <h2>🎯 Tujuan Kriptografi (CIAN)</h2>
+                <div class="grid-2">
+                    <div class="card card-blue fragment">
+                        <h3>🔒 Confidentiality</h3>
+                        <p><strong>Kerahasiaan</strong></p>
+                        <p class="small-text">Hanya yang berwenang yang bisa membaca</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>✅ Integrity</h3>
+                        <p><strong>Integritas</strong></p>
+                        <p class="small-text">Pesan tidak diubah saat pengiriman</p>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>👤 Authentication</h3>
+                        <p><strong>Autentikasi</strong></p>
+                        <p class="small-text">Memverifikasi identitas pengirim</p>
+                    </div>
+                    <div class="card card-purple fragment">
+                        <h3>📜 Non-repudiation</h3>
+                        <p><strong>Tidak Dapat Disangkal</strong></p>
+                        <p class="small-text">Pengirim tidak bisa menyangkal</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== ENKRIPSI SIMETRIS ==================== -->
+            <section>
+                <h2>🔐 Jenis Enkripsi</h2>
+                <div class="grid-2">
+                    <div class="card card-blue">
+                        <div class="emoji-large">🔑</div>
+                        <h3>Enkripsi Simetris</h3>
+                        <p><strong>SATU</strong> kunci untuk enkripsi & dekripsi</p>
+                    </div>
+                    <div class="card card-purple">
+                        <div class="emoji-large">🔑🔑</div>
+                        <h3>Enkripsi Asimetris</h3>
+                        <p><strong>DUA</strong> kunci berbeda (publik & privat)</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Enkripsi Simetris Detail -->
+            <section>
+                <h2>🔑 Enkripsi Simetris</h2>
+                <div class="analogy-box">
+                    <h3>💡 Analogi: Kotak dengan Satu Kunci</h3>
+                    <p>Bayangkan sebuah kotak dengan <strong>satu gembok dan satu kunci</strong></p>
+                    <p>Kamu dan temanmu <strong>harus punya salinan kunci yang sama</strong> untuk membuka kotak tersebut!</p>
+                </div>
+                <div class="process-flow fragment" style="margin-top: 30px;">
+                    <div class="highlight-box" style="background: #3498db;">Alice<br>🔑 Kunci A</div>
+                    <span class="process-arrow">📨</span>
+                    <div class="highlight-box" style="background: #e74c3c;">Pesan Terenkripsi</div>
+                    <span class="process-arrow">📨</span>
+                    <div class="highlight-box" style="background: #27ae60;">Bob<br>🔑 Kunci A</div>
+                </div>
+                <p class="fragment small-text" style="margin-top: 20px;">⚠️ Kunci yang sama digunakan kedua belah pihak!</p>
+            </section>
+            
+            <!-- Contoh Algoritma Simetris -->
+            <section>
+                <h2>📊 Algoritma Enkripsi Simetris</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Algoritma</th>
+                        <th>Ukuran Kunci</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td><strong>DES</strong></td>
+                        <td>56-bit</td>
+                        <td style="color: #e74c3c;">❌ Tidak Aman</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3DES</strong></td>
+                        <td>112/168-bit</td>
+                        <td style="color: #f39c12;">⚠️ Usang</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AES</strong></td>
+                        <td>128/192/256-bit</td>
+                        <td style="color: #27ae60;">✅ Standar Saat Ini</td>
+                    </tr>
+                </table>
+                <div class="success-box fragment">
+                    <p>🏆 <strong>AES (Advanced Encryption Standard)</strong> adalah standar enkripsi yang paling banyak digunakan saat ini!</p>
+                </div>
+            </section>
+            
+            <!-- AES Sederhana -->
+            <section>
+                <h2>🔐 AES - Cara Kerjanya (Sederhana)</h2>
+                <div class="info-box">
+                    <p>AES memproses data dalam <strong>blok 128-bit</strong> melalui beberapa <strong>putaran transformasi</strong></p>
+                </div>
+                <div class="grid-4 fragment" style="margin-top: 30px;">
+                    <div class="card card-blue">
+                        <p><strong>1️⃣</strong></p>
+                        <p class="small-text">SubBytes</p>
+                        <p class="very-small-text">Substitusi byte</p>
+                    </div>
+                    <div class="card card-green">
+                        <p><strong>2️⃣</strong></p>
+                        <p class="small-text">ShiftRows</p>
+                        <p class="very-small-text">Geser baris</p>
+                    </div>
+                    <div class="card card-orange">
+                        <p><strong>3️⃣</strong></p>
+                        <p class="small-text">MixColumns</p>
+                        <p class="very-small-text">Campur kolom</p>
+                    </div>
+                    <div class="card card-purple">
+                        <p><strong>4️⃣</strong></p>
+                        <p class="small-text">AddRoundKey</p>
+                        <p class="very-small-text">Tambah kunci</p>
+                    </div>
+                </div>
+                <p class="fragment small-text" style="margin-top: 20px;">🔄 Diulang 10-14 kali tergantung panjang kunci!</p>
+            </section>
+            
+            <!-- Kelebihan & Kekurangan Simetris -->
+            <section>
+                <h2>⚖️ Enkripsi Simetris</h2>
+                <div class="grid-2">
+                    <div class="success-box">
+                        <h3>✅ Kelebihan</h3>
+                        <ul class="small-text">
+                            <li><strong>Sangat CEPAT</strong> - 100-1000x lebih cepat dari asimetris</li>
+                            <li>Cocok untuk <strong>data berukuran besar</strong></li>
+                            <li>Algoritma sederhana dan teruji</li>
+                        </ul>
+                    </div>
+                    <div class="danger-box">
+                        <h3>❌ Kekurangan</h3>
+                        <ul class="small-text">
+                            <li><strong>Masalah distribusi kunci</strong> - bagaimana mengirim kunci dengan aman?</li>
+                            <li>Manajemen kunci <strong>kompleks</strong> untuk banyak pihak</li>
+                            <li>Tidak mendukung tanda tangan digital</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== ENKRIPSI ASIMETRIS ==================== -->
+            <section>
+                <h2>🔐🔓 Enkripsi Asimetris</h2>
+                <div class="analogy-box">
+                    <h3>💡 Analogi: Kotak Surat</h3>
+                    <p>Bayangkan <strong>kotak surat</strong> di depan rumahmu:</p>
+                    <ul>
+                        <li><strong>Siapa saja</strong> bisa memasukkan surat (kunci publik)</li>
+                        <li>Tapi <strong>hanya kamu</strong> yang punya kunci untuk mengambil surat (kunci privat)</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Dua Kunci -->
+            <section>
+                <h2>🔑🔑 Dua Kunci Berbeda</h2>
+                <div class="grid-2">
+                    <div class="card" style="border-top: 4px solid #27ae60;">
+                        <div class="key-icon key-public">🔓 KUNCI PUBLIK</div>
+                        <ul class="small-text">
+                            <li>Dapat dibagikan ke <strong>siapa saja</strong></li>
+                            <li>Digunakan untuk <strong>MENGENKRIPSI</strong></li>
+                            <li>Tidak rahasia</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 4px solid #e74c3c;">
+                        <div class="key-icon key-private">🔐 KUNCI PRIVAT</div>
+                        <ul class="small-text">
+                            <li><strong>HARUS RAHASIA!</strong></li>
+                            <li>Digunakan untuk <strong>MENDEKRIPSI</strong></li>
+                            <li>Hanya pemilik yang boleh tahu</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Proses Enkripsi Asimetris -->
+            <section>
+                <h2>📤 Cara Kerja Enkripsi Asimetris</h2>
+                <div class="timeline">
+                    <div class="timeline-item fragment">
+                        <strong>1️⃣ Bob membuat pasangan kunci</strong>
+                        <p class="small-text">Kunci Publik + Kunci Privat</p>
+                    </div>
+                    <div class="timeline-item fragment">
+                        <strong>2️⃣ Bob membagikan kunci publik ke Alice</strong>
+                        <p class="small-text">Kunci publik boleh diketahui siapa saja</p>
+                    </div>
+                    <div class="timeline-item fragment">
+                        <strong>3️⃣ Alice mengenkripsi pesan dengan kunci publik Bob</strong>
+                        <p class="small-text">Plaintext → Ciphertext</p>
+                    </div>
+                    <div class="timeline-item fragment">
+                        <strong>4️⃣ Bob mendekripsi dengan kunci privatnya</strong>
+                        <p class="small-text">Ciphertext → Plaintext (hanya Bob yang bisa!)</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- RSA -->
+            <section>
+                <h2>🔐 RSA - Algoritma Asimetris Populer</h2>
+                <div class="info-box">
+                    <p><strong>RSA</strong> = <strong>R</strong>ivest, <strong>S</strong>hamir, <strong>A</strong>dleman (1977)</p>
+                </div>
+                <div class="card card-blue fragment" style="margin-top: 20px;">
+                    <h3>🔢 Keamanan RSA berdasarkan:</h3>
+                    <p>Kesulitan <strong>memfaktorkan bilangan besar</strong> menjadi faktor primanya</p>
+                    <p class="small-text">Contoh: Mudah menghitung 17 × 23 = 391</p>
+                    <p class="small-text">Tapi sulit mencari faktor dari 391 = ? × ?</p>
+                </div>
+                <p class="fragment warning-box small-text">⚠️ Ukuran kunci RSA yang direkomendasikan: <strong>minimal 2048-bit</strong></p>
+            </section>
+            
+            <!-- Perbandingan -->
+            <section>
+                <h2>⚖️ Simetris vs Asimetris</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Aspek</th>
+                        <th>🔑 Simetris</th>
+                        <th>🔑🔑 Asimetris</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Jumlah Kunci</strong></td>
+                        <td>1 kunci</td>
+                        <td>2 kunci (publik + privat)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kecepatan</strong></td>
+                        <td style="color: #27ae60;">✅ Sangat Cepat</td>
+                        <td style="color: #e74c3c;">❌ Lambat</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Distribusi Kunci</strong></td>
+                        <td style="color: #e74c3c;">❌ Sulit</td>
+                        <td style="color: #27ae60;">✅ Mudah</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanda Tangan Digital</strong></td>
+                        <td style="color: #e74c3c;">❌ Tidak bisa</td>
+                        <td style="color: #27ae60;">✅ Bisa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contoh</strong></td>
+                        <td>AES, DES</td>
+                        <td>RSA, ECC</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Enkripsi Hybrid -->
+            <section>
+                <h2>🔄 Solusi: Enkripsi Hybrid</h2>
+                <div class="success-box">
+                    <h3>💡 Gabungkan Keduanya!</h3>
+                    <p>Ambil keunggulan masing-masing metode</p>
+                </div>
+                <div class="process-flow fragment" style="margin-top: 30px;">
+                    <div class="process-step" style="background: #3498db;">1️⃣ Buat<br>Session Key<br><span class="very-small-text">(Simetris)</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: #9b59b6;">2️⃣ Enkripsi<br>Session Key<br><span class="very-small-text">(Asimetris)</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: #27ae60;">3️⃣ Enkripsi<br>Data<br><span class="very-small-text">(Simetris)</span></div>
+                </div>
+                <p class="fragment small-text" style="margin-top: 20px;">🌐 Digunakan di: HTTPS, Email (PGP), dan hampir semua komunikasi aman modern!</p>
+            </section>
+            
+            <!-- ==================== FUNGSI HASH ==================== -->
+            <section>
+                <h2>🔢 Fungsi Hash Kriptografi</h2>
+                <div class="analogy-box">
+                    <h3>💡 Analogi: Mesin Penggiling</h3>
+                    <p>Seperti mesin penggiling daging:</p>
+                    <ul>
+                        <li>Masukkan daging <strong>ukuran apapun</strong> → keluar daging giling dengan <strong>tekstur konsisten</strong></li>
+                        <li>Tidak bisa mengembalikan daging giling ke bentuk aslinya!</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Properti Hash -->
+            <section>
+                <h2>✨ Properti Fungsi Hash</h2>
+                <div class="grid-2">
+                    <div class="card card-blue fragment">
+                        <h3>1️⃣ Deterministik</h3>
+                        <p class="small-text">Input sama = Hash sama (selalu)</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>2️⃣ Cepat</h3>
+                        <p class="small-text">Proses hitung sangat efisien</p>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>3️⃣ Satu Arah</h3>
+                        <p class="small-text">Tidak bisa dikembalikan ke input asli</p>
+                    </div>
+                    <div class="card card-purple fragment">
+                        <h3>4️⃣ Avalanche Effect</h3>
+                        <p class="small-text">Perubahan kecil → hash berubah drastis</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contoh Hash -->
+            <section>
+                <h2>📊 Contoh Fungsi Hash</h2>
+                <div class="info-box">
+                    <p><strong>Input:</strong> "Hello"</p>
+                    <p><strong>MD5:</strong> <code style="color: #e74c3c;">8b1a9953c4611296a827abf8c47804d7</code></p>
+                    <p><strong>SHA-256:</strong> <code style="color: #27ae60;">185f8db32271fe25f561a6fc938b2e26...</code></p>
+                </div>
+                <table class="comparison-table fragment" style="margin-top: 20px;">
+                    <tr>
+                        <th>Algoritma</th>
+                        <th>Panjang Output</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>MD5</td>
+                        <td>128-bit</td>
+                        <td style="color: #e74c3c;">❌ Tidak Aman</td>
+                    </tr>
+                    <tr>
+                        <td>SHA-1</td>
+                        <td>160-bit</td>
+                        <td style="color: #f39c12;">⚠️ Usang</td>
+                    </tr>
+                    <tr>
+                        <td>SHA-256</td>
+                        <td>256-bit</td>
+                        <td style="color: #27ae60;">✅ Aman</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Kegunaan Hash -->
+            <section>
+                <h2>🛠️ Kegunaan Fungsi Hash</h2>
+                <div class="grid-2">
+                    <div class="card card-blue fragment">
+                        <h3>✅ Verifikasi File</h3>
+                        <p class="small-text">Memastikan file tidak rusak/diubah saat download</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>🔐 Simpan Password</h3>
+                        <p class="small-text">Tidak menyimpan password asli, tapi hash-nya</p>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>✍️ Tanda Tangan Digital</h3>
+                        <p class="small-text">Hash dokumen yang ditandatangani</p>
+                    </div>
+                    <div class="card card-purple fragment">
+                        <h3>⛓️ Blockchain</h3>
+                        <p class="small-text">Menghubungkan blok-blok dalam rantai</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== TANDA TANGAN DIGITAL ==================== -->
+            <section>
+                <h2>✍️ Tanda Tangan Digital</h2>
+                <div class="info-box">
+                    <p>Mekanisme kriptografi untuk membuktikan:</p>
+                    <div class="grid-3" style="margin-top: 15px;">
+                        <div class="highlight-box" style="background: #3498db;">👤 Autentikasi<br><span class="very-small-text">Siapa pengirimnya</span></div>
+                        <div class="highlight-box" style="background: #27ae60;">✅ Integritas<br><span class="very-small-text">Tidak diubah</span></div>
+                        <div class="highlight-box" style="background: #9b59b6;">📜 Non-repudiasi<br><span class="very-small-text">Tidak bisa disangkal</span></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Proses Tanda Tangan -->
+            <section>
+                <h2>✍️ Cara Membuat Tanda Tangan Digital</h2>
+                <div class="process-flow">
+                    <div class="process-step">📄 Dokumen</div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: #9b59b6;">🔢 Hash</div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: #e74c3c;">🔐 Enkripsi<br><span class="very-small-text">dengan Kunci Privat</span></div>
+                    <span class="process-arrow">→</span>
+                    <div class="process-step" style="background: #f39c12;">✍️ Tanda Tangan</div>
+                </div>
+                <div class="warning-box fragment" style="margin-top: 30px;">
+                    <p>⚠️ <strong>Perhatikan:</strong> Tanda tangan dibuat dengan <strong>kunci privat</strong></p>
+                    <p class="small-text">Berbeda dengan enkripsi yang menggunakan kunci publik!</p>
+                </div>
+            </section>
+            
+            <!-- Verifikasi Tanda Tangan -->
+            <section>
+                <h2>✅ Verifikasi Tanda Tangan Digital</h2>
+                <div class="grid-2">
+                    <div class="card card-blue">
+                        <h3>Jalur 1: Dari Dokumen</h3>
+                        <p class="small-text">📄 Dokumen → 🔢 Hash → <strong>Hash A</strong></p>
+                    </div>
+                    <div class="card card-green">
+                        <h3>Jalur 2: Dari Tanda Tangan</h3>
+                        <p class="small-text">✍️ Tanda Tangan → 🔓 Dekripsi (Kunci Publik) → <strong>Hash B</strong></p>
+                    </div>
+                </div>
+                <div class="success-box fragment" style="margin-top: 30px;">
+                    <h3>🎯 Jika Hash A = Hash B</h3>
+                    <p>✅ Dokumen <strong>asli</strong> dan <strong>tidak diubah</strong></p>
+                    <p>✅ Benar berasal dari <strong>pengirim yang sah</strong></p>
+                </div>
+            </section>
+            
+            <!-- ==================== PKI ==================== -->
+            <section>
+                <h2>🏛️ PKI - Public Key Infrastructure</h2>
+                <div class="info-box">
+                    <p><strong>Masalah:</strong> Bagaimana kita yakin kunci publik yang kita terima <strong>benar-benar milik orang yang mengaku memilikinya?</strong></p>
+                </div>
+                <div class="success-box fragment">
+                    <p><strong>Solusi:</strong> PKI - sistem yang mengelola sertifikat digital</p>
+                    <p class="small-text">Seperti KTP untuk dunia digital! 🪪</p>
+                </div>
+            </section>
+            
+            <!-- Komponen PKI -->
+            <section>
+                <h2>🧩 Komponen PKI</h2>
+                <div class="grid-2">
+                    <div class="card card-red fragment">
+                        <h3>🏛️ Certificate Authority (CA)</h3>
+                        <p class="small-text">Menerbitkan sertifikat digital</p>
+                        <p class="very-small-text">Contoh: DigiCert, Let's Encrypt</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>📋 Registration Authority (RA)</h3>
+                        <p class="small-text">Memverifikasi identitas pemohon</p>
+                    </div>
+                    <div class="card card-blue fragment">
+                        <h3>📜 Sertifikat Digital</h3>
+                        <p class="small-text">Mengikat identitas dengan kunci publik</p>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>🚫 CRL / OCSP</h3>
+                        <p class="small-text">Daftar sertifikat yang dicabut</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Chain of Trust -->
+            <section>
+                <h2>🔗 Rantai Kepercayaan</h2>
+                <div class="center-content">
+                    <div class="card card-red" style="width: 200px; margin: 10px;">
+                        <p><strong>🏛️ Root CA</strong></p>
+                        <p class="very-small-text">Paling dipercaya</p>
+                    </div>
+                    <p style="font-size: 2em;">⬇️</p>
+                    <div class="card card-orange" style="width: 250px; margin: 10px;">
+                        <p><strong>📋 Intermediate CA</strong></p>
+                        <p class="very-small-text">Ditandatangani Root CA</p>
+                    </div>
+                    <p style="font-size: 2em;">⬇️</p>
+                    <div class="card card-blue" style="width: 300px; margin: 10px;">
+                        <p><strong>🌐 Website / End Entity</strong></p>
+                        <p class="very-small-text">Sertifikat yang kita gunakan sehari-hari</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== BAGIAN 2: CLOUD ==================== -->
+            <section>
+                <div class="slide-title">
+                    <h1>☁️ BAGIAN 2</h1>
+                    <h2>Keamanan Cloud Computing</h2>
+                </div>
+            </section>
+            
+            <!-- Apa itu Cloud? -->
+            <section>
+                <h2>☁️ Apa itu Cloud Computing?</h2>
+                <div class="analogy-box">
+                    <h3>💡 Analogi: Listrik PLN</h3>
+                    <p><strong>Tanpa Cloud:</strong> Seperti punya pembangkit listrik sendiri di rumah 🏭</p>
+                    <p><strong>Dengan Cloud:</strong> Seperti berlangganan listrik PLN ⚡</p>
+                    <p class="small-text">Bayar sesuai pemakaian, tidak perlu pusing maintenance!</p>
+                </div>
+            </section>
+            
+            <!-- Karakteristik Cloud -->
+            <section>
+                <h2>✨ 5 Karakteristik Cloud (NIST)</h2>
+                <div class="grid-3">
+                    <div class="card card-blue fragment">
+                        <h3>1️⃣</h3>
+                        <p><strong>On-demand</strong></p>
+                        <p class="very-small-text">Akses kapan saja, tanpa campur tangan manusia</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>2️⃣</h3>
+                        <p><strong>Broad Access</strong></p>
+                        <p class="very-small-text">Akses dari berbagai perangkat</p>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>3️⃣</h3>
+                        <p><strong>Resource Pooling</strong></p>
+                        <p class="very-small-text">Sumber daya dibagi banyak pengguna</p>
+                    </div>
+                </div>
+                <div class="grid-2 fragment" style="margin-top: 20px;">
+                    <div class="card card-purple">
+                        <h3>4️⃣</h3>
+                        <p><strong>Rapid Elasticity</strong></p>
+                        <p class="very-small-text">Bisa naik/turun sesuai kebutuhan</p>
+                    </div>
+                    <div class="card card-red">
+                        <h3>5️⃣</h3>
+                        <p><strong>Measured Service</strong></p>
+                        <p class="very-small-text">Bayar sesuai pemakaian</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Model Layanan -->
+            <section>
+                <h2>📦 Model Layanan Cloud</h2>
+                <div class="grid-3">
+                    <div class="card card-blue">
+                        <h3>IaaS</h3>
+                        <p><strong>Infrastructure</strong> as a Service</p>
+                        <p class="small-text">🖥️ Sewa server virtual</p>
+                        <p class="very-small-text">AWS EC2, Azure VM</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h3>PaaS</h3>
+                        <p><strong>Platform</strong> as a Service</p>
+                        <p class="small-text">🛠️ Platform untuk develop</p>
+                        <p class="very-small-text">Heroku, Google App Engine</p>
+                    </div>
+                    <div class="card card-green">
+                        <h3>SaaS</h3>
+                        <p><strong>Software</strong> as a Service</p>
+                        <p class="small-text">📱 Aplikasi siap pakai</p>
+                        <p class="very-small-text">Gmail, Office 365, Zoom</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Pizza Analogy -->
+            <section>
+                <h2>🍕 Analogi Model Cloud</h2>
+                <div class="analogy-box">
+                    <div class="grid-4">
+                        <div>
+                            <p><strong>On-Premise</strong></p>
+                            <p class="small-text">🏠 Masak sendiri di rumah</p>
+                        </div>
+                        <div>
+                            <p><strong>IaaS</strong></p>
+                            <p class="small-text">🔥 Beli bahan, masak di dapur umum</p>
+                        </div>
+                        <div>
+                            <p><strong>PaaS</strong></p>
+                            <p class="small-text">🍕 Beli pizza beku, tinggal panggang</p>
+                        </div>
+                        <div>
+                            <p><strong>SaaS</strong></p>
+                            <p class="small-text">🛵 Pesan pizza delivery!</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="fragment small-text">Semakin ke kanan = semakin sedikit yang perlu kamu kelola!</p>
+            </section>
+            
+            <!-- Tingkat Kontrol -->
+            <section>
+                <h2>🎚️ Tingkat Kontrol</h2>
+                <div class="cloud-model">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Komponen</th>
+                            <th>IaaS</th>
+                            <th>PaaS</th>
+                            <th>SaaS</th>
+                        </tr>
+                        <tr>
+                            <td>Aplikasi</td>
+                            <td class="layer-customer">👤 Kamu</td>
+                            <td class="layer-customer">👤 Kamu</td>
+                            <td class="layer-provider">☁️ Penyedia</td>
+                        </tr>
+                        <tr>
+                            <td>Data</td>
+                            <td class="layer-customer">👤 Kamu</td>
+                            <td class="layer-customer">👤 Kamu</td>
+                            <td class="layer-shared">🤝 Bersama</td>
+                        </tr>
+                        <tr>
+                            <td>OS & Runtime</td>
+                            <td class="layer-customer">👤 Kamu</td>
+                            <td class="layer-provider">☁️ Penyedia</td>
+                            <td class="layer-provider">☁️ Penyedia</td>
+                        </tr>
+                        <tr>
+                            <td>Server & Storage</td>
+                            <td class="layer-provider">☁️ Penyedia</td>
+                            <td class="layer-provider">☁️ Penyedia</td>
+                            <td class="layer-provider">☁️ Penyedia</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Model Deployment -->
+            <section>
+                <h2>🏢 Model Deployment Cloud</h2>
+                <div class="grid-2">
+                    <div class="card card-blue fragment">
+                        <h3>☁️ Public Cloud</h3>
+                        <p class="small-text">Untuk umum, dibagi banyak pelanggan</p>
+                        <p class="very-small-text">AWS, Azure, Google Cloud</p>
+                    </div>
+                    <div class="card card-red fragment">
+                        <h3>🏢 Private Cloud</h3>
+                        <p class="small-text">Eksklusif untuk satu organisasi</p>
+                        <p class="very-small-text">Kontrol penuh, keamanan tinggi</p>
+                    </div>
+                    <div class="card card-purple fragment">
+                        <h3>🔄 Hybrid Cloud</h3>
+                        <p class="small-text">Kombinasi public + private</p>
+                        <p class="very-small-text">Fleksibilitas optimal</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>🤝 Community Cloud</h3>
+                        <p class="small-text">Untuk organisasi sejenis</p>
+                        <p class="very-small-text">Berbagi biaya & regulasi</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ==================== ANCAMAN KEAMANAN CLOUD ==================== -->
+            <section>
+                <h2>⚠️ Ancaman Keamanan Cloud</h2>
+                <div class="grid-3">
+                    <div class="card card-red fragment">
+                        <h3>💧</h3>
+                        <p><strong>Data Breach</strong></p>
+                        <p class="very-small-text">Kebocoran data sensitif</p>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>⚙️</h3>
+                        <p><strong>Misconfiguration</strong></p>
+                        <p class="very-small-text">Kesalahan konfigurasi</p>
+                    </div>
+                    <div class="card card-purple fragment">
+                        <h3>🔌</h3>
+                        <p><strong>API Attack</strong></p>
+                        <p class="very-small-text">Eksploitasi API</p>
+                    </div>
+                    <div class="card card-blue fragment">
+                        <h3>👤</h3>
+                        <p><strong>Account Hijacking</strong></p>
+                        <p class="very-small-text">Pembajakan akun</p>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>👥</h3>
+                        <p><strong>Insider Threat</strong></p>
+                        <p class="very-small-text">Ancaman dari dalam</p>
+                    </div>
+                    <div class="card card-red fragment">
+                        <h3>🔒</h3>
+                        <p><strong>Ransomware</strong></p>
+                        <p class="very-small-text">Enkripsi data untuk tebusan</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Misconfiguration -->
+            <section>
+                <h2>⚙️ Kesalahan Konfigurasi</h2>
+                <div class="danger-box">
+                    <h3>⚠️ Penyebab #1 Insiden Keamanan Cloud!</h3>
+                </div>
+                <div class="card card-orange fragment" style="margin-top: 20px;">
+                    <h3>Contoh Kesalahan Umum:</h3>
+                    <ul class="small-text">
+                        <li>S3 Bucket dibuat <strong>PUBLIC</strong> tanpa sengaja</li>
+                        <li>Firewall terlalu <strong>permisif</strong></li>
+                        <li>Izin akses <strong>berlebihan</strong></li>
+                        <li>Tidak mengaktifkan <strong>enkripsi</strong></li>
+                    </ul>
+                </div>
+                <p class="fragment small-text" style="margin-top: 20px;">💡 Banyak kebocoran data besar terjadi karena bucket S3 yang salah konfigurasi!</p>
+            </section>
+            
+            <!-- ==================== SHARED RESPONSIBILITY ==================== -->
+            <section>
+                <h2>🤝 Model Tanggung Jawab Bersama</h2>
+                <div class="warning-box">
+                    <h3>⚠️ KONSEP PALING PENTING!</h3>
+                    <p>Keamanan adalah tanggung jawab <strong>BERSAMA</strong> antara penyedia cloud dan pelanggan</p>
+                </div>
+            </section>
+            
+            <!-- Pembagian Tanggung Jawab -->
+            <section>
+                <h2>🤝 Pembagian Tanggung Jawab</h2>
+                <div class="grid-2">
+                    <div class="card" style="border-top: 4px solid #e74c3c;">
+                        <h3>☁️ Penyedia Cloud</h3>
+                        <p class="small-text"><strong>"Security OF the Cloud"</strong></p>
+                        <ul class="very-small-text">
+                            <li>Keamanan fisik data center</li>
+                            <li>Infrastruktur hardware</li>
+                            <li>Hypervisor & virtualisasi</li>
+                            <li>Jaringan dasar</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-top: 4px solid #3498db;">
+                        <h3>👤 Pelanggan</h3>
+                        <p class="small-text"><strong>"Security IN the Cloud"</strong></p>
+                        <ul class="very-small-text">
+                            <li>Data & enkripsi</li>
+                            <li>Manajemen akses (IAM)</li>
+                            <li>Konfigurasi aplikasi</li>
+                            <li>Kepatuhan regulasi</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Kesalahan Umum -->
+            <section>
+                <h2>❌ Kesalahan Umum</h2>
+                <div class="danger-box">
+                    <h3>🚫 Jangan Berasumsi!</h3>
+                    <p>"Penyedia cloud pasti sudah mengamankan semuanya..."</p>
+                </div>
+                <div class="success-box fragment" style="margin-top: 20px;">
+                    <h3>✅ Yang Benar:</h3>
+                    <p>Pahami <strong>dengan jelas</strong> apa yang menjadi tanggung jawab kamu!</p>
+                    <p class="small-text">Banyak insiden terjadi karena pelanggan tidak memahami pembagian tanggung jawab ini.</p>
+                </div>
+            </section>
+            
+            <!-- ==================== BEST PRACTICES ==================== -->
+            <section>
+                <h2>🛡️ Best Practices Keamanan Cloud</h2>
+                <div class="grid-2">
+                    <div class="card card-blue fragment">
+                        <h3>🔐 IAM</h3>
+                        <p class="small-text">Kelola identitas & akses dengan ketat</p>
+                        <ul class="very-small-text">
+                            <li>Prinsip Least Privilege</li>
+                            <li>Aktifkan MFA</li>
+                            <li>Audit izin berkala</li>
+                        </ul>
+                    </div>
+                    <div class="card card-green fragment">
+                        <h3>🔒 Enkripsi</h3>
+                        <p class="small-text">Lindungi data dengan enkripsi</p>
+                        <ul class="very-small-text">
+                            <li>Enkripsi at rest</li>
+                            <li>Enkripsi in transit</li>
+                            <li>Kelola kunci dengan baik</li>
+                        </ul>
+                    </div>
+                    <div class="card card-orange fragment">
+                        <h3>👁️ Monitoring</h3>
+                        <p class="small-text">Pantau aktivitas terus-menerus</p>
+                        <ul class="very-small-text">
+                            <li>Aktifkan logging</li>
+                            <li>Gunakan SIEM</li>
+                            <li>Alert untuk anomali</li>
+                        </ul>
+                    </div>
+                    <div class="card card-purple fragment">
+                        <h3>💾 Backup</h3>
+                        <p class="small-text">Cadangkan data secara teratur</p>
+                        <ul class="very-small-text">
+                            <li>Backup otomatis</li>
+                            <li>Uji restore berkala</li>
+                            <li>Simpan di lokasi berbeda</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- MFA -->
+            <section>
+                <h2>🔐 Multi-Factor Authentication (MFA)</h2>
+                <div class="info-box">
+                    <p>Gunakan <strong>lebih dari satu bukti</strong> untuk memverifikasi identitas</p>
+                </div>
+                <div class="grid-3 fragment" style="margin-top: 30px;">
+                    <div class="card card-blue">
+                        <h3>1️⃣ Something You Know</h3>
+                        <p class="small-text">🔑 Password, PIN</p>
+                    </div>
+                    <div class="card card-green">
+                        <h3>2️⃣ Something You Have</h3>
+                        <p class="small-text">📱 HP, Token</p>
+                    </div>
+                    <div class="card card-purple">
+                        <h3>3️⃣ Something You Are</h3>
+                        <p class="small-text">👆 Sidik jari, Wajah</p>
+                    </div>
+                </div>
+                <p class="fragment success-box small-text" style="margin-top: 20px;">✅ MFA mengurangi risiko pembajakan akun secara drastis!</p>
+            </section>
+            
+            <!-- Least Privilege -->
+            <section>
+                <h2>🎯 Prinsip Least Privilege</h2>
+                <div class="analogy-box">
+                    <h3>💡 Analogi: Kunci Ruangan</h3>
+                    <p>Tidak semua karyawan butuh kunci ke <strong>semua ruangan</strong> di kantor</p>
+                    <p>Berikan akses <strong>hanya yang diperlukan</strong> untuk pekerjaannya!</p>
+                </div>
+                <div class="danger-box fragment">
+                    <p>❌ <strong>Jangan:</strong> Berikan akses admin ke semua orang</p>
+                </div>
+                <div class="success-box fragment">
+                    <p>✅ <strong>Lakukan:</strong> Berikan izin minimum yang diperlukan</p>
+                </div>
+            </section>
+            
+            <!-- ==================== RINGKASAN ==================== -->
+            <section>
+                <h2>📝 Ringkasan - Kriptografi</h2>
+                <div class="grid-2">
+                    <div class="card card-blue">
+                        <h3>🔑 Simetris</h3>
+                        <ul class="small-text">
+                            <li>1 kunci untuk semua</li>
+                            <li>Cepat, untuk data besar</li>
+                            <li>Contoh: AES</li>
+                        </ul>
+                    </div>
+                    <div class="card card-purple">
+                        <h3>🔑🔑 Asimetris</h3>
+                        <ul class="small-text">
+                            <li>2 kunci (publik + privat)</li>
+                            <li>Aman untuk distribusi</li>
+                            <li>Contoh: RSA</li>
+                        </ul>
+                    </div>
+                    <div class="card card-green">
+                        <h3>🔢 Hash</h3>
+                        <ul class="small-text">
+                            <li>Satu arah</li>
+                            <li>Verifikasi integritas</li>
+                            <li>Contoh: SHA-256</li>
+                        </ul>
+                    </div>
+                    <div class="card card-orange">
+                        <h3>✍️ Digital Signature</h3>
+                        <ul class="small-text">
+                            <li>Hash + Kunci Privat</li>
+                            <li>Autentikasi & integritas</li>
+                            <li>Non-repudiasi</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Ringkasan Cloud -->
+            <section>
+                <h2>📝 Ringkasan - Cloud Security</h2>
+                <div class="grid-2">
+                    <div class="card card-blue">
+                        <h3>☁️ Model Layanan</h3>
+                        <ul class="small-text">
+                            <li><strong>IaaS:</strong> Sewa infrastruktur</li>
+                            <li><strong>PaaS:</strong> Platform development</li>
+                            <li><strong>SaaS:</strong> Aplikasi siap pakai</li>
+                        </ul>
+                    </div>
+                    <div class="card card-purple">
+                        <h3>🏢 Model Deployment</h3>
+                        <ul class="small-text">
+                            <li>Public, Private</li>
+                            <li>Hybrid, Community</li>
+                        </ul>
+                    </div>
+                    <div class="card card-orange">
+                        <h3>🤝 Shared Responsibility</h3>
+                        <ul class="small-text">
+                            <li>Penyedia: Security OF cloud</li>
+                            <li>Pelanggan: Security IN cloud</li>
+                        </ul>
+                    </div>
+                    <div class="card card-green">
+                        <h3>🛡️ Best Practices</h3>
+                        <ul class="small-text">
+                            <li>IAM & MFA</li>
+                            <li>Enkripsi</li>
+                            <li>Monitoring & Backup</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Key Takeaways -->
+            <section>
+                <h2>🎯 Key Takeaways</h2>
+                <div class="info-box">
+                    <ol class="small-text">
+                        <li class="fragment"><strong>Kriptografi</strong> adalah fondasi keamanan digital modern</li>
+                        <li class="fragment"><strong>AES</strong> untuk enkripsi data, <strong>RSA/ECC</strong> untuk pertukaran kunci</li>
+                        <li class="fragment"><strong>Hash</strong> memastikan integritas, <strong>Digital Signature</strong> memastikan keaslian</li>
+                        <li class="fragment"><strong>Cloud</strong> bukan berarti keamanan otomatis - pahami tanggung jawab kamu!</li>
+                        <li class="fragment"><strong>Kesalahan konfigurasi</strong> adalah ancaman terbesar di cloud</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- Penutup -->
+            <section>
+                <div class="slide-title">
+                    <h1>🙏 Terima Kasih!</h1>
+                    <h3>Ada Pertanyaan?</h3>
+                    <p style="margin-top: 40px;">📚 Pertemuan 15: Kriptografi dan Keamanan Cloud</p>
+                    <p class="small-text">Pengantar Keamanan Siber</p>
+                    <p class="small-text">Universitas Pertahanan Republik Indonesia</p>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            center: true,
+            controls: true,
+            progress: true,
+            history: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            shuffle: false,
+            fragments: true,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            autoSlide: 0,
+            mouseWheel: false,
+            hideAddressBar: true,
+            previewLinks: false,
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 1.5
+        });
+    </script>
+</body>
+</html>
