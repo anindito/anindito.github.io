@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 14: Keamanan Platform Mobile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    <style>
+        :root {
+            --r-background-color: #1a1a2e;
+            --r-main-font: 'Segoe UI', Arial, sans-serif;
+            --r-heading-font: 'Segoe UI', Arial, sans-serif;
+            --r-main-color: #eee;
+            --r-heading-color: #fff;
+            --r-link-color: #4fc3f7;
+        }
+        
+        .reveal {
+            font-size: 32px;
+        }
+        
+        .reveal h1 {
+            font-size: 2.2em;
+            color: #4fc3f7;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .reveal h2 {
+            font-size: 1.6em;
+            color: #81d4fa;
+            margin-bottom: 0.5em;
+        }
+        
+        .reveal h3 {
+            font-size: 1.2em;
+            color: #b3e5fc;
+        }
+        
+        .title-slide h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.3em;
+        }
+        
+        .title-slide h2 {
+            font-size: 1.3em;
+            color: #aaa;
+            font-weight: normal;
+        }
+        
+        .title-slide h3 {
+            font-size: 1em;
+            color: #888;
+            margin-top: 1em;
+        }
+        
+        .emoji-big {
+            font-size: 3em;
+            margin: 0.3em 0;
+        }
+        
+        .emoji-medium {
+            font-size: 2em;
+        }
+        
+        .box {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .box-green {
+            background: rgba(39, 174, 96, 0.2);
+            border-left: 4px solid #27ae60;
+        }
+        
+        .box-red {
+            background: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .box-blue {
+            background: rgba(52, 152, 219, 0.2);
+            border-left: 4px solid #3498db;
+        }
+        
+        .box-orange {
+            background: rgba(243, 156, 18, 0.2);
+            border-left: 4px solid #f39c12;
+        }
+        
+        .box-purple {
+            background: rgba(155, 89, 182, 0.2);
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .two-column > div {
+            flex: 1;
+            max-width: 45%;
+        }
+        
+        .three-column {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .three-column > div {
+            flex: 1;
+            max-width: 30%;
+        }
+        
+        .highlight-green { color: #2ecc71; }
+        .highlight-red { color: #e74c3c; }
+        .highlight-blue { color: #3498db; }
+        .highlight-orange { color: #f39c12; }
+        .highlight-purple { color: #9b59b6; }
+        .highlight-yellow { color: #f1c40f; }
+        
+        .small-text {
+            font-size: 0.7em;
+            color: #aaa;
+        }
+        
+        .medium-text {
+            font-size: 0.85em;
+        }
+        
+        .analogy {
+            background: linear-gradient(135deg, rgba(52,152,219,0.2), rgba(155,89,182,0.2));
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .analogy::before {
+            content: "💡 Analogi: ";
+            font-weight: bold;
+            color: #f1c40f;
+        }
+        
+        .key-point {
+            background: linear-gradient(135deg, rgba(231,76,60,0.2), rgba(243,156,18,0.2));
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .key-point::before {
+            content: "⚠️ Penting: ";
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .reveal ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .reveal ul li {
+            margin: 0.5em 0;
+            padding-left: 1.5em;
+            position: relative;
+        }
+        
+        .reveal ul li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #4fc3f7;
+        }
+        
+        .phone-icon {
+            display: inline-block;
+            width: 60px;
+            height: 100px;
+            background: #2c3e50;
+            border-radius: 10px;
+            position: relative;
+            margin: 10px;
+        }
+        
+        .phone-icon::after {
+            content: "";
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #34495e;
+        }
+        
+        .vs-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: inline-block;
+            margin: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .timeline-item {
+            text-align: center;
+            position: relative;
+        }
+        
+        .timeline-item::after {
+            content: "→";
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #4fc3f7;
+        }
+        
+        .timeline-item:last-child::after {
+            content: "";
+        }
+        
+        .reveal .progress {
+            color: #4fc3f7;
+        }
+        
+        .section-divider {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .section-divider h2 {
+            font-size: 2em;
+            color: #4fc3f7;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.8em;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        th {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+        }
+        
+        tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .checklist li::before {
+            content: "✓" !important;
+            color: #2ecc71 !important;
+        }
+        
+        .crosslist li::before {
+            content: "✗" !important;
+            color: #e74c3c !important;
+        }
+
+        .fragment.highlight-current-blue.visible {
+            color: #4fc3f7;
+        }
+
+        .risk-high { background: rgba(231,76,60,0.3); }
+        .risk-medium { background: rgba(243,156,18,0.3); }
+        .risk-low { background: rgba(241,196,15,0.3); }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- SLIDE 1: Title -->
+            <section class="title-slide" data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">
+                <h1>📱 Keamanan Platform Mobile</h1>
+                <h2>Pertemuan 14 - Pengantar Keamanan Siber</h2>
+                <h3>Universitas Pertahanan Republik Indonesia</h3>
+                <p class="small-text" style="margin-top: 2em;">Tekan SPASI atau → untuk melanjutkan</p>
+            </section>
+
+            <!-- SLIDE 2: Capaian Pembelajaran -->
+            <section>
+                <h2>🎯 Capaian Pembelajaran</h2>
+                <div class="box box-blue">
+                    <p><strong>CPMK 5:</strong> Mahasiswa mampu menganalisis serangan umum pada sistem, jaringan, dan aplikasi web serta merumuskan strategi mitigasinya.</p>
+                </div>
+                <div class="three-column" style="margin-top: 30px;">
+                    <div class="box">
+                        <p class="emoji-medium">🔍</p>
+                        <p class="medium-text"><strong>Sub-CPMK 5.22</strong><br>Mengidentifikasi kerentanan platform mobile</p>
+                    </div>
+                    <div class="box">
+                        <p class="emoji-medium">⚔️</p>
+                        <p class="medium-text"><strong>Sub-CPMK 5.23</strong><br>Menjelaskan serangan umum pada perangkat mobile</p>
+                    </div>
+                    <div class="box">
+                        <p class="emoji-medium">🛡️</p>
+                        <p class="medium-text"><strong>Sub-CPMK 5.24</strong><br>Menjelaskan strategi pengamanan perangkat mobile</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Mengapa Mobile Security Penting? -->
+            <section>
+                <h2>🤔 Mengapa Keamanan Mobile Penting?</h2>
+                <div class="analogy">
+                    Bayangkan smartphone Anda seperti <strong>dompet digital</strong> yang berisi: uang, kartu identitas, foto pribadi, percakapan rahasia, bahkan akses ke rekening bank!
+                </div>
+                <div class="two-column" style="margin-top: 30px;">
+                    <div>
+                        <p class="stat-number">5+ Miliar</p>
+                        <p>Pengguna smartphone di dunia</p>
+                    </div>
+                    <div>
+                        <p class="stat-number">70%+</p>
+                        <p>Penetrasi smartphone di Indonesia</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Apa yang Tersimpan di HP? -->
+            <section>
+                <h2>📦 Apa Saja di Smartphone Kita?</h2>
+                <div class="three-column">
+                    <div class="box box-blue">
+                        <p class="emoji-medium">💳</p>
+                        <p><strong>Finansial</strong></p>
+                        <p class="small-text">Mobile banking, E-wallet, Kartu kredit</p>
+                    </div>
+                    <div class="box box-green">
+                        <p class="emoji-medium">👤</p>
+                        <p><strong>Identitas</strong></p>
+                        <p class="small-text">KTP digital, Email, Akun sosmed</p>
+                    </div>
+                    <div class="box box-purple">
+                        <p class="emoji-medium">🔐</p>
+                        <p><strong>Akses</strong></p>
+                        <p class="small-text">OTP, 2FA, Password manager</p>
+                    </div>
+                </div>
+                <div class="key-point" style="margin-top: 30px;">
+                    Jika smartphone dikompromikan, <strong>semua</strong> ini bisa jatuh ke tangan penjahat!
+                </div>
+            </section>
+
+            <!-- SECTION: Arsitektur Keamanan -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>🏗️ BAGIAN 1</h2>
+                <h1>Arsitektur Keamanan Mobile</h1>
+                <p>Android vs iOS</p>
+            </section>
+
+            <!-- SLIDE 5: Android Security Overview -->
+            <section>
+                <h2>🤖 Keamanan Android</h2>
+                <div class="analogy">
+                    Android seperti <strong>apartemen dengan banyak kamar</strong>. Setiap aplikasi punya "kamar" sendiri (sandbox) dan tidak bisa masuk kamar tetangga tanpa izin!
+                </div>
+                <div class="box" style="margin-top: 20px;">
+                    <p><strong>Fondasi:</strong> Dibangun di atas Linux Kernel yang sudah teruji puluhan tahun</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Android Layers -->
+            <section>
+                <h2>🤖 Lapisan Keamanan Android</h2>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="box" style="background: linear-gradient(90deg, #a4c639, #78a030); color: white;">
+                        <strong>📱 Aplikasi</strong> - Apps dari Play Store & pihak ketiga
+                    </div>
+                    <div class="box" style="background: linear-gradient(90deg, #3498db, #2980b9); color: white;">
+                        <strong>🔧 Framework</strong> - Permission System, Play Protect, Keystore
+                    </div>
+                    <div class="box" style="background: linear-gradient(90deg, #9b59b6, #8e44ad); color: white;">
+                        <strong>⚙️ Runtime</strong> - App Sandbox, Isolasi Proses, UID Unik
+                    </div>
+                    <div class="box" style="background: linear-gradient(90deg, #e67e22, #d35400); color: white;">
+                        <strong>🔌 HAL</strong> - Hardware Abstraction Layer
+                    </div>
+                    <div class="box" style="background: linear-gradient(90deg, #e74c3c, #c0392b); color: white;">
+                        <strong>🐧 Kernel</strong> - SELinux, Verified Boot, Enkripsi
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Android Key Security Features -->
+            <section>
+                <h2>🤖 Fitur Keamanan Utama Android</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box box-green">
+                            <p><strong>🏠 App Sandbox</strong></p>
+                            <p class="small-text">Setiap app di "kamar" terpisah dengan UID unik</p>
+                        </div>
+                        <div class="box box-blue">
+                            <p><strong>✅ Verified Boot</strong></p>
+                            <p class="small-text">Memastikan sistem tidak dimodifikasi saat boot</p>
+                        </div>
+                        <div class="box box-purple">
+                            <p><strong>🔒 SELinux</strong></p>
+                            <p class="small-text">Kontrol akses wajib untuk setiap proses</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box box-orange">
+                            <p><strong>🛡️ Play Protect</strong></p>
+                            <p class="small-text">Scan malware secara otomatis</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>🔑 Keystore</strong></p>
+                            <p class="small-text">Penyimpanan kunci kriptografi yang aman</p>
+                        </div>
+                        <div class="box box-blue">
+                            <p><strong>📝 Permission System</strong></p>
+                            <p class="small-text">Izin eksplisit untuk akses sensitif</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: iOS Security Overview -->
+            <section>
+                <h2>🍎 Keamanan iOS</h2>
+                <div class="analogy">
+                    iOS seperti <strong>taman dengan tembok tinggi</strong> (walled garden). Sangat aman, tapi pilihan terbatas - semua harus lewat "pintu gerbang" App Store!
+                </div>
+                <div class="box" style="margin-top: 20px;">
+                    <p><strong>Filosofi:</strong> Apple mengontrol hardware DAN software = keamanan terintegrasi</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: iOS Key Features -->
+            <section>
+                <h2>🍎 Fitur Keamanan Utama iOS</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box box-blue">
+                            <p><strong>🔐 Secure Enclave</strong></p>
+                            <p class="small-text">Chip khusus untuk Touch ID, Face ID, dan kunci enkripsi</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>⛓️ Secure Boot Chain</strong></p>
+                            <p class="small-text">Verifikasi bertingkat dari hardware hingga iOS</p>
+                        </div>
+                        <div class="box box-purple">
+                            <p><strong>✍️ Code Signing</strong></p>
+                            <p class="small-text">Semua app harus ditandatangani Apple</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box box-orange">
+                            <p><strong>🏪 App Store Review</strong></p>
+                            <p class="small-text">Review manual & otomatis sebelum publish</p>
+                        </div>
+                        <div class="box box-blue">
+                            <p><strong>🔒 Data Protection</strong></p>
+                            <p class="small-text">Enkripsi berlapis berdasarkan sensitivitas</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>🔑 Keychain</strong></p>
+                            <p class="small-text">Penyimpanan kredensial terenkripsi</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Android vs iOS -->
+            <section>
+                <h2>🤖 vs 🍎 Perbandingan</h2>
+                <table>
+                    <tr>
+                        <th>Aspek</th>
+                        <th>Android</th>
+                        <th>iOS</th>
+                    </tr>
+                    <tr>
+                        <td>Kode Sumber</td>
+                        <td class="highlight-green">Open Source ✓</td>
+                        <td class="highlight-orange">Closed Source</td>
+                    </tr>
+                    <tr>
+                        <td>Distribusi App</td>
+                        <td class="highlight-orange">Play Store + Sideload</td>
+                        <td class="highlight-green">App Store Only ✓</td>
+                    </tr>
+                    <tr>
+                        <td>Update Keamanan</td>
+                        <td class="highlight-red">Tergantung vendor ✗</td>
+                        <td class="highlight-green">Langsung dari Apple ✓</td>
+                    </tr>
+                    <tr>
+                        <td>Fleksibilitas</td>
+                        <td class="highlight-green">Sangat fleksibel ✓</td>
+                        <td class="highlight-orange">Terbatas</td>
+                    </tr>
+                    <tr>
+                        <td>Hardware Security</td>
+                        <td class="highlight-orange">Bervariasi</td>
+                        <td class="highlight-green">Konsisten (Secure Enclave) ✓</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- SECTION: OWASP Top 10 -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>📋 BAGIAN 2</h2>
+                <h1>OWASP Mobile Top 10</h1>
+                <p>10 Risiko Keamanan Paling Berbahaya</p>
+            </section>
+
+            <!-- SLIDE 11: What is OWASP -->
+            <section>
+                <h2>📋 Apa itu OWASP Mobile Top 10?</h2>
+                <div class="box box-blue">
+                    <p><strong>OWASP</strong> = Open Web Application Security Project</p>
+                    <p class="small-text">Organisasi nirlaba yang fokus pada keamanan software</p>
+                </div>
+                <div class="analogy" style="margin-top: 30px;">
+                    Seperti <strong>daftar "10 penyakit paling berbahaya"</strong> untuk aplikasi mobile. Dengan tahu daftarnya, kita bisa mencegah dan mengobati!
+                </div>
+            </section>
+
+            <!-- SLIDE 12: M1-M3 -->
+            <section>
+                <h2>🔴 Risiko Tinggi (M1-M3)</h2>
+                <div class="box risk-high">
+                    <p><strong>M1: Penggunaan Platform yang Tidak Tepat</strong></p>
+                    <p class="small-text">Tidak memanfaatkan fitur keamanan platform (Keystore/Keychain)</p>
+                </div>
+                <div class="box risk-high">
+                    <p><strong>M2: Penyimpanan Data Tidak Aman</strong></p>
+                    <p class="small-text">Menyimpan password/token tanpa enkripsi 😱</p>
+                </div>
+                <div class="box risk-high">
+                    <p><strong>M3: Komunikasi Tidak Aman</strong></p>
+                    <p class="small-text">Kirim data sensitif tanpa HTTPS atau tanpa validasi sertifikat</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 13: M4-M6 -->
+            <section>
+                <h2>🟠 Risiko Sedang (M4-M6)</h2>
+                <div class="box risk-medium">
+                    <p><strong>M4: Autentikasi Tidak Aman</strong></p>
+                    <p class="small-text">Login lemah, tidak ada limit percobaan, tanpa 2FA</p>
+                </div>
+                <div class="box risk-medium">
+                    <p><strong>M5: Kriptografi Tidak Memadai</strong></p>
+                    <p class="small-text">Pakai algoritma usang (MD5, DES) atau simpan kunci sembarangan</p>
+                </div>
+                <div class="box risk-medium">
+                    <p><strong>M6: Otorisasi Tidak Aman</strong></p>
+                    <p class="small-text">User biasa bisa akses fitur admin karena cek hanya di frontend</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 14: M7-M10 -->
+            <section>
+                <h2>🟡 Risiko Lainnya (M7-M10)</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box risk-low">
+                            <p><strong>M7: Kualitas Kode Buruk</strong></p>
+                            <p class="small-text">Buffer overflow, memory leak</p>
+                        </div>
+                        <div class="box risk-low">
+                            <p><strong>M8: Code Tampering</strong></p>
+                            <p class="small-text">App dimodifikasi untuk tujuan jahat</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box risk-low">
+                            <p><strong>M9: Reverse Engineering</strong></p>
+                            <p class="small-text">App di-decompile untuk cari kelemahan</p>
+                        </div>
+                        <div class="box risk-low">
+                            <p><strong>M10: Fitur Debug Tersisa</strong></p>
+                            <p class="small-text">Backdoor dev masuk ke production</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Malware -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>🦠 BAGIAN 3</h2>
+                <h1>Malware Mobile</h1>
+                <p>Ancaman yang Mengintai Smartphone</p>
+            </section>
+
+            <!-- SLIDE 15: Types of Malware -->
+            <section>
+                <h2>🦠 Jenis-Jenis Malware Mobile</h2>
+                <div class="three-column">
+                    <div class="box" style="background: rgba(155,89,182,0.3);">
+                        <p class="emoji-medium">🐴</p>
+                        <p><strong>Trojan</strong></p>
+                        <p class="small-text">Menyamar jadi app biasa, diam-diam mencuri data</p>
+                    </div>
+                    <div class="box" style="background: rgba(52,152,219,0.3);">
+                        <p class="emoji-medium">👁️</p>
+                        <p><strong>Spyware</strong></p>
+                        <p class="small-text">Memata-matai: lokasi, chat, kamera, mikrofon</p>
+                    </div>
+                    <div class="box" style="background: rgba(230,126,34,0.3);">
+                        <p class="emoji-medium">🔒</p>
+                        <p><strong>Ransomware</strong></p>
+                        <p class="small-text">Kunci HP/data, minta tebusan</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 16: More Malware -->
+            <section>
+                <h2>🦠 Malware Lainnya</h2>
+                <div class="three-column">
+                    <div class="box" style="background: rgba(39,174,96,0.3);">
+                        <p class="emoji-medium">📢</p>
+                        <p><strong>Adware</strong></p>
+                        <p class="small-text">Iklan mengganggu terus-menerus</p>
+                    </div>
+                    <div class="box" style="background: rgba(241,196,15,0.3);">
+                        <p class="emoji-medium">⛏️</p>
+                        <p><strong>Cryptominer</strong></p>
+                        <p class="small-text">HP jadi panas, baterai boros untuk mining</p>
+                    </div>
+                    <div class="box" style="background: rgba(231,76,60,0.3);">
+                        <p class="emoji-medium">🏦</p>
+                        <p><strong>Banking Trojan</strong></p>
+                        <p class="small-text">Khusus target app banking, curi uang!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 17: How Malware Spreads -->
+            <section>
+                <h2>📥 Bagaimana Malware Menyebar?</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box box-red">
+                            <p><strong>🏪 Toko App Tidak Resmi</strong></p>
+                            <p class="small-text">APK "gratis" dari situs mencurigakan</p>
+                        </div>
+                        <div class="box box-orange">
+                            <p><strong>📧 Phishing SMS/Email</strong></p>
+                            <p class="small-text">"Klik link ini untuk hadiah!"</p>
+                        </div>
+                        <div class="box box-purple">
+                            <p><strong>📺 Malvertising</strong></p>
+                            <p class="small-text">Iklan yang mengarah ke download malware</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box box-blue">
+                            <p><strong>🔗 Fake Apps</strong></p>
+                            <p class="small-text">App palsu mirip app populer</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>⛓️ Supply Chain</strong></p>
+                            <p class="small-text">SDK/library yang dikompromikan</p>
+                        </div>
+                        <div class="box box-red">
+                            <p><strong>💾 Drive-by Download</strong></p>
+                            <p class="small-text">Otomatis terunduh saat buka web</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 18: Real Case - Pegasus -->
+            <section>
+                <h2>📰 Kasus Nyata: Pegasus</h2>
+                <div class="box box-red">
+                    <p class="emoji-medium">👁️</p>
+                    <p><strong>Spyware paling canggih di dunia</strong></p>
+                </div>
+                <ul style="margin-top: 20px;">
+                    <li><strong>Zero-click:</strong> Korban tidak perlu klik apapun!</li>
+                    <li><strong>Kemampuan:</strong> Akses semua data, aktifkan kamera & mikrofon</li>
+                    <li><strong>Target:</strong> Jurnalis, aktivis, politisi, pengusaha</li>
+                    <li><strong>Harga:</strong> Dijual ke pemerintah, harga jutaan dolar</li>
+                </ul>
+                <div class="key-point" style="margin-top: 20px;">
+                    Bahkan iPhone yang dianggap sangat aman pun bisa ditembus!
+                </div>
+            </section>
+
+            <!-- SECTION: Attack Techniques -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>⚔️ BAGIAN 4</h2>
+                <h1>Teknik Serangan</h1>
+                <p>Cara Penyerang Menyerang Perangkat Mobile</p>
+            </section>
+
+            <!-- SLIDE 19: Network Attacks -->
+            <section>
+                <h2>📡 Serangan Jaringan</h2>
+                <div class="box box-blue">
+                    <p><strong>👿 Evil Twin WiFi</strong></p>
+                    <p class="small-text">Penyerang buat hotspot palsu "Starbucks_WiFi_Free" → semua data dicuri</p>
+                </div>
+                <div class="box box-purple">
+                    <p><strong>🔀 Man-in-the-Middle</strong></p>
+                    <p class="small-text">Penyerang "duduk di tengah" antara HP dan server, baca semua komunikasi</p>
+                </div>
+                <div class="analogy" style="margin-top: 20px;">
+                    Seperti orang yang <strong>baca surat</strong> Anda sebelum dikirim ke tujuan!
+                </div>
+            </section>
+
+            <!-- SLIDE 20: SIM Swapping -->
+            <section>
+                <h2>📱 SIM Swapping</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <p class="emoji-medium">🎭</p>
+                        <p class="small-text">Penipu hubungi operator</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="emoji-medium">🗣️</p>
+                        <p class="small-text">Mengaku sebagai korban</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="emoji-medium">💳</p>
+                        <p class="small-text">Minta pindah ke SIM baru</p>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="emoji-medium">📲</p>
+                        <p class="small-text">Terima OTP korban!</p>
+                    </div>
+                </div>
+                <div class="key-point">
+                    OTP via SMS <strong>TIDAK AMAN</strong>! Gunakan authenticator app jika memungkinkan.
+                </div>
+            </section>
+
+            <!-- SLIDE 21: Bluetooth & NFC -->
+            <section>
+                <h2>📶 Serangan Jarak Dekat</h2>
+                <div class="two-column">
+                    <div class="box box-blue">
+                        <p class="emoji-medium">🔵</p>
+                        <p><strong>Bluetooth Attack</strong></p>
+                        <ul class="small-text">
+                            <li><strong>Bluesnarfing:</strong> Curi data via BT</li>
+                            <li><strong>Bluejacking:</strong> Kirim spam</li>
+                            <li><strong>Bluebugging:</strong> Kontrol HP</li>
+                        </ul>
+                    </div>
+                    <div class="box box-green">
+                        <p class="emoji-medium">💳</p>
+                        <p><strong>NFC Relay</strong></p>
+                        <p class="small-text">Penyerang "teruskan" sinyal NFC kartu pembayaran Anda ke toko lain → bayar tanpa sadar!</p>
+                    </div>
+                </div>
+                <div class="box box-orange" style="margin-top: 20px;">
+                    <p><strong>🔌 Juice Jacking</strong></p>
+                    <p class="small-text">Stasiun charging USB publik yang mencuri data atau install malware</p>
+                </div>
+            </section>
+
+            <!-- SECTION: Root & Jailbreak -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>🔓 BAGIAN 5</h2>
+                <h1>Rooting & Jailbreaking</h1>
+                <p>Membuka Kunci = Membuka Risiko</p>
+            </section>
+
+            <!-- SLIDE 22: What is Root/Jailbreak -->
+            <section>
+                <h2>🔓 Apa itu Root/Jailbreak?</h2>
+                <div class="two-column">
+                    <div class="box box-green">
+                        <p class="emoji-medium">🤖</p>
+                        <p><strong>Rooting (Android)</strong></p>
+                        <p class="small-text">Mendapat akses "superuser" atau administrator penuh</p>
+                    </div>
+                    <div class="box box-blue">
+                        <p class="emoji-medium">🍎</p>
+                        <p><strong>Jailbreaking (iOS)</strong></p>
+                        <p class="small-text">Menghapus pembatasan Apple, bisa install app dari luar App Store</p>
+                    </div>
+                </div>
+                <div class="analogy" style="margin-top: 30px;">
+                    Seperti <strong>membuka semua kunci rumah</strong> dan <strong>membuang alarm</strong>. Bebas masuk mana saja... tapi pencuri juga!
+                </div>
+            </section>
+
+            <!-- SLIDE 23: Risks of Root/Jailbreak -->
+            <section>
+                <h2>⚠️ Risiko Root/Jailbreak</h2>
+                <div class="two-column">
+                    <div>
+                        <h3 class="highlight-green">✅ Normal</h3>
+                        <ul class="checklist small-text">
+                            <li>Sandbox berfungsi</li>
+                            <li>SELinux aktif</li>
+                            <li>Verified Boot aman</li>
+                            <li>App banking jalan</li>
+                            <li>Keystore terlindungi</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="highlight-red">❌ Rooted/Jailbroken</h3>
+                        <ul class="crosslist small-text">
+                            <li>Sandbox di-bypass</li>
+                            <li>Proteksi dimatikan</li>
+                            <li>Boot tidak terverifikasi</li>
+                            <li>App banking DIBLOKIR</li>
+                            <li>Malware akses semua!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="key-point" style="margin-top: 20px;">
+                    Banyak app banking dan korporat <strong>menolak</strong> berjalan di perangkat root/jailbreak!
+                </div>
+            </section>
+
+            <!-- SECTION: MDM -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>🏢 BAGIAN 6</h2>
+                <h1>Mobile Device Management</h1>
+                <p>Mengelola Perangkat Mobile Organisasi</p>
+            </section>
+
+            <!-- SLIDE 24: What is MDM -->
+            <section>
+                <h2>🏢 Apa itu MDM?</h2>
+                <div class="box box-blue">
+                    <p><strong>Mobile Device Management</strong> = Software untuk mengelola, memantau, dan mengamankan perangkat mobile karyawan secara terpusat</p>
+                </div>
+                <div class="analogy" style="margin-top: 30px;">
+                    Seperti <strong>satpam digital</strong> yang mengawasi semua HP kantor: siapa pakai apa, install apa, dan bisa "kunci darurat" jika hilang!
+                </div>
+            </section>
+
+            <!-- SLIDE 25: MDM Capabilities -->
+            <section>
+                <h2>🏢 Kemampuan MDM</h2>
+                <div class="three-column">
+                    <div class="box box-green">
+                        <p class="emoji-medium">📋</p>
+                        <p><strong>Kebijakan</strong></p>
+                        <p class="small-text">Paksa password kuat, enkripsi, update</p>
+                    </div>
+                    <div class="box box-blue">
+                        <p class="emoji-medium">📲</p>
+                        <p><strong>Distribusi App</strong></p>
+                        <p class="small-text">Install app kantor otomatis</p>
+                    </div>
+                    <div class="box box-red">
+                        <p class="emoji-medium">🗑️</p>
+                        <p><strong>Remote Wipe</strong></p>
+                        <p class="small-text">Hapus data jarak jauh jika hilang</p>
+                    </div>
+                </div>
+                <div class="three-column" style="margin-top: 20px;">
+                    <div class="box box-purple">
+                        <p class="emoji-medium">📍</p>
+                        <p><strong>Tracking</strong></p>
+                        <p class="small-text">Lacak lokasi perangkat</p>
+                    </div>
+                    <div class="box box-orange">
+                        <p class="emoji-medium">🔍</p>
+                        <p><strong>Compliance</strong></p>
+                        <p class="small-text">Cek HP patuh aturan?</p>
+                    </div>
+                    <div class="box box-green">
+                        <p class="emoji-medium">🚫</p>
+                        <p><strong>Root Detection</strong></p>
+                        <p class="small-text">Blokir HP yang di-root</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 26: BYOD vs COPE -->
+            <section>
+                <h2>🏢 Model Kepemilikan</h2>
+                <div class="three-column">
+                    <div class="box box-blue">
+                        <p><strong>COPE</strong></p>
+                        <p class="small-text">Corporate-Owned, Personally Enabled</p>
+                        <hr style="border-color: rgba(255,255,255,0.2);">
+                        <p class="small-text">HP milik kantor, boleh pakai pribadi</p>
+                        <p class="highlight-green small-text">✓ Kontrol penuh IT</p>
+                    </div>
+                    <div class="box box-orange">
+                        <p><strong>BYOD</strong></p>
+                        <p class="small-text">Bring Your Own Device</p>
+                        <hr style="border-color: rgba(255,255,255,0.2);">
+                        <p class="small-text">HP pribadi untuk kerja</p>
+                        <p class="highlight-orange small-text">~ Kontrol terbatas</p>
+                    </div>
+                    <div class="box box-red">
+                        <p><strong>COBO</strong></p>
+                        <p class="small-text">Corporate-Owned, Business Only</p>
+                        <hr style="border-color: rgba(255,255,255,0.2);">
+                        <p class="small-text">HP kantor, HANYA untuk kerja</p>
+                        <p class="highlight-green small-text">✓ Paling aman</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Best Practices -->
+            <section class="section-divider" data-background-gradient="linear-gradient(135deg, #0f3460 0%, #16213e 100%)">
+                <h2>🛡️ BAGIAN 7</h2>
+                <h1>Praktik Terbaik</h1>
+                <p>Tips Mengamankan Perangkat Mobile</p>
+            </section>
+
+            <!-- SLIDE 27: User Tips -->
+            <section>
+                <h2>👤 Tips untuk Pengguna</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box box-green">
+                            <p><strong>🔐 Kunci Layar Kuat</strong></p>
+                            <p class="small-text">PIN 6 digit + biometrik, hindari pola</p>
+                        </div>
+                        <div class="box box-blue">
+                            <p><strong>📲 Update Selalu!</strong></p>
+                            <p class="small-text">OS dan app, aktifkan auto-update</p>
+                        </div>
+                        <div class="box box-purple">
+                            <p><strong>🏪 Sumber Resmi</strong></p>
+                            <p class="small-text">Hanya dari Play Store/App Store</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box box-orange">
+                            <p><strong>🔍 Cek Izin App</strong></p>
+                            <p class="small-text">App senter tidak perlu akses kontak!</p>
+                        </div>
+                        <div class="box box-red">
+                            <p><strong>📶 Hindari WiFi Publik</strong></p>
+                            <p class="small-text">Atau gunakan VPN</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>📍 Find My Device</strong></p>
+                            <p class="small-text">Aktifkan sebelum HP hilang!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 28: Developer Tips -->
+            <section>
+                <h2>👨‍💻 Tips untuk Developer</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box box-blue">
+                            <p><strong>🔒 Enkripsi Data</strong></p>
+                            <p class="small-text">Gunakan Keystore/Keychain untuk simpan kredensial</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>🔗 HTTPS + Pinning</strong></p>
+                            <p class="small-text">Certificate pinning untuk data sensitif</p>
+                        </div>
+                        <div class="box box-purple">
+                            <p><strong>✅ Validasi di Server</strong></p>
+                            <p class="small-text">JANGAN percaya input dari client</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box box-orange">
+                            <p><strong>🔐 Auth yang Kuat</strong></p>
+                            <p class="small-text">MFA, rate limiting, session management</p>
+                        </div>
+                        <div class="box box-red">
+                            <p><strong>🧹 Bersihkan Debug</strong></p>
+                            <p class="small-text">Hapus log & backdoor sebelum production</p>
+                        </div>
+                        <div class="box box-blue">
+                            <p><strong>🔍 Security Testing</strong></p>
+                            <p class="small-text">Static & dynamic analysis rutin</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 29: Organization Tips -->
+            <section>
+                <h2>🏢 Tips untuk Organisasi</h2>
+                <div class="box box-blue">
+                    <p><strong>📋 Kebijakan Mobile Security</strong></p>
+                    <p class="small-text">Buat aturan jelas: apa boleh, apa tidak, konsekuensi pelanggaran</p>
+                </div>
+                <div class="box box-green">
+                    <p><strong>📱 Implementasi MDM</strong></p>
+                    <p class="small-text">Kelola semua perangkat secara terpusat</p>
+                </div>
+                <div class="box box-orange">
+                    <p><strong>📚 Edukasi Karyawan</strong></p>
+                    <p class="small-text">Training awareness security secara berkala</p>
+                </div>
+                <div class="box box-purple">
+                    <p><strong>🔒 Containerization</strong></p>
+                    <p class="small-text">Pisahkan data kerja dari data pribadi (terutama BYOD)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 30: Summary -->
+            <section>
+                <h2>📝 Rangkuman</h2>
+                <div class="two-column">
+                    <div>
+                        <div class="box box-blue">
+                            <p><strong>🏗️ Arsitektur</strong></p>
+                            <p class="small-text">Android & iOS punya mekanisme keamanan berlapis</p>
+                        </div>
+                        <div class="box box-red">
+                            <p><strong>⚠️ OWASP Top 10</strong></p>
+                            <p class="small-text">Pahami 10 risiko utama untuk mencegahnya</p>
+                        </div>
+                        <div class="box box-purple">
+                            <p><strong>🦠 Malware</strong></p>
+                            <p class="small-text">Trojan, spyware, ransomware mengintai</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="box box-orange">
+                            <p><strong>⚔️ Serangan</strong></p>
+                            <p class="small-text">WiFi, SIM swap, Bluetooth, dan lainnya</p>
+                        </div>
+                        <div class="box box-red">
+                            <p><strong>🔓 Root/Jailbreak</strong></p>
+                            <p class="small-text">Membuka akses = membuka risiko</p>
+                        </div>
+                        <div class="box box-green">
+                            <p><strong>🛡️ Pertahanan</strong></p>
+                            <p class="small-text">Update, sumber resmi, enkripsi, MDM</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 31: Key Takeaways -->
+            <section>
+                <h2>💡 Pesan Kunci</h2>
+                <div class="box box-green" style="font-size: 1.1em;">
+                    <p>1️⃣ <strong>Smartphone = Target Bernilai Tinggi</strong></p>
+                    <p class="small-text">Banyak data sensitif, selalu online, sering di jaringan tidak aman</p>
+                </div>
+                <div class="box box-blue" style="font-size: 1.1em;">
+                    <p>2️⃣ <strong>Keamanan = Tanggung Jawab Bersama</strong></p>
+                    <p class="small-text">Pengguna, developer, dan organisasi harus berperan aktif</p>
+                </div>
+                <div class="box box-orange" style="font-size: 1.1em;">
+                    <p>3️⃣ <strong>Defense in Depth</strong></p>
+                    <p class="small-text">Tidak ada satu solusi sempurna, gunakan pertahanan berlapis</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 32: Questions -->
+            <section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">
+                <h1>❓ Pertanyaan?</h1>
+                <p style="margin-top: 50px;">Terima kasih atas perhatiannya!</p>
+                <div class="box" style="margin-top: 50px;">
+                    <p class="small-text">📚 Referensi: CEH v13 Module 17, OWASP Mobile Top 10, iOS Security Guide, Android Security Documentation</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            center: true,
+            progress: true,
+            controls: true,
+            controlsTutorial: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            shuffle: false,
+            fragments: true,
+            fragmentInURL: true,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoSlide: 0,
+            autoSlideStoppable: true,
+            defaultTiming: null,
+            mouseWheel: false,
+            previewLinks: false,
+            viewDistance: 3,
+            mobileViewDistance: 2,
+            display: 'block',
+            hideInactiveCursor: true,
+            hideCursorTime: 3000
+        });
+    </script>
+</body>
+</html>
